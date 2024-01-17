@@ -8,9 +8,11 @@ public class Managers : MonoBehaviour
     Resource_Manager _resource = new();
     UI_Manager _ui = new();
     Input_Manager _input = new();
+    Game_Manager _game = new();
     public static Resource_Manager Resource { get { return Instance._resource; } }
     public static UI_Manager UI { get { return Instance._ui; } }
     public static Input_Manager Input { get { return Instance._input; } }
+    public static Game_Manager Game { get { return Instance._game; } }
     public void Update()
     {
         _input.OnUpdate();
