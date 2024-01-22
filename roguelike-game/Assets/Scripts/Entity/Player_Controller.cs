@@ -15,22 +15,13 @@ public class Player_Controller : Base_Controller
     }
     protected override void Update()
     {
-        base.Update();
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, new Vector2(Camera.main.orthographicSize * 2 * Camera.main.aspect, Camera.main.orthographicSize * 2), LayerMask.NameToLayer("Monster"));
-        h = Input.GetAxisRaw("Horizontal");
+        base.Update();h = Input.GetAxisRaw("Horizontal");
         v = Input.GetAxisRaw("Vertical");
         if (state != State.Death)
         {
             if (h != 0 || v != 0)
             {
                 state = State.Moving;
-            }
-        }
-        if (colliders != null)
-        {
-            foreach (Collider2D col in colliders)
-            {
-                
             }
         }
         if (skill != null)

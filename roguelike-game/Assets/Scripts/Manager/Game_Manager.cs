@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class Game_Manager
 {
+    ObjectPool objectPool = new();
     private Player_Controller playerController;
     public Player_Controller PlayerController { get { init();  return playerController; } }
+    public List<GameObject> monsters = new List<GameObject>();
     public int gold;
     public int exp;
     private void init()
@@ -35,3 +37,4 @@ public class Game_Manager
         Time.timeScale = 0f;
     }
 }
+//List Remove

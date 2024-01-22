@@ -7,14 +7,5 @@ public class Long_Distance_Monster : Monster_Controller
     protected override void Update()
     {
         base.Update();
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange, LayerMask.GetMask("Player"));
-        if(colliders != null)
-        {
-            isAttack = true;
-        }
-        else
-        {
-            isAttack = false;
-        }
     }
 }
