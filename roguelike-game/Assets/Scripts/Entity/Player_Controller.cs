@@ -11,6 +11,7 @@ public class Player_Controller : Base_Controller
     protected override void Start()
     {
         base.Start();
+        rigid.constraints = RigidbodyConstraints2D.FreezeAll;
         StartCoroutine(Attack());
     }
     protected override void Update()
