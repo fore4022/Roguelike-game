@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 public class Monster_Controller : Base_Controller
 {
@@ -14,8 +15,9 @@ public class Monster_Controller : Base_Controller
     [SerializeField]
     private float neighborhoodRadius = 3f;
     [SerializeField]
-    private float maxDistance = 2f;
-    private Vector2 velocity;
+    private float maxDistance = 6f;
+    [HideInInspector]
+    public Vector2 velocity;
     private Vector2 acceleration;
     protected override void Start()
     {
@@ -25,10 +27,9 @@ public class Monster_Controller : Base_Controller
     protected override void Update()
     {
         base.Update();
-        velocity = Managers.Game.PlayerController.transform.position - transform.position;
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange, LayerMask.NameToLayer("Monster"));
-        List<Monster_Controller> boids = colliders.Select(o => o.GetComponent<Monster_Controller>()).ToList();
-        boids.Remove(this);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange * 10);
+        List<Monster_Controller> boids = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
+        boids.Remove(null);
         flock(boids);
         updateVelocity();
         updatePosition();
@@ -36,7 +37,7 @@ public class Monster_Controller : Base_Controller
     }
     protected override void moving()
     {
-        transform.position += (Managers.Game.PlayerController.gameObject.transform.position - transform.position).normalized * moveSpeed * Time.deltaTime;
+        transform.position += (Managers.Game.PlayerController.gameObject.transform.position - transform.position)* moveSpeed * Time.deltaTime;
     }
     protected override void death()
     {
@@ -93,6 +94,7 @@ public class Monster_Controller : Base_Controller
         if (!boids.Any()) { return direction; }
         foreach (Monster_Controller boid in boids)
         {
+            float a = Vector2.Distance(boid.transform.position, transform.position);
             Vector2 difference = transform.position - boid.transform.position;
             direction += difference.normalized * moveSpeed;
         }
@@ -116,7 +118,7 @@ public class Monster_Controller : Base_Controller
     }
     protected float distanceTo(Monster_Controller boid)
     {
-        return Vector2.Distance(boid.transform.position, transform.position);
+        return Vector2.Distance(boid.gameObject.transform.position, transform.position);
     }
     protected void crash(Collision2D collision)
     {
