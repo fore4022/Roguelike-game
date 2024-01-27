@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 public class Monster_Controller : Base_Controller
 {
+    public Vector3 baseVector;
     [SerializeField]
     private float alignmentAmount = 2f;
     [SerializeField]
@@ -15,7 +17,7 @@ public class Monster_Controller : Base_Controller
     [SerializeField]
     private float neighborhoodRadius = 3f;
     [SerializeField]
-    private float maxDistance = 6f;
+    private float maxDistance = 0.3f;
     [HideInInspector]
     public Vector2 velocity;
     private Vector2 acceleration;
@@ -27,22 +29,29 @@ public class Monster_Controller : Base_Controller
     protected override void Update()
     {
         base.Update();
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange * 10);
-        List<Monster_Controller> boids = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
-        boids.Remove(null);
-        flock(boids);
-        updateVelocity();
-        updatePosition();
-        updateRotation();
-    }
-    protected override void moving()
-    {
-        transform.position += (Managers.Game.PlayerController.gameObject.transform.position - transform.position)* moveSpeed * Time.deltaTime;
-    }
-    protected override void death()
-    {
-        Managers.Game.PlayerController.Gold += gold;
-        Managers.Game.PlayerController.Exp += exp;
+        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, maxDistance * 1.5f);
+        List<Player_Controller> player = collider.Select(o => o.gameObject.GetComponent<Player_Controller>()).ToList();
+        foreach(Collider2D col in collider)
+        {
+            Debug.Log(col.gameObject.name);
+        }
+        Debug.Log("----");
+        foreach(Player_Controller pl in player)
+        {
+            Debug.Log(pl.gameObject.name);
+        }
+        player.Remove(null);
+        Debug.Log(player.Count());
+        if (player.Count() != 1)
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange * 10);
+            List<Monster_Controller> boids = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
+            boids.Remove(null);
+            flock(boids);
+            updateVelocity();
+            updatePosition();
+            updateRotation();
+        }
     }
     protected void flock(IEnumerable<Monster_Controller> boids)
     {
@@ -60,7 +69,7 @@ public class Monster_Controller : Base_Controller
     protected void updateRotation()
     {
         float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle) + baseVector);
     }
     protected Vector2 alignment(IEnumerable<Monster_Controller> boids)
     {
@@ -120,6 +129,17 @@ public class Monster_Controller : Base_Controller
     {
         return Vector2.Distance(boid.gameObject.transform.position, transform.position);
     }
+    protected override void moving()
+    {
+        Vector3 dir = Managers.Game.PlayerController.gameObject.transform.position - transform.position;
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * moveSpeed);
+        transform.position += (Managers.Game.PlayerController.gameObject.transform.position - transform.position) * moveSpeed * Time.deltaTime;
+    }
+    protected override void death()
+    {
+        Managers.Game.PlayerController.Gold += gold;
+        Managers.Game.PlayerController.Exp += exp;
+    }
     protected void crash(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
@@ -139,5 +159,7 @@ public class Monster_Controller : Base_Controller
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, maxDistance * 1.5f);
     }
 }
