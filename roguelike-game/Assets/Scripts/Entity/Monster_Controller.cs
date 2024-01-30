@@ -2,25 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.Properties;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 public class Monster_Controller : Base_Controller
 {
-    public Vector3 baseVector;
-    [SerializeField]
-    private float alignmentAmount = 2f;
-    [SerializeField]
-    private float cohesionAmount = 2f;
-    [SerializeField]
-    private float separationAmount = 2f;
-    [SerializeField]
-    private float neighborhoodRadius = 3f;
-    [SerializeField]
-    private float maxDistance = 0.3f;
     [HideInInspector]
     public Vector2 velocity;
-    private Vector2 acceleration;
+    [SerializeField]
+    protected float alignmentAmount = 4f;
+    [SerializeField]
+    protected float cohesionAmount = 4f;
+    [SerializeField]
+    protected float separationAmount = 4f;
+    [SerializeField]
+    protected float neighborhoodRadius = 2f;
+    [SerializeField]
+    protected float maxDistance = 0.3f;
+    protected Vector2 acceleration;
+    protected float correction = 0.005f;
     protected override void Start()
     {
         base.Start();
@@ -28,25 +30,11 @@ public class Monster_Controller : Base_Controller
     }
     protected override void Update()
     {
-        base.Update();
-        Collider2D[] collider = Physics2D.OverlapCircleAll(transform.position, maxDistance * 1.5f);
-        List<Player_Controller> player = collider.Select(o => o.gameObject.GetComponent<Player_Controller>()).ToList();
-        foreach(Collider2D col in collider)
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, neighborhoodRadius);
+        List<Monster_Controller> boids = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
+        boids.RemoveAll(o => o == null);
+        if(boids != null)
         {
-            Debug.Log(col.gameObject.name);
-        }
-        Debug.Log("----");
-        foreach(Player_Controller pl in player)
-        {
-            Debug.Log(pl.gameObject.name);
-        }
-        player.Remove(null);
-        Debug.Log(player.Count());
-        if (player.Count() != 1)
-        {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange * 10);
-            List<Monster_Controller> boids = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
-            boids.Remove(null);
             flock(boids);
             updateVelocity();
             updatePosition();
@@ -55,7 +43,7 @@ public class Monster_Controller : Base_Controller
     }
     protected void flock(IEnumerable<Monster_Controller> boids)
     {
-        acceleration = alignment(boids) * alignmentAmount + cohesion(boids) * cohesionAmount + separation(boids) * separationAmount;
+        acceleration = alignment(boids) * alignmentAmount + cohesion(boids) * cohesionAmount + separation(boids) * separationAmount + move();
     }
     protected void updateVelocity()
     {
@@ -64,37 +52,39 @@ public class Monster_Controller : Base_Controller
     }
     protected void updatePosition()
     {
-        transform.position += new Vector3(velocity.x, velocity.y, 0) * Time.deltaTime;
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, neighborhoodRadius / 2);
+        List<Base_Controller> boids = colliders.Select(o => o.gameObject.GetComponent<Base_Controller>()).ToList();
+        if(boids == null)
+        {
+            transform.position += new Vector3(velocity.x, velocity.y, 0) * Time.deltaTime;
+        }
+        else
+        {
+            acceleration -= move();
+            transform.position += new Vector3(velocity.x, velocity.y, 0) * Time.deltaTime;
+        }
     }
     protected void updateRotation()
     {
         float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle) + baseVector);
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
     protected Vector2 alignment(IEnumerable<Monster_Controller> boids)
     {
         Vector2 velocity = Vector2.zero;
         if (!boids.Any()) { return velocity; }
-        foreach (Monster_Controller boid in boids)
-        {
-            velocity += boid.velocity;
-        }
+        foreach (Monster_Controller boid in boids) { velocity += boid.velocity; }
         velocity /= boids.Count();
-        Vector2 vec = steer(velocity.normalized * moveSpeed);
-        return vec;
+        return steer(velocity.normalized * moveSpeed);
     }
     protected Vector2 cohesion(IEnumerable<Monster_Controller> boids)
     {
         if (!boids.Any()) { return Vector2.zero; }
         Vector2 sumPositions = Vector2.zero;
-        foreach (Monster_Controller boid in boids)
-        {
-            sumPositions += (Vector2)boid.transform.position;
-        }
+        foreach (Monster_Controller boid in boids) { sumPositions += (Vector2)boid.transform.position; }
         Vector2 average = sumPositions / boids.Count();
         Vector2 direction = average - (Vector2)transform.position;
-        Vector2 vec = steer(direction.normalized * moveSpeed);
-        return vec;
+        return steer(direction.normalized * moveSpeed);
     }
     protected Vector2 separation(IEnumerable<Monster_Controller> boids)
     {
@@ -108,32 +98,29 @@ public class Monster_Controller : Base_Controller
             direction += difference.normalized * moveSpeed;
         }
         direction /= boids.Count();
-        Vector2 vec = steer(direction.normalized * moveSpeed);
-        return vec;
+        return steer(direction.normalized * moveSpeed);
     }
     protected Vector2 steer(Vector2 desired)
     {
         Vector2 vec = desired - velocity;
-        vec = limitMagnitude(vec, maxDistance);
-        return vec;
+        return limitMagnitude(vec, maxDistance);
     }
     protected Vector2 limitMagnitude(Vector2 baseVector, float maxMagnitude)
     {
-        if (baseVector.sqrMagnitude > maxMagnitude * maxMagnitude)
-        {
-            baseVector = baseVector.normalized * maxMagnitude;
-        }
+        if (baseVector.sqrMagnitude > maxMagnitude * maxMagnitude) { baseVector = baseVector.normalized * maxMagnitude; }
         return baseVector;
     }
     protected float distanceTo(Monster_Controller boid)
     {
         return Vector2.Distance(boid.gameObject.transform.position, transform.position);
     }
+    protected Vector2 move()
+    {
+        return (Managers.Game.PlayerController.gameObject.transform.position - transform.position).normalized;
+    }
     protected override void moving()
     {
-        Vector3 dir = Managers.Game.PlayerController.gameObject.transform.position - transform.position;
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * moveSpeed);
-        transform.position += (Managers.Game.PlayerController.gameObject.transform.position - transform.position) * moveSpeed * Time.deltaTime;
+        
     }
     protected override void death()
     {
@@ -142,10 +129,7 @@ public class Monster_Controller : Base_Controller
     }
     protected void crash(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
-        {
-            Managers.Game.PlayerController.Hp -= damage * attackSpeed * Time.deltaTime;
-        }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) { Managers.Game.PlayerController.Hp -= damage * attackSpeed * Time.deltaTime; }
     }
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
@@ -155,11 +139,15 @@ public class Monster_Controller : Base_Controller
     {
         crash(collision);
     }
+    protected virtual void OnCollisionExit2D(Collision2D collision)
+    {
+        
+    }
     protected override void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.DrawWireSphere(transform.position, neighborhoodRadius);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, maxDistance * 1.5f);
+        Gizmos.DrawWireSphere(transform.position, neighborhoodRadius / 2);
     }
 }

@@ -12,8 +12,6 @@ public class Status : MonoBehaviour
     [SerializeField]
     protected float moveSpeed;
     [SerializeField]
-    protected float attackRange;
-    [SerializeField]
     protected int gold;
     [SerializeField]
     protected int exp;
@@ -21,7 +19,6 @@ public class Status : MonoBehaviour
     public float AttackSpeed { get { return attackSpeed; } set { attackSpeed = value; } }
     public float Hp { get { return hp; } set { hp = value; } }
     public float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
-    public float AttackRange { get { return attackRange; } set { attackRange = value; } }
     public int Gold { get { return gold; } set { gold = value; } }
     public int Exp { get { return exp; } set { exp = value; } }
 }
