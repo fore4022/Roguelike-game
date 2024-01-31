@@ -5,8 +5,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 public abstract class Base_Controller : Status
 {
-    protected Rigidbody2D rigid;
     protected BoxCollider2D boxCollider;
+    protected Rigidbody2D rigid;
     protected enum State
     {
         Moving, Death

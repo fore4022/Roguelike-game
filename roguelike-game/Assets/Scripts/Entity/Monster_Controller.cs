@@ -12,28 +12,29 @@ public class Monster_Controller : Base_Controller
     [HideInInspector]
     public Vector2 velocity;
     [SerializeField]
-    protected float alignmentAmount = 4f;
+    protected float alignmentAmount = 1f;
     [SerializeField]
-    protected float cohesionAmount = 4f;
+    protected float cohesionAmount = 1f;
     [SerializeField]
-    protected float separationAmount = 4f;
+    protected float separationAmount = 1f;
     [SerializeField]
-    protected float neighborhoodRadius = 2f;
+    protected float neighborhoodRadius = 2.75f;
     [SerializeField]
-    protected float maxDistance = 0.3f;
+    protected float maxDistance = 3f;
     protected Vector2 acceleration;
     protected float correction = 0.005f;
     protected override void Start()
     {
         base.Start();
         state = State.Moving;
+        moveSpeed = 4f;
     }
     protected override void Update()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, neighborhoodRadius);
         List<Monster_Controller> boids = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
         boids.RemoveAll(o => o == null);
-        if(boids != null)
+        if(boids.Count() != 0)
         {
             flock(boids);
             updateVelocity();
@@ -43,7 +44,15 @@ public class Monster_Controller : Base_Controller
     }
     protected void flock(IEnumerable<Monster_Controller> boids)
     {
-        acceleration = alignment(boids) * alignmentAmount + cohesion(boids) * cohesionAmount + separation(boids) * separationAmount + move();
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, (transform.localScale.x + transform.localScale.y) / 2.8f + correction);
+        List<Monster_Controller> monster = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
+        List<Player_Controller> player = colliders.Select(o => o.gameObject.GetComponent<Player_Controller>()).ToList();
+        acceleration = alignment(boids) * alignmentAmount + cohesion(boids) * cohesionAmount + separation(boids) * separationAmount;
+        if(monster.Count() != 0) { monster.RemoveAll(o => o == null); }
+        if(player.Count() != 0) { player.RemoveAll(o => o == null); }
+        if (monster.Count() == 1 && player.Count() == 0) { acceleration += move(); }
+        else if (player.Count() == 1) { acceleration = Vector2.zero; }
+        else if (monster.Count() > 1) { acceleration = separation(boids) * separationAmount * 2; }
     }
     protected void updateVelocity()
     {
@@ -52,21 +61,11 @@ public class Monster_Controller : Base_Controller
     }
     protected void updatePosition()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, neighborhoodRadius / 2);
-        List<Base_Controller> boids = colliders.Select(o => o.gameObject.GetComponent<Base_Controller>()).ToList();
-        if(boids == null)
-        {
-            transform.position += new Vector3(velocity.x, velocity.y, 0) * Time.deltaTime;
-        }
-        else
-        {
-            acceleration -= move();
-            transform.position += new Vector3(velocity.x, velocity.y, 0) * Time.deltaTime;
-        }
+        if(acceleration != Vector2.zero) { transform.position += new Vector3(velocity.x, velocity.y, 0) * Time.deltaTime; }
     }
     protected void updateRotation()
     {
-        float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(move().y, move().x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
     protected Vector2 alignment(IEnumerable<Monster_Controller> boids)
@@ -139,15 +138,13 @@ public class Monster_Controller : Base_Controller
     {
         crash(collision);
     }
-    protected virtual void OnCollisionExit2D(Collision2D collision)
-    {
-        
-    }
     protected override void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, neighborhoodRadius);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, neighborhoodRadius / 2);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, (transform.localScale.x + transform.localScale.y) / 2.8f + correction);
     }
 }
