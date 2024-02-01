@@ -28,7 +28,7 @@ public class Game_Manager
     }
     public void stageStart()
     {
-
+        
     }
     public void stageEnd()
     {
@@ -37,4 +37,3 @@ public class Game_Manager
         Time.timeScale = 0f;
     }
 }
-//List Remove

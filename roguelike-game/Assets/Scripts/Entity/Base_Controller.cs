@@ -7,11 +7,16 @@ public abstract class Base_Controller : Status
 {
     protected BoxCollider2D boxCollider;
     protected Rigidbody2D rigid;
+    protected GameObject player;
     protected enum State
     {
         Moving, Death
     }
     protected State state;
+    private void Awake()
+    {
+        player = Managers.Game.PlayerController.gameObject;
+    }
     protected virtual void Start()
     {
         boxCollider = Util.getOrAddComponent<BoxCollider2D>(transform.gameObject);

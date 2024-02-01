@@ -7,8 +7,19 @@ public class Test : MonoBehaviour
     ObjectPool objectPool = new();
     private void Start()
     {
-        objectPool.CreateObjects("zombie", 3);
-        objectPool.activateObject("zombie", 2);
-        objectPool.disableObject("zombie", Managers.Game.monsters[1]);
+        StartCoroutine("monsterSpawn");
+
+    }
+    private void Update()
+    {
+    }
+    IEnumerator monsterSpawn()
+    {
+        while(true)
+        {
+            objectPool.CreateObjects("zombie", 1);
+            objectPool.activateObject("zombie", 1);
+            yield return new WaitForSeconds(0.75f);
+        }
     }
 }
