@@ -18,7 +18,7 @@ public class Player_Controller : Base_Controller
         rigid.constraints = RigidbodyConstraints2D.FreezeAll;
         StartCoroutine(Attack());
     }
-    private void init()
+    protected override void init()
     {
         attackDamage += Item.attackDamage;
         AttackSpeed = Item.attackSpeed;
@@ -31,15 +31,9 @@ public class Player_Controller : Base_Controller
         v = Input.GetAxisRaw("Vertical");
         if (state != State.Death)
         {
-            if (h != 0 || v != 0)
-            {
-                state = State.Moving;
-            }
+            if (h != 0 || v != 0) { state = State.Moving; }
         }
-        if (skill != null)
-        {
-            skill.Invoke();
-        }
+        if (skill != null) { skill.Invoke(); }
     }
     private IEnumerator Attack()
     {

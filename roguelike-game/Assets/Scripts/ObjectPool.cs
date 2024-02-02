@@ -2,45 +2,54 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro.EditorUtilities;
+using Unity.VisualScripting;
+using UnityEditor.Compilation;
 using UnityEngine;
 public class ObjectPool
 {
-    public Dictionary<String, Queue<GameObject>> boids = new Dictionary<String, Queue<GameObject>>();
+    public Dictionary<string, Queue<GameObject>> boids = new Dictionary<string, Queue<GameObject>>();
+    public Dictionary<string, Monster> monsterData = new Dictionary<string, Monster>();
     private GameObject objectPool;
     private GameObject monster;
     private void init()
     {
-        objectPool = new GameObject { name = "@ObjectPool" };
-        monster = new GameObject { name = "@Monster" };
+        if (GameObject.Find("@ObjectPool") == null) { objectPool = new GameObject { name = "@ObjectPool" }; }
+        
+        if (GameObject.Find("@Monster") == null) { monster = new GameObject { name = "@Monster" }; }
+        foreach (string str in Managers.Game.map.monsterType) { monsterData.Add(str, Managers.Resource.load<Monster>($"Data/Monster/{str}")); }
     }
-    public void CreateObjects(string prefabName, int count)
+    public void CreateObjects(string prefabName, string scriptName, int count)
     {
-        objectPool = GameObject.Find("@ObjectPool");
-        monster = GameObject.Find("@Monster");
-        if (objectPool == null || monster == null) { init(); }
+        init();
         Queue<GameObject> queue;
         if (boids.ContainsKey(prefabName))
         {
             queue = boids[prefabName];
             for (int i = 0; i < count; i++)
             {
-                GameObject go = Managers.Resource.instantiate($"Monster/{prefabName}", objectPool.transform);
+                GameObject go = Managers.Resource.instantiate($"Prefab/Monster/{prefabName}", objectPool.transform);
                 go.SetActive(false);
                 queue.Enqueue(go);
             }
+            boids[prefabName] = queue;
         }
         else
         {
             queue = new Queue<GameObject>();
             for(int i = 0; i < count; i++)
             {
-                GameObject go = Managers.Resource.instantiate($"Monster/{prefabName}", objectPool.transform);
+                GameObject go = Managers.Resource.instantiate($"Prefab/Monster/{prefabName}", objectPool.transform);
                 go.SetActive(false);
                 queue.Enqueue(go);
             }
             boids.Add(prefabName, queue);
         }
-        boids[prefabName] = queue;
+        System.Type scriptType = System.Type.GetType(scriptName);
+        foreach (GameObject go in boids[prefabName])
+        {
+            Monster_Controller script = go.AddComponent(scriptType) as Monster_Controller;
+            script.monsterType = monsterData[prefabName];
+        }
     }
     public void activateObject(string prefabName, int count)
     {

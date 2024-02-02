@@ -12,11 +12,11 @@ public abstract class Base_Controller : Status
     {
         Moving, Death
     }
-    protected State state;
-    private void Awake()
+    protected void OnEnable()
     {
-        player = Managers.Game.PlayerController.gameObject;
+        //player = Managers.Game.playerController.gameObject;
     }
+    protected State state;
     protected virtual void Start()
     {
         boxCollider = Util.getOrAddComponent<BoxCollider2D>(transform.gameObject);
@@ -24,16 +24,11 @@ public abstract class Base_Controller : Status
         rigid.gravityScale = 0f;
         rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
+    protected virtual void init() { }
     protected virtual void Update()
     {
-        if(state == State.Death)
-        {
-            return;
-        }
-        if(Hp == 0)
-        {
-            state = State.Death;
-        }
+        if (state == State.Death) { return; }
+        if (Hp == 0) { state = State.Death; }
         setState();
     }
     private void setState()

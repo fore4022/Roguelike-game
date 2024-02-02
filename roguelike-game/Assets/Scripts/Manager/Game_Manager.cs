@@ -5,35 +5,29 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class Game_Manager
 {
-    ObjectPool objectPool = new();
-    private Player_Controller playerController;
-    public Player_Controller PlayerController { get { init();  return playerController; } }
+    public Player_Controller playerController;
     public List<GameObject> monsters = new List<GameObject>();
-    public int gold;
-    public int exp;
+    public Map_Theme map;
+    public int userGold;
+    public int userExp;
     private void init()
     {
-        if(playerController == null)
+        map = Managers.Resource.load<Map_Theme>("Data/Map_Theme/zombie");
+        if (playerController == null)
         {
-            GameObject go = GameObject.Find("Player");
+            GameObject go = new GameObject { name = "Player" };
+            go.AddComponent<Player_Controller>();
             playerController = go.GetComponent<Player_Controller>();
-        }
-        else
-        {
-            if(playerController.Hp <= 0)
-            {
-                stageEnd();
-            }
         }
     }
     public void stageStart()
     {
-        
+        if(map != null) { init(); }
     }
     public void stageEnd()
     {
-        gold += playerController.Gold;
-        exp += playerController.Exp;
+        userGold += playerController.Gold;
+        userExp += playerController.Exp;
         Time.timeScale = 0f;
     }
 }

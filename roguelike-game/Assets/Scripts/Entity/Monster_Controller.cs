@@ -9,13 +9,23 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 public class Monster_Controller : Base_Controller
 {
+    [HideInInspector]
+    public Monster monsterType;
     protected float interval = 0.2f;
     protected override void Start()
     {
+        init();
         base.Start();
         state = State.Moving;
-        moveSpeed = 1;
-        hp = 1;
+    }
+    protected override void init()
+    {
+        attackDamage = monsterType.attackDamage;
+        attackSpeed = monsterType.attackSpeed;
+        moveSpeed = monsterType.moveSpeed;
+        hp = monsterType.hp;
+        gold = monsterType.gold;
+        exp = monsterType.exp;
     }
     protected override void Update()
     {
@@ -45,12 +55,12 @@ public class Monster_Controller : Base_Controller
     }
     protected override void death()
     {
-        Managers.Game.PlayerController.Gold += gold;
-        Managers.Game.PlayerController.Exp += exp;
+        Managers.Game.playerController.Gold += gold;
+        Managers.Game.playerController.Exp += exp;
     }
     protected void crash(Collision2D collision)
     {//플레이어 체력 감소 메서드 실행으로 바꾸기
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) { Debug.Log("Asdf"); Managers.Game.PlayerController.Hp -= attackDamage * attackSpeed * Time.deltaTime; }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) { Managers.Game.playerController.Hp -= attackDamage * attackSpeed * Time.deltaTime; }
     }
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {

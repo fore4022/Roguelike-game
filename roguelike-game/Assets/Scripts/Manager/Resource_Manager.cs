@@ -14,18 +14,12 @@ public class Resource_Manager
     public GameObject instantiate(string path, Transform transform = null)
     {
         GameObject prefab = load<GameObject>($"{path}");
-        if(prefab == null)
-        {
-            return null;
-        }
+        if (prefab == null) { return null; }
         return Object.Instantiate(prefab, transform);
     }
     public void destroy(GameObject go)
     {
-        if(go == null)
-        {
-            return;
-        }
+        if (go == null) { return; }
         Object.Destroy(go);
     }
 }
