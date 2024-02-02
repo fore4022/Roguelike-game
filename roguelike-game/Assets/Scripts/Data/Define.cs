@@ -11,4 +11,9 @@ public class Define
         Enter,
         Exit
     }
+    public enum Effect
+    {
+        SlowDown,
+        UnableToMove
+    }
 }

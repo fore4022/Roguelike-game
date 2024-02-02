@@ -17,10 +17,7 @@ public class ObjectPool
     {
         objectPool = GameObject.Find("@ObjectPool");
         monster = GameObject.Find("@Monster");
-        if(objectPool == null || monster == null)
-        {
-            init();
-        }
+        if (objectPool == null || monster == null) { init(); }
         Queue<GameObject> queue;
         if (boids.ContainsKey(prefabName))
         {

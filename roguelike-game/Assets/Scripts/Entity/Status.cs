@@ -4,7 +4,7 @@ using UnityEngine;
 public class Status : MonoBehaviour
 {
     [SerializeField]
-    protected float damage;
+    protected float attackDamage;
     [SerializeField]
     protected float attackSpeed;
     [SerializeField]
@@ -15,7 +15,7 @@ public class Status : MonoBehaviour
     protected int gold;
     [SerializeField]
     protected int exp;
-    public float Damage { get { return damage; } set { damage = value; } }
+    public float AttackDamage { get { return attackDamage; } set { attackDamage = value; } }
     public float AttackSpeed { get { return attackSpeed; } set { attackSpeed = value; } }
     public float Hp { get { return hp; } set { hp = value; } }
     public float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }

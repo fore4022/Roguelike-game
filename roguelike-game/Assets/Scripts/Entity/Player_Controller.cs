@@ -5,14 +5,25 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public class Player_Controller : Base_Controller
 {
+    public Item Item;
+    public List<Skill> skills = new List<Skill>();
     public Action skill = null;
+    public float skillCooldownReduction;
     private float h;
     private float v;
     protected override void Start()
     {
+        init();
         base.Start();
         rigid.constraints = RigidbodyConstraints2D.FreezeAll;
         StartCoroutine(Attack());
+    }
+    private void init()
+    {
+        attackDamage += Item.attackDamage;
+        AttackSpeed = Item.attackSpeed;
+        moveSpeed += Item.moveSpeed;
+        transform.localScale += new Vector3(Item.playerSizeIncrease, Item.playerSizeIncrease, 0);
     }
     protected override void Update()
     {

@@ -9,8 +9,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 public class Monster_Controller : Base_Controller
 {
-    protected float interval = 0.5f;
-    protected Vector3 separationVec;
+    protected float interval = 0.2f;
     protected override void Start()
     {
         base.Start();
@@ -22,34 +21,27 @@ public class Monster_Controller : Base_Controller
     {
         base.Update();
     }
-    protected void separation(IEnumerable<Monster_Controller> monsters)
+    protected Vector3 separation(IEnumerable<Monster_Controller> monsters)
     {
-        separationVec = Vector3.zero;
+        Vector3 vec = Vector3.zero;
         if(monsters.Count() != 1)
         {
-            foreach(Monster_Controller boid in monsters)
-            {
-                separationVec += (transform.position - boid.transform.position).normalized;
-            }
-            separationVec /= monsters.Count();
+            foreach (Monster_Controller boid in monsters) { vec += (transform.position - boid.transform.position).normalized; }
+            vec /= monsters.Count();
+            if(Mathf.Abs(vec.x) < 0.075f || Mathf.Abs(vec.y) < 0.075f) { vec = Vector3.zero; }
         }
+        return vec;
     }
     protected Vector3 move() { return (player.transform.position - transform.position).normalized; }
     protected override void moving()
     {
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, new Vector3(transform.localScale.x + interval, transform.localScale.y + interval, 0), default);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, (transform.localScale.x + transform.localScale.y) / 2.75f);
         List<Player_Controller> players = colliders.Select(o => o.gameObject.GetComponent<Player_Controller>()).ToList();
         List<Monster_Controller> monsters = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
         players.RemoveAll(o => o == null);
         monsters.RemoveAll(o => o == null);
         if (players.Count() != 1 && monsters.Count() == 1) { transform.position += move() * MoveSpeed * Time.deltaTime; }
-        else
-        {
-            //if(Mathf.Abs(separationVec.x) * moveSpeed * 2 > 0.1f || Mathf.Abs(separationVec.y) * moveSpeed * 2 > 0.1f)
-            //{
-            //}
-                transform.position += separationVec * MoveSpeed * 2 * Time.deltaTime;
-        }
+        else { transform.position += separation(monsters) * MoveSpeed * 2 * Time.deltaTime; }
     }
     protected override void death()
     {
@@ -57,8 +49,8 @@ public class Monster_Controller : Base_Controller
         Managers.Game.PlayerController.Exp += exp;
     }
     protected void crash(Collision2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) { Managers.Game.PlayerController.Hp -= damage * attackSpeed * Time.deltaTime; }
+    {//플레이어 체력 감소 메서드 실행으로 바꾸기
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) { Debug.Log("Asdf"); Managers.Game.PlayerController.Hp -= attackDamage * attackSpeed * Time.deltaTime; }
     }
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
@@ -71,6 +63,6 @@ public class Monster_Controller : Base_Controller
     protected override void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position, new Vector3(transform.localScale.x + interval, transform.localScale.y + interval, 0));
+        Gizmos.DrawWireSphere(transform.position, (transform.localScale.x + transform.localScale.y) / 2.75f);
     }
 }
