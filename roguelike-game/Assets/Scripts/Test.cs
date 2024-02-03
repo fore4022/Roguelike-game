@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Test : MonoBehaviour
 {
-    ObjectPool objectPool = new();
     private void Start()
     {
         Managers.Game.stageStart();
@@ -17,8 +16,9 @@ public class Test : MonoBehaviour
     {
         while(true)
         {
-            objectPool.CreateObjects("zombie","zombie", 1);
-            objectPool.activateObject("zombie", 1);
+            Managers.Game.objectPool.CreateObjects("zombie","Monster_Controller", 1);
+            Vector3 position = new Vector3(Random.Range(-4, 4), Random.Range(-4, 4));
+            Managers.Game.objectPool.activateObject("zombie", 1, position);
             yield return new WaitForSeconds(0.75f);
         }
     }

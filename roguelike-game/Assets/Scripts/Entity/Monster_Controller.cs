@@ -12,17 +12,22 @@ public class Monster_Controller : Base_Controller
     [HideInInspector]
     public Monster monsterType;
     protected float interval = 0.2f;
+    protected GameObject player;
     protected override void Start()
     {
         init();
         base.Start();
         state = State.Moving;
     }
+    protected void OnEnable()
+    {
+        player = Managers.Game.playerController.gameObject;
+    }
     protected override void init()
     {
         attackDamage = monsterType.attackDamage;
         attackSpeed = monsterType.attackSpeed;
-        moveSpeed = monsterType.moveSpeed;
+        moveSpeed += monsterType.moveSpeed;
         hp = monsterType.hp;
         gold = monsterType.gold;
         exp = monsterType.exp;
@@ -34,12 +39,10 @@ public class Monster_Controller : Base_Controller
     protected Vector3 separation(IEnumerable<Monster_Controller> monsters)
     {
         Vector3 vec = Vector3.zero;
-        if(monsters.Count() != 1)
-        {
-            foreach (Monster_Controller boid in monsters) { vec += (transform.position - boid.transform.position).normalized; }
-            vec /= monsters.Count();
-            if(Mathf.Abs(vec.x) < 0.075f || Mathf.Abs(vec.y) < 0.075f) { vec = Vector3.zero; }
-        }
+        foreach (Monster_Controller boid in monsters) { vec += (transform.position - boid.transform.position).normalized; }
+        vec /= monsters.Count();
+        vec *= MoveSpeed * 2 * Time.deltaTime;
+        if (Mathf.Abs(vec.x) < 0.00075f || Mathf.Abs(vec.y) < 0.00075f) { vec = Vector3.zero; }
         return vec;
     }
     protected Vector3 move() { return (player.transform.position - transform.position).normalized; }
@@ -51,7 +54,7 @@ public class Monster_Controller : Base_Controller
         players.RemoveAll(o => o == null);
         monsters.RemoveAll(o => o == null);
         if (players.Count() != 1 && monsters.Count() == 1) { transform.position += move() * MoveSpeed * Time.deltaTime; }
-        else { transform.position += separation(monsters) * MoveSpeed * 2 * Time.deltaTime; }
+        else { transform.position += separation(monsters); }
     }
     protected override void death()
     {

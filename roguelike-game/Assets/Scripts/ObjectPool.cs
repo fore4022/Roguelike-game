@@ -11,7 +11,7 @@ public class ObjectPool
     public Dictionary<string, Monster> monsterData = new Dictionary<string, Monster>();
     private GameObject objectPool;
     private GameObject monster;
-    private void init()
+    public void init()
     {
         if (GameObject.Find("@ObjectPool") == null) { objectPool = new GameObject { name = "@ObjectPool" }; }
         
@@ -20,7 +20,6 @@ public class ObjectPool
     }
     public void CreateObjects(string prefabName, string scriptName, int count)
     {
-        init();
         Queue<GameObject> queue;
         if (boids.ContainsKey(prefabName))
         {
@@ -51,7 +50,7 @@ public class ObjectPool
             script.monsterType = monsterData[prefabName];
         }
     }
-    public void activateObject(string prefabName, int count)
+    public void activateObject(string prefabName, int count, Vector3 position)
     {
         Queue<GameObject> queue = boids[prefabName];
         for(int i = 0; i < count; i++)
@@ -59,6 +58,7 @@ public class ObjectPool
             GameObject go = queue.Dequeue();
             go.SetActive(true);
             go.transform.SetParent(monster.transform);
+            if(position != null) { go.transform.position = position; }
             Managers.Game.monsters.Add(go);
         }
         boids[prefabName] = queue;

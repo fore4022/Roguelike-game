@@ -13,7 +13,7 @@ public class Player_Controller : Base_Controller
     private float v;
     protected override void Start()
     {
-        init();
+        //init();
         base.Start();
         rigid.constraints = RigidbodyConstraints2D.FreezeAll;
         StartCoroutine(Attack());

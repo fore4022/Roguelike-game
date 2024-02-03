@@ -7,22 +7,24 @@ public class Game_Manager
 {
     public Player_Controller playerController;
     public List<GameObject> monsters = new List<GameObject>();
+    public ObjectPool objectPool = new();
     public Map_Theme map;
     public int userGold;
     public int userExp;
     private void init()
     {
         map = Managers.Resource.load<Map_Theme>("Data/Map_Theme/zombie");
-        if (playerController == null)
+        GameObject go = GameObject.Find("Player");
+        if (go == null)
         {
-            GameObject go = new GameObject { name = "Player" };
-            go.AddComponent<Player_Controller>();
-            playerController = go.GetComponent<Player_Controller>();
+            go = Managers.Resource.instantiate("Prefab/Player", null);
+            playerController = go.AddComponent<Player_Controller>();
         }
     }
     public void stageStart()
     {
-        if(map != null) { init(); }
+        init();
+        objectPool.init();
     }
     public void stageEnd()
     {

@@ -7,14 +7,9 @@ public abstract class Base_Controller : Status
 {
     protected BoxCollider2D boxCollider;
     protected Rigidbody2D rigid;
-    protected GameObject player;
     protected enum State
     {
         Moving, Death
-    }
-    protected void OnEnable()
-    {
-        //player = Managers.Game.playerController.gameObject;
     }
     protected State state;
     protected virtual void Start()
