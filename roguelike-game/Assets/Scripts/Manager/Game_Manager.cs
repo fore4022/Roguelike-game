@@ -9,11 +9,14 @@ public class Game_Manager
     public List<GameObject> monsters = new List<GameObject>();
     public ObjectPool objectPool = new();
     public Map_Theme map;
+    public bool isSpawn = false;
     public int userGold;
     public int userExp;
     private void init()
     {
+        isSpawn = false;
         map = Managers.Resource.load<Map_Theme>("Data/Map_Theme/zombie");
+        Debug.Log(map.monsterType.Count);
         GameObject go = GameObject.Find("Player");
         if (go == null)
         {
@@ -25,6 +28,7 @@ public class Game_Manager
     {
         init();
         objectPool.init();
+        isSpawn = true;
     }
     public void stageEnd()
     {

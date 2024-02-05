@@ -27,7 +27,8 @@ public class Player_Controller : Base_Controller
     }
     protected override void Update()
     {
-        base.Update();h = Input.GetAxisRaw("Horizontal");
+        base.Update();
+        h = Input.GetAxisRaw("Horizontal");
         v = Input.GetAxisRaw("Vertical");
         if (state != State.Death)
         {
@@ -55,7 +56,7 @@ public class Player_Controller : Base_Controller
     {
         //Invoke();
     }
-    protected override void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(transform.position, new Vector2(Camera.main.orthographicSize * 2 * Camera.main.aspect, Camera.main.orthographicSize * 2));

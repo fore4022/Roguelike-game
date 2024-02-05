@@ -40,5 +40,5 @@ public abstract class Base_Controller : Status
     }
     protected virtual void moving() { }
     protected virtual void death() { }
-    protected virtual void OnDrawGizmos() { }
+    protected virtual void OnDrawGizmosSelected() { }
 }

@@ -42,7 +42,7 @@ public class Monster_Controller : Base_Controller
         foreach (Monster_Controller boid in monsters) { vec += (transform.position - boid.transform.position).normalized; }
         vec /= monsters.Count();
         vec *= MoveSpeed * 2 * Time.deltaTime;
-        if (Mathf.Abs(vec.x) < 0.00075f || Mathf.Abs(vec.y) < 0.00075f) { vec = Vector3.zero; }
+        if (Mathf.Abs(vec.x) < 0.000075f || Mathf.Abs(vec.y) < 0.000075f) { vec = Vector3.zero; }
         return vec;
     }
     protected Vector3 move() { return (player.transform.position - transform.position).normalized; }
@@ -73,7 +73,7 @@ public class Monster_Controller : Base_Controller
     {
         crash(collision);
     }
-    protected override void OnDrawGizmos()
+    protected override void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, (transform.localScale.x + transform.localScale.y) / 2.75f);
