@@ -2,19 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class SpawnMonster : MonoBehaviour
+public class SpawnMonster
 {
-    public void Start()
+    public void Spawn()
     {
-        StartCoroutine(monsterSpawn());
-    }
-    IEnumerator monsterSpawn()
-    {
-        while(true)
+        while (Managers.Game.isSpawn)
         {
-            int rand = UnityEngine.Random.Range(0, Managers.Game.map.monsterType.Count);
-            Managers.Game.objectPool.activateObject(Managers.Game.map.monsterType[rand].ToString());
-            yield return new WaitForSeconds(0.5f);
+            if(Managers.Game.stopWatch.Elapsed.Seconds % Managers.Game.creationCycle == 0)
+            {
+                int rand = UnityEngine.Random.Range(0, Managers.Game.map.monsterType.Count);
+                Managers.Game.objectPool.activateObject(Managers.Game.map.monsterType[rand].ToString());
+                Debug.Log("Asdf");
+            }
         }
     }
 }

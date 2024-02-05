@@ -11,8 +11,8 @@ public class Monster_Controller : Base_Controller
 {
     [HideInInspector]
     public Monster monsterType;
-    protected float interval = 0.2f;
     protected GameObject player;
+    protected float interval = 0.2f;
     protected override void Start()
     {
         init();
@@ -27,7 +27,7 @@ public class Monster_Controller : Base_Controller
     {
         attackDamage = monsterType.attackDamage;
         attackSpeed = monsterType.attackSpeed;
-        moveSpeed += monsterType.moveSpeed;
+        moveSpeed = monsterType.moveSpeed;
         hp = monsterType.hp;
         gold = monsterType.gold;
         exp = monsterType.exp;
