@@ -14,9 +14,9 @@ public class ObjectPool
     private Transform player;
     public void init()
     {
-        player = Managers.Game.playerController.gameObject.transform;
+        player = Managers.Game.player.gameObject.transform;
         if (GameObject.Find("@ObjectPool") == null) { objectPool = new GameObject { name = "@ObjectPool" }; }
-        if (GameObject.Find("@Monster") == null) { monster = new GameObject { name = "@Monster" }; }
+        if (GameObject.Find("@Monster") == null) { Managers.Game.spawnMonster.init(); monster = GameObject.Find("@Monster"); }
         foreach (string str in Managers.Game.map.monsterType) { monsterData.Add(str, Managers.Resource.load<Monster>($"Data/Monster/{str}")); }
     }
     public void CreateObjects(string prefabName, int count, string scriptName = null)

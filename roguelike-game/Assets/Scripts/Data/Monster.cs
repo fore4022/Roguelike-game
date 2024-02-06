@@ -14,6 +14,6 @@ public class Monster : ScriptableObject
     public float attackSpeed;
     public float moveSpeed;
     public int hp;
-    public int gold;
-    public int exp;
+    public float gold;
+    public float exp;
 }

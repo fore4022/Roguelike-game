@@ -15,22 +15,22 @@ public class Monster_Controller : Base_Controller
     protected float interval = 0.2f;
     protected override void Start()
     {
-        init();
         base.Start();
         state = State.Moving;
     }
     protected void OnEnable()
     {
-        player = Managers.Game.playerController.gameObject;
+        player = Managers.Game.player.gameObject;
+        init();
     }
     protected override void init()
     {
-        attackDamage = monsterType.attackDamage;
+        attackDamage = monsterType.attackDamage + Managers.Game.stopWatchMinute / 2;
         attackSpeed = monsterType.attackSpeed;
         moveSpeed = monsterType.moveSpeed;
-        hp = monsterType.hp;
-        gold = monsterType.gold;
-        exp = monsterType.exp;
+        hp = monsterType.hp + Managers.Game.stopWatchMinute / 2;
+        gold = monsterType.gold + (Managers.Game.stopWatchMinute / 4f);
+        exp = monsterType.exp + (Managers.Game.stopWatchMinute / 4f);
     }
     protected override void Update()
     {
@@ -58,12 +58,12 @@ public class Monster_Controller : Base_Controller
     }
     protected override void death()
     {
-        Managers.Game.playerController.Gold += gold;
-        Managers.Game.playerController.Exp += exp;
+        Managers.Game.player.Gold += gold;
+        Managers.Game.player.Exp += exp;
     }
     protected void crash(Collision2D collision)
     {//플레이어 체력 감소 메서드 실행으로 바꾸기
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) { Managers.Game.playerController.Hp -= attackDamage * attackSpeed * Time.deltaTime; }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) { Managers.Game.player.Hp -= attackDamage * attackSpeed * Time.deltaTime; }
     }
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {

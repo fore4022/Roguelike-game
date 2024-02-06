@@ -8,8 +8,6 @@ public class Test : MonoBehaviour
 {
     private void Start()
     {
-        //Managers.Game.stopWatch.Start();
-        //Managers.Game.isSpawn = true;
-        //Managers.Game.spawnMonster.Spawn();
+
     }
 }

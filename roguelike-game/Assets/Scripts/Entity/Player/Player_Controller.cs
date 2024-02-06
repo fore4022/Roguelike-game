@@ -11,6 +11,7 @@ public class Player_Controller : Base_Controller
     public float skillCooldownReduction;
     private float h;
     private float v;
+    private int level;
     protected override void Start()
     {
         //init();
@@ -20,6 +21,7 @@ public class Player_Controller : Base_Controller
     }
     protected override void init()
     {
+        level = 1;
         attackDamage += Item.attackDamage;
         AttackSpeed = Item.attackSpeed;
         moveSpeed += Item.moveSpeed;
@@ -40,7 +42,6 @@ public class Player_Controller : Base_Controller
     {
         while(true)
         {
-            //Managers.Resource.instantiate...
             if(state == State.Death)
             {
                 yield break;
@@ -54,7 +55,7 @@ public class Player_Controller : Base_Controller
     }
     protected override void death()
     {
-        //Invoke();
+        Managers.Game.stageEnd();
     }
     private void OnDrawGizmos()
     {

@@ -12,13 +12,13 @@ public class Status : MonoBehaviour
     [SerializeField]
     protected float moveSpeed;
     [SerializeField]
-    protected int gold;
+    protected float gold;
     [SerializeField]
-    protected int exp;
+    protected float exp;
     public float AttackDamage { get { return attackDamage; } set { attackDamage = value; } }
     public float AttackSpeed { get { return attackSpeed; } set { attackSpeed = value; } }
     public float Hp { get { return hp; } set { hp = value; } }
     public float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
-    public int Gold { get { return gold; } set { gold = value; } }
-    public int Exp { get { return exp; } set { exp = value; } }
+    public float Gold { get { return gold; } set { gold = value; } }
+    public float Exp { get { return exp; } set { exp = value; } }
 }
