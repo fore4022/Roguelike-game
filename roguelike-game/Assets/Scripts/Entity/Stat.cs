@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Status : MonoBehaviour
+public class Stat : MonoBehaviour
 {
     [SerializeField]
     protected float attackDamage;
@@ -9,6 +9,8 @@ public class Status : MonoBehaviour
     protected float attackSpeed;
     [SerializeField]
     protected float hp;
+    [SerializeField]
+    protected float maxHp;
     [SerializeField]
     protected float moveSpeed;
     [SerializeField]
@@ -18,6 +20,7 @@ public class Status : MonoBehaviour
     public float AttackDamage { get { return attackDamage; } set { attackDamage = value; } }
     public float AttackSpeed { get { return attackSpeed; } set { attackSpeed = value; } }
     public float Hp { get { return hp; } set { hp = value; } }
+    public float MaxHp { get { return maxHp; } set { maxHp = value; } }
     public float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
     public float Gold { get { return gold; } set { gold = value; } }
     public float Exp { get { return exp; } set { exp = value; } }

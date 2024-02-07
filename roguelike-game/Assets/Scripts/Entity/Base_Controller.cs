@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-public abstract class Base_Controller : Status
+public abstract class Base_Controller : Stat
 {
     protected BoxCollider2D boxCollider;
     protected Rigidbody2D rigid;

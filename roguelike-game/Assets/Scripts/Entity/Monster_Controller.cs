@@ -62,8 +62,8 @@ public class Monster_Controller : Base_Controller
         Managers.Game.player.Exp += exp;
     }
     protected void crash(Collision2D collision)
-    {//플레이어 체력 감소 메서드 실행으로 바꾸기
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) { Managers.Game.player.Hp -= attackDamage * attackSpeed * Time.deltaTime; }
+    {
+        Managers.Game.player.attacked(attackDamage);
     }
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
