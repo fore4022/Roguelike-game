@@ -12,7 +12,9 @@ public class Skill : ScriptableObject
     public float skillRange;
     public float castingSpeed;
     public float skillDuration;
-    public float skillCooldownReduction;
-    public bool combatType;
+    public float increaseSkillCooldown;
+    public float increaseDamage;
+    public float increaseHp;
+    public float magnificationExp;
     public bool useType;
 }

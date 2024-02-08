@@ -16,7 +16,7 @@ public class SpawnMonster : MonoBehaviour
         float seconds = Managers.Game.creationCycle;
         while (Managers.Game.isSpawn)
         {
-            if (((Managers.Game.stopWatchMinute % 8 == 0) && (Managers.Game.stopWatchSecond % 8 == 0)) || Managers.Game.stopWatchMinute % 25 == 0) { Managers.Game.inBattle = true; }
+            if (((Managers.Game.minute % 8 == 0) && (Managers.Game.second % 8 == 0)) || Managers.Game.minute % 25 == 0) { Managers.Game.inBattle = true; }
             if (!Managers.Game.inBattle)
             {
                 int rand = UnityEngine.Random.Range(0, Managers.Game.map.monsterType.Count);
@@ -24,7 +24,7 @@ public class SpawnMonster : MonoBehaviour
             }
             else { Managers.Game.stopWatch.Stop(); }
             if(seconds < 0.1f) { seconds = 0.1f; }
-            else { seconds = Managers.Game.creationCycle - ((0.6f / 60) * Managers.Game.stopWatchMinute); }
+            else { seconds = Managers.Game.creationCycle - ((0.6f / 60) * Managers.Game.minute); }
             yield return new WaitForSeconds(seconds);
         }
     }

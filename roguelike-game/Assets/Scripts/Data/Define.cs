@@ -13,6 +13,7 @@ public class Define
     }
     public enum Effect
     {
+        Null,
         SlowDown,
         UnableToMove
     }

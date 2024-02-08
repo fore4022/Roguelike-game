@@ -6,8 +6,6 @@ public class Stat : MonoBehaviour
     [SerializeField]
     protected float attackDamage;
     [SerializeField]
-    protected float attackSpeed;
-    [SerializeField]
     protected float hp;
     [SerializeField]
     protected float maxHp;
@@ -18,7 +16,6 @@ public class Stat : MonoBehaviour
     [SerializeField]
     protected float exp;
     public float AttackDamage { get { return attackDamage; } set { attackDamage = value; } }
-    public float AttackSpeed { get { return attackSpeed; } set { attackSpeed = value; } }
     public float Hp { get { return hp; } set { hp = value; } }
     public float MaxHp { get { return maxHp; } set { maxHp = value; } }
     public float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }

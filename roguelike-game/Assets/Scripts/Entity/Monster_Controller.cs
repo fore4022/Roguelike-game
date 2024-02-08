@@ -25,12 +25,11 @@ public class Monster_Controller : Base_Controller
     }
     protected override void init()
     {
-        attackDamage = monsterType.attackDamage + Managers.Game.stopWatchMinute / 2;
-        attackSpeed = monsterType.attackSpeed;
+        attackDamage = monsterType.attackDamage + Managers.Game.minute / 2;
         moveSpeed = monsterType.moveSpeed;
-        hp = monsterType.hp + Managers.Game.stopWatchMinute / 2;
-        gold = monsterType.gold + (Managers.Game.stopWatchMinute / 4f);
-        exp = monsterType.exp + (Managers.Game.stopWatchMinute / 4f);
+        hp = monsterType.hp + Managers.Game.minute / 2;
+        gold = monsterType.gold + (Managers.Game.minute / 4f);
+        exp = monsterType.exp + (Managers.Game.minute / 4f);
     }
     protected override void Update()
     {
@@ -57,7 +56,7 @@ public class Monster_Controller : Base_Controller
         else { transform.position += separation(monsters); }
     }
     protected override void death()
-    {
+    {//player
         Managers.Game.player.Gold += gold;
         Managers.Game.player.Exp += exp;
     }

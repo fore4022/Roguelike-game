@@ -6,13 +6,13 @@ using UnityEngine.Events;
 using UnityEngine.UIElements;
 public class Player_Controller : Base_Controller
 {
+    //private Dictionary<string, Base_Skill> acquiredSkill = new();
     public Action updateStatus = null;
     public Action updateStat = null;
     public Item Item;
-    public List<Skill> skills = new List<Skill>();
-    public Action skill = null;
     public float skillCooldownReduction;
     public float necessaryExp;
+    public float shieldAmount;
     public int level;
     private float h;
     private float v;
@@ -21,13 +21,13 @@ public class Player_Controller : Base_Controller
         init();
         base.Start();
         rigid.constraints = RigidbodyConstraints2D.FreezeAll;
-        StartCoroutine(Attack());
+        Managers.Input.keyAction -= moving;
+        Managers.Input.keyAction += moving;
     }
     protected override void init()
     {
         level = 1;
         attackDamage += Item.attackDamage;
-        AttackSpeed = Item.attackSpeed;
         moveSpeed += Item.moveSpeed;
         Hp = maxHp;
         transform.localScale += new Vector3(Item.playerSizeIncrease, Item.playerSizeIncrease, 0);
@@ -35,13 +35,11 @@ public class Player_Controller : Base_Controller
     protected override void Update()
     {
         base.Update();
-        h = Input.GetAxisRaw("Horizontal");
-        v = Input.GetAxisRaw("Vertical");
-        if (state != State.Death)
-        {
-            if (h != 0 || v != 0) { state = State.Moving; }
-        }
-        if (skill != null) { skill.Invoke(); }
+        useSkill();
+    }
+    private void useSkill()
+    {
+
     }
     public void checkExp()
     {
@@ -62,20 +60,11 @@ public class Player_Controller : Base_Controller
         hp -= damage;
         updateStatus.Invoke();
     }
-    private IEnumerator Attack()
-    {
-        while(true)
-        {
-            if(state == State.Death)
-            {
-                yield break;
-            }
-            yield return new WaitForSeconds(attackSpeed);
-        }
-    }
     protected override void moving()
     {
-        transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v);
+        h = Input.GetAxisRaw("Horizontal");
+        v = Input.GetAxisRaw("Vertical"); 
+        if (h != 0 || v != 0) { transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v); }
     }
     protected override void death()
     {

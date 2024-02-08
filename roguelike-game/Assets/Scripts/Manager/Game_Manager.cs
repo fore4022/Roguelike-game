@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Diagnostics;
 using UnityEngine.Events;
+using System;
+using System.Linq;
 public class Game_Manager
 {
     public Player_Controller player;
@@ -12,9 +14,11 @@ public class Game_Manager
     public SpawnMonster spawnMonster = new();
     public ObjectPool objectPool = new();
     public Stopwatch stopWatch = new();
+    public List<Skill> skills;
     public Map_Theme map;
-    public float stopWatchMinute { get { return stopWatch.Elapsed.Minutes; } }
-    public float stopWatchSecond { get { return stopWatch.Elapsed.Seconds; } }
+    public float minute { get { return stopWatch.Elapsed.Minutes; } }
+    public float second { get { return stopWatch.Elapsed.Seconds; } }
+    public float milliSeconds { get { return stopWatch.Elapsed.Milliseconds; } }
     public float creationCycle;
     public float timer;
     public float basicExp = 75;
@@ -32,6 +36,7 @@ public class Game_Manager
         killCount = 0;
         map = Managers.Resource.load<Map_Theme>($"Data/Map_Theme/{Theme}");
         GameObject go = GameObject.Find("Player");
+        if (skills == null) { skills = Managers.Resource.LoadAll<Skill>("Data/Skill/").ToList<Skill>(); }
         if (go == null)
         {
             go = Managers.Resource.instantiate("Prefab/Player", null);
