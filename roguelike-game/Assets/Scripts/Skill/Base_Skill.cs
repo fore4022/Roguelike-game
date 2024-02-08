@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Base_Skill : MonoBehaviour
+public abstract class Base_Skill
 {
-    protected Skill skill;
-    protected bool castingSkill;
+    public Skill skill;
+    public bool castingSkill;
+    public abstract void skillCast();
 }

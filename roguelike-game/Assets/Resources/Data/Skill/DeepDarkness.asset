@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d47eceb190e27994b87ce175868a287b, type: 3}
   m_Name: DeepDarkness
   m_EditorClassIdentifier: 
-  skillName: 
+  skillName: DeepDarkness
   explanation: 
-  effect: 0
-  skillDamage: 0
-  skillCoolTime: 0
-  skillRange: 0
+  effect: 1
+  skillDamage: 1
+  skillCoolTime: 3
+  skillRange: 2
   castingSpeed: 0
-  skillDuration: 0
+  skillDuration: 2
   increaseSkillCooldown: 0
-  increaseDamage: 0
+  increaseDamage: 2
   increaseHp: 0
   magnificationExp: 0
-  useType: 0
+  useType: 1

@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d47eceb190e27994b87ce175868a287b, type: 3}
   m_Name: ForceField
   m_EditorClassIdentifier: 
-  skillName: 
+  skillName: ForceField
   explanation: 
-  effect: 0
-  skillDamage: 0
-  skillCoolTime: 0
-  skillRange: 0
-  castingSpeed: 0
-  skillDuration: 0
+  effect: 2
+  skillDamage: 1
+  skillCoolTime: 3
+  skillRange: 2
+  castingSpeed: 2
+  skillDuration: 3
   increaseSkillCooldown: 0
   increaseDamage: 0
-  increaseHp: 0
+  increaseHp: 2
   magnificationExp: 0
   useType: 0

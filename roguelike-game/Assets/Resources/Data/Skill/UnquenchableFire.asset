@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d47eceb190e27994b87ce175868a287b, type: 3}
   m_Name: UnquenchableFire
   m_EditorClassIdentifier: 
-  skillName: 
+  skillName: UnquenchableFire
   explanation: 
   effect: 0
-  skillDamage: 0
+  skillDamage: 1
   skillCoolTime: 0
-  skillRange: 0
+  skillRange: 3
   castingSpeed: 0
   skillDuration: 0
   increaseSkillCooldown: 0

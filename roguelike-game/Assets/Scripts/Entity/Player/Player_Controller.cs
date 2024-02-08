@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 public class Player_Controller : Base_Controller
 {
-    //private Dictionary<string, Base_Skill> acquiredSkill = new();
+    public List<Base_Skill> acquiredSkill = new();
     public Action updateStatus = null;
     public Action updateStat = null;
     public Item Item;
@@ -20,17 +21,18 @@ public class Player_Controller : Base_Controller
     {
         init();
         base.Start();
-        rigid.constraints = RigidbodyConstraints2D.FreezeAll;
-        Managers.Input.keyAction -= moving;
-        Managers.Input.keyAction += moving;
     }
     protected override void init()
     {
+        rigid.constraints = RigidbodyConstraints2D.FreezeAll;
+        Managers.Input.keyAction -= moving;
+        Managers.Input.keyAction += moving;
         level = 1;
         attackDamage += Item.attackDamage;
         moveSpeed += Item.moveSpeed;
         Hp = maxHp;
         transform.localScale += new Vector3(Item.playerSizeIncrease, Item.playerSizeIncrease, 0);
+        anime.runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{gameObject.name}/{gameObject.name}");
     }
     protected override void Update()
     {
@@ -39,9 +41,23 @@ public class Player_Controller : Base_Controller
     }
     private void useSkill()
     {
-
+        foreach(Base_Skill skill in acquiredSkill)
+        {
+            if (skill.skill.useType)
+            {
+                if (!skill.castingSkill) { skill.skillCast(); }
+            }
+            else { skill.skillCast(); }
+        }
     }
-    public void checkExp()
+    public void getLoot(float gold, float exp)
+    {
+        Gold -= gold;
+        Exp -= exp;
+        checkExp();
+        updateStat.Invoke();
+    }
+    private void checkExp()
     {
         while(true)
         {
@@ -49,8 +65,9 @@ public class Player_Controller : Base_Controller
             if (exp >= necessaryExp)
             {
                 exp -= necessaryExp;
-                level++;
+                level++;//choice ui
                 updateStatus.Invoke();
+                updateStat.Invoke();
             }
             else { break; }
         }
@@ -63,7 +80,7 @@ public class Player_Controller : Base_Controller
     protected override void moving()
     {
         h = Input.GetAxisRaw("Horizontal");
-        v = Input.GetAxisRaw("Vertical"); 
+        v = Input.GetAxisRaw("Vertical"); //+rotation
         if (h != 0 || v != 0) { transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v); }
     }
     protected override void death()

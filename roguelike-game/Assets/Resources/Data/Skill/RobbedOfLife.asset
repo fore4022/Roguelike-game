@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d47eceb190e27994b87ce175868a287b, type: 3}
   m_Name: RobbedOfLife
   m_EditorClassIdentifier: 
-  skillName: 
+  skillName: RobbedOfLife
   explanation: 
   effect: 0
   skillDamage: 0
@@ -20,7 +20,7 @@ MonoBehaviour:
   skillRange: 0
   castingSpeed: 0
   skillDuration: 0
-  increaseSkillCooldown: 0
+  increaseSkillCooldown: 1
   increaseDamage: 0
   increaseHp: 0
   magnificationExp: 0

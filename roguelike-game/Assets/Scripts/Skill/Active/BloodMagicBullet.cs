@@ -3,5 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 public class BloodMagicBullet : Base_Skill
 {
-
+    public override void skillCast()
+    {
+        
+    }
 }

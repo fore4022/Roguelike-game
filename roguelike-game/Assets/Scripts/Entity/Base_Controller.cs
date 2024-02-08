@@ -7,6 +7,7 @@ public abstract class Base_Controller : Stat
 {
     protected BoxCollider2D boxCollider;
     protected Rigidbody2D rigid;
+    protected Animator anime;
     protected enum State
     {
         Moving, Death
@@ -16,6 +17,7 @@ public abstract class Base_Controller : Stat
     {
         boxCollider = Util.getOrAddComponent<BoxCollider2D>(transform.gameObject);
         rigid = Util.getOrAddComponent<Rigidbody2D>(transform.gameObject);
+        anime = Util.getOrAddComponent<Animator>(transform.gameObject);
         rigid.gravityScale = 0f;
         rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
     }

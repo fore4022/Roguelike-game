@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d47eceb190e27994b87ce175868a287b, type: 3}
   m_Name: TouchOfDeath
   m_EditorClassIdentifier: 
-  skillName: 
+  skillName: TouchOfDeath
   explanation: 
   effect: 0
-  skillDamage: 0
-  skillCoolTime: 0
-  skillRange: 0
-  castingSpeed: 0
-  skillDuration: 0
+  skillDamage: 3
+  skillCoolTime: 2
+  skillRange: 3
+  castingSpeed: 2
+  skillDuration: 2
   increaseSkillCooldown: 0
-  increaseDamage: 0
+  increaseDamage: 2
   increaseHp: 0
   magnificationExp: 0
-  useType: 0
+  useType: 1

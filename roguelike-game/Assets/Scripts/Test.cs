@@ -9,16 +9,16 @@ using System.Linq;
 
 public class Test : MonoBehaviour
 {
-    public Stopwatch stopWatch = new();
-    public List<Skill> skills;
-    private Dictionary<string, Base_Skill> acquiredSkill = new();
+    //public Stopwatch stopWatch = new();
+    //public List<Skill> skills;
+    //private Dictionary<string, Base_Skill> acquiredSkill = new();
     private void Start()
     {
-        stopWatch.Start();
-        acquiredSkill = new();
-        BloodMagicBullet sss = new();
-        acquiredSkill.Add("Asdf", sss);
-        UnityEngine.Debug.Log(acquiredSkill["Asdf"]);
+        //stopWatch.Start();
+        //acquiredSkill = new();
+        //BloodMagicBullet sss = new();
+        //acquiredSkill.Add("Asdf", sss);
+        //UnityEngine.Debug.Log(acquiredSkill["Asdf"].a);
     }
     private void Update()
     {

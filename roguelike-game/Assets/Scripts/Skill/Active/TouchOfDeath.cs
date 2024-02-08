@@ -1,18 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class TouchOfDeath : MonoBehaviour
+public class TouchOfDeath : Base_Skill
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void skillCast()
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
