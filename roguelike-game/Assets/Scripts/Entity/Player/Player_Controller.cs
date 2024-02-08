@@ -27,17 +27,38 @@ public class Player_Controller : Base_Controller
         rigid.constraints = RigidbodyConstraints2D.FreezeAll;
         Managers.Input.keyAction -= moving;
         Managers.Input.keyAction += moving;
+        Managers.Input.keyAction -= dash;
+        Managers.Input.keyAction += dash;
         level = 1;
         attackDamage += Item.attackDamage;
         moveSpeed += Item.moveSpeed;
         Hp = maxHp;
         transform.localScale += new Vector3(Item.playerSizeIncrease, Item.playerSizeIncrease, 0);
-        anime.runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{gameObject.name}/{gameObject.name}");
+        anime.runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{transform.gameObject.name}/{transform.gameObject.name}");
+        anime.Play("donwIdle");
     }
     protected override void Update()
     {
-        base.Update();
+        if (anime.GetCurrentAnimatorStateInfo(0).IsName("death")) { return; }
+        if(hp <= 0) { anime.Play("death"); }
+        if(Input.anyKey == false) { h = v = 0; }
+        setAnime();
         useSkill();
+    }
+    protected override void setAnime()
+    {
+        if (h != 0) { anime.Play("horizontalMove"); }
+        else if (v != 0)
+        {
+            if (v == 1) { anime.Play("upMove"); }
+            else { anime.Play("downMove"); }
+        }
+        else
+        {
+            if (anime.GetCurrentAnimatorStateInfo(0).IsName("horizontalMove")) { anime.Play("horizontalIdle"); }
+            else if (anime.GetCurrentAnimatorStateInfo(0).IsName("upMove")) { anime.Play("upIdle"); }
+            else if (anime.GetCurrentAnimatorStateInfo(0).IsName("downMove")) { anime.Play("downIdle"); }
+        }
     }
     private void useSkill()
     {
@@ -80,8 +101,16 @@ public class Player_Controller : Base_Controller
     protected override void moving()
     {
         h = Input.GetAxisRaw("Horizontal");
-        v = Input.GetAxisRaw("Vertical"); //+rotation
-        if (h != 0 || v != 0) { transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v); }
+        v = Input.GetAxisRaw("Vertical");
+        if (h != 0 || v != 0) 
+        {
+            transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v);
+            transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0) * (h == 1 ? 1 : 0));
+        }
+    }
+    private void dash()
+    {
+
     }
     protected override void death()
     {

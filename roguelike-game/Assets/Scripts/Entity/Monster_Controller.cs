@@ -12,6 +12,11 @@ public class Monster_Controller : Base_Controller
     [HideInInspector]
     public Monster monsterType;
     protected GameObject player;
+    protected enum State
+    {
+        Moving, Death
+    }
+    protected State state;
     protected float interval = 0.2f;
     protected override void Start()
     {
@@ -33,7 +38,26 @@ public class Monster_Controller : Base_Controller
     }
     protected override void Update()
     {
-        base.Update();
+        if (state == State.Death) { return; }
+        if (Hp == 0) { anime.Play("death"); state = State.Death; }
+        setAnime();
+        setState();
+    }
+    protected override void setAnime()
+    {
+        
+    }
+    private void setState()
+    {
+        switch (state)
+        {
+            case State.Moving:
+                moving();
+                break;
+            case State.Death:
+                death();
+                break;
+        }
     }
     protected Vector3 separation(IEnumerable<Monster_Controller> monsters)
     {

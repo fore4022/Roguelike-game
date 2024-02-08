@@ -8,11 +8,6 @@ public abstract class Base_Controller : Stat
     protected BoxCollider2D boxCollider;
     protected Rigidbody2D rigid;
     protected Animator anime;
-    protected enum State
-    {
-        Moving, Death
-    }
-    protected State state;
     protected virtual void Start()
     {
         boxCollider = Util.getOrAddComponent<BoxCollider2D>(transform.gameObject);
@@ -22,24 +17,8 @@ public abstract class Base_Controller : Stat
         rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
     protected virtual void init() { }
-    protected virtual void Update()
-    {
-        if (state == State.Death) { return; }
-        if (Hp == 0) { state = State.Death; }
-        setState();
-    }
-    private void setState()
-    {
-        switch(state)
-        {
-            case State.Moving:
-                moving();
-                break;
-            case State.Death:
-                death();
-                break;
-        }
-    }
+    protected virtual void Update() { }
+    protected virtual void setAnime() { }
     protected virtual void moving() { }
     protected virtual void death() { }
     protected virtual void OnDrawGizmosSelected() { }
