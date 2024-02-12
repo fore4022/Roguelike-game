@@ -19,29 +19,32 @@ public class Player_Controller : Base_Controller
     private float v;
     protected override void Start()
     {
-        init();
         base.Start();
+        init();
     }
     protected override void init()
     {
-        rigid.constraints = RigidbodyConstraints2D.FreezeAll;
         Managers.Input.keyAction -= moving;
         Managers.Input.keyAction += moving;
         Managers.Input.keyAction -= dash;
         Managers.Input.keyAction += dash;
         level = 1;
-        attackDamage += Item.attackDamage;
-        moveSpeed += Item.moveSpeed;
-        Hp = maxHp;
-        transform.localScale += new Vector3(Item.playerSizeIncrease, Item.playerSizeIncrease, 0);
-        anime.runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{transform.gameObject.name}/{transform.gameObject.name}");
-        anime.Play("donwIdle");
+        hp = 222;
+        MoveSpeed = 4;
+        //attackDamage += Item.attackDamage;
+        //moveSpeed += Item.moveSpeed;
+        //Hp = maxHp;
+        //transform.localScale += new Vector3(Item.playerSizeIncrease, Item.playerSizeIncrease, 0);
+        string name = transform.gameObject.name;
+        name = name.Replace("(Clone)", "");
+        anime.runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{name}/{name}");
+        anime.Play("downIdle");
     }
     protected override void Update()
     {
         if (anime.GetCurrentAnimatorStateInfo(0).IsName("death")) { return; }
-        if(hp <= 0) { anime.Play("death"); }
-        if(Input.anyKey == false) { h = v = 0; }
+        if (hp <= 0) { anime.Play("death"); }
+        if (Input.anyKey == false) { h = v = 0; }
         setAnime();
         useSkill();
     }
@@ -62,7 +65,7 @@ public class Player_Controller : Base_Controller
     }
     private void useSkill()
     {
-        foreach(Base_Skill skill in acquiredSkill)
+        foreach (Base_Skill skill in acquiredSkill)
         {
             if (skill.skill.useType)
             {
@@ -80,7 +83,7 @@ public class Player_Controller : Base_Controller
     }
     private void checkExp()
     {
-        while(true)
+        while (true)
         {
             necessaryExp = (float)(Managers.Game.basicExp + Managers.Game.increaseExp * 1.15 * (level - 1) * ((level - 1) / 50));
             if (exp >= necessaryExp)

@@ -7,13 +7,15 @@ using System.Diagnostics;
 using UnityEngine.Events;
 using System;
 using System.Linq;
+using System.Threading;
+
 public class Game_Manager
 {
     public Player_Controller player;
     public List<GameObject> monsters = new();
-    public SpawnMonster spawnMonster = new();
     public ObjectPool objectPool = new();
     public Stopwatch stopWatch = new();
+    public SpawnMonster spawnMonster;
     public List<Skill> skills;
     public Map_Theme map;
     public float minute { get { return stopWatch.Elapsed.Minutes; } }
@@ -30,8 +32,8 @@ public class Game_Manager
     public bool inBattle;
     private void init(string Theme)
     {
-        creationCycle = 0.7f;
-        isSpawn = false;
+        creationCycle = 1f;
+        isSpawn = true;
         inBattle = false;
         killCount = 0;
         map = Managers.Resource.load<Map_Theme>($"Data/Map_Theme/{Theme}");
@@ -42,13 +44,15 @@ public class Game_Manager
             go = Managers.Resource.instantiate("Prefab/Player", null);
             player = go.AddComponent<Player_Controller>();
         }
+        if (GameObject.Find("@Monster") == null) { go = new GameObject { name = "@Monster" }; }
+        spawnMonster = Util.getOrAddComponent<SpawnMonster>(go);
         player.updateStatus += increaseKillCount;
     }
     public void stageStart(string Theme)
     {
         init(Theme);
         objectPool.init();
-        foreach(string str in map.monsterType)
+        foreach (string str in map.monsterType)
         {
             objectPool.CreateObjects(str, 1200);
         }

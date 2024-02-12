@@ -10,13 +10,11 @@ public class ObjectPool
     public Dictionary<string, Queue<GameObject>> boids = new();
     public Dictionary<string, Monster> monsterData = new();
     private GameObject objectPool;
-    private GameObject monster;
     private Transform player;
     public void init()
     {
         player = Managers.Game.player.gameObject.transform;
         if (GameObject.Find("@ObjectPool") == null) { objectPool = new GameObject { name = "@ObjectPool" }; }
-        if (GameObject.Find("@Monster") == null) { Managers.Game.spawnMonster.init(); monster = GameObject.Find("@Monster"); }
         foreach (string str in Managers.Game.map.monsterType) { monsterData.Add(str, Managers.Resource.load<Monster>($"Data/Monster/{str}")); }
     }
     public void CreateObjects(string prefabName, int count, string scriptName = null)
@@ -51,7 +49,7 @@ public class ObjectPool
         {
             Monster_Controller script = go.AddComponent(scriptType) as Monster_Controller;
             script.monsterType = monsterData[prefabName];
-            go.GetComponent<Animator>().runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{prefabName}/{prefabName}");
+            //go.GetComponent<Animator>().runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{prefabName}/{prefabName}");
         }
     }
     public void activateObject(string prefabName, int count = 0)
@@ -62,7 +60,7 @@ public class ObjectPool
             Queue<GameObject> queue = boids[prefabName];
             GameObject go = queue.Dequeue();
             go.SetActive(true);
-            go.transform.SetParent(monster.transform);
+            go.transform.SetParent(Managers.Game.spawnMonster.gameObject.transform);
             go.transform.position = position();
             Managers.Game.monsters.Add(go);
             boids[prefabName] = queue;
@@ -77,7 +75,7 @@ public class ObjectPool
         {
             GameObject go = queue.Dequeue();
             go.SetActive(true);
-            go.transform.SetParent(monster.transform);
+            go.transform.SetParent(Managers.Game.spawnMonster.gameObject.transform);
             go.transform.position = position();
             Managers.Game.monsters.Add(go);
         }
@@ -89,13 +87,13 @@ public class ObjectPool
         float y;
         if (UnityEngine.Random.Range(0, 2) == 1)
         {
-            x = UnityEngine.Random.Range(-6.5f, 6.51f) >= 0 ? 6.5f : -6.5f;
-            y = UnityEngine.Random.Range(-10f, 10.1f);
+            x = UnityEngine.Random.Range(-7.5f, 7.51f) >= 0 ? 7.5f : -7.5f;
+            y = UnityEngine.Random.Range(-11f, 11.1f);
         }
         else
         {
-            y = UnityEngine.Random.Range(-10f, 10.1f) >= 0 ? -10f : 10f;
-            x = UnityEngine.Random.Range(-6.5f, 6.51f);
+            y = UnityEngine.Random.Range(-11f, 11.1f) >= 0 ? -11f : 11f;
+            x = UnityEngine.Random.Range(-7.5f, 7.51f);
         }
         return new Vector3(player.position.x + x, player.position.y + y, 0);
     }
