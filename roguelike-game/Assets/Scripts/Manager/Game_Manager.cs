@@ -8,7 +8,6 @@ using UnityEngine.Events;
 using System;
 using System.Linq;
 using System.Threading;
-
 public class Game_Manager
 {
     public Player_Controller player;

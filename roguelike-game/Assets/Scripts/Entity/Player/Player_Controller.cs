@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Events;
@@ -29,8 +30,9 @@ public class Player_Controller : Base_Controller
         Managers.Input.keyAction -= dash;
         Managers.Input.keyAction += dash;
         level = 1;
-        hp = 222;
-        MoveSpeed = 4;
+        hp = 100;
+        MoveSpeed = 1.8f;
+        animatorPlaySpeed = 0.85f;
         //attackDamage += Item.attackDamage;
         //moveSpeed += Item.moveSpeed;
         //Hp = maxHp;
@@ -38,12 +40,18 @@ public class Player_Controller : Base_Controller
         string name = transform.gameObject.name;
         name = name.Replace("(Clone)", "");
         anime.runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{name}/{name}");
+        anime.speed = animatorPlaySpeed;
         anime.Play("downIdle");
     }
     protected override void Update()
     {
         if (anime.GetCurrentAnimatorStateInfo(0).IsName("death")) { return; }
-        if (hp <= 0) { anime.Play("death"); }
+        if (hp <= 0) 
+        { 
+            Managers.Input.keyAction -= moving;
+            anime.Play("death");
+            Invoke("death", 1.1f);
+        }
         if (Input.anyKey == false) { h = v = 0; }
         setAnime();
         useSkill();
@@ -117,6 +125,7 @@ public class Player_Controller : Base_Controller
     }
     protected override void death()
     {
+        Destroy(this);
         Managers.Game.stageEnd();
     }
     private void OnDrawGizmos()

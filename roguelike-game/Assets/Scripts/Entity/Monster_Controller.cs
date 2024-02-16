@@ -38,10 +38,13 @@ public class Monster_Controller : Base_Controller
     }
     protected override void Update()
     {
-        if (state == State.Death) { return; }
-        if (Hp == 0) { anime.Play("death"); state = State.Death; }
-        setAnime();
-        setState();
+        if(Managers.Game.player.Hp >= 0)
+        {
+            if (state == State.Death) { return; }
+            if (Hp == 0) { anime.Play("death"); state = State.Death; }
+            setAnime();
+            setState();
+        }
     }
     protected override void setAnime()
     {

@@ -16,7 +16,7 @@ MonoBehaviour:
   monsterType: 0
   attackDamage: 1
   attackSpeed: 1
-  moveSpeed: 2
+  moveSpeed: 1.25
   hp: 2
   maxHp: 2
   gold: 1

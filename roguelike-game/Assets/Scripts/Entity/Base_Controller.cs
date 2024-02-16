@@ -8,6 +8,7 @@ public abstract class Base_Controller : Stat
     protected BoxCollider2D boxCollider;
     protected Rigidbody2D rigid;
     protected Animator anime;
+    protected float animatorPlaySpeed;
     protected virtual void Start()
     {
         boxCollider = Util.getOrAddComponent<BoxCollider2D>(transform.gameObject);
