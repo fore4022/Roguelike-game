@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 public class FruitOfPatience : Base_Skill
 {
-    public override void skillCast()
+    public override IEnumerator skillCast()
     {
-
+        yield return null;
     }
 }

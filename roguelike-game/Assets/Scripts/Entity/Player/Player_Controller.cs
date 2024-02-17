@@ -75,11 +75,7 @@ public class Player_Controller : Base_Controller
     {
         foreach (Base_Skill skill in acquiredSkill)
         {
-            if (skill.skill.useType)
-            {
-                if (!skill.castingSkill) { skill.skillCast(); }
-            }
-            else { skill.skillCast(); }
+            
         }
     }
     public void getLoot(float gold, float exp)
@@ -97,7 +93,7 @@ public class Player_Controller : Base_Controller
             if (exp >= necessaryExp)
             {
                 exp -= necessaryExp;
-                level++;//choice ui
+                level++;
                 updateStatus.Invoke();
                 updateStat.Invoke();
             }
@@ -125,7 +121,7 @@ public class Player_Controller : Base_Controller
     }
     protected override void death()
     {
-        Destroy(this);
+        Destroy(this.gameObject);
         Managers.Game.stageEnd();
     }
     private void OnDrawGizmos()

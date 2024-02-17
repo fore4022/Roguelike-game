@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using TMPro.EditorUtilities;
 using Unity.VisualScripting;
 using UnityEditor.Compilation;
@@ -17,15 +18,19 @@ public class ObjectPool
         if (GameObject.Find("@ObjectPool") == null) { objectPool = new GameObject { name = "@ObjectPool" }; }
         foreach (string str in Managers.Game.map.monsterType) { monsterData.Add(str, Managers.Resource.load<Monster>($"Data/Monster/{str}")); }
     }
-    public void CreateObjects(string prefabName, int count, string scriptName = null)
+    public void createObjects(System.Type type, string prefabName, int count, string scriptName = null)
     {
         Queue<GameObject> queue;
+        string folderName = null;
+        if(type == typeof(Monster_Controller)) { folderName = "Monster"; }
+        else if(type == typeof(Base_Skill)) { folderName = "Skill"; }
+        if (folderName == null) { return; }
         if (boids.ContainsKey(prefabName))
         {
             queue = boids[prefabName];
             for (int i = 0; i < count; i++)
             {
-                GameObject go = Managers.Resource.instantiate($"Prefab/Monster/{prefabName}", objectPool.transform);
+                GameObject go = Managers.Resource.instantiate($"Prefab/{folderName}/{prefabName}", objectPool.transform);
                 go.SetActive(false);
                 queue.Enqueue(go);
             }

@@ -8,6 +8,8 @@ using UnityEngine.Events;
 using System;
 using System.Linq;
 using System.Threading;
+using UnityEditor.Compilation;
+
 public class Game_Manager
 {
     public Player_Controller player;
@@ -45,6 +47,7 @@ public class Game_Manager
         }
         if (GameObject.Find("@Monster") == null) { go = new GameObject { name = "@Monster" }; }
         spawnMonster = Util.getOrAddComponent<SpawnMonster>(go);
+        if (GameObject.Find("@Skill")) { go = new GameObject { name = "@Skill" }; }  
         player.updateStatus += increaseKillCount;
     }
     public void stageStart(string Theme)
@@ -53,15 +56,14 @@ public class Game_Manager
         objectPool.init();
         foreach (string str in map.monsterType)
         {
-            objectPool.CreateObjects(str, 1200);
+            objectPool.createObjects(typeof(Monster_Controller), str, 1200);
         }
         stopWatch.Start();
         isSpawn = true;
-        Time.timeScale = 1f;
         spawnMonster.StartCoroutine(spawnMonster.Spawn());
     }
     public void increaseKillCount()
-    {
+    {   
         killCount++;
         if(player.Hp != player.MaxHp)
         {
@@ -72,7 +74,6 @@ public class Game_Manager
     {
         stopWatch.Stop();
         isSpawn = false;
-        Time.timeScale = 0f;
         userGold += (int)player.Gold;
         userExp += (int)player.Exp;
     }
