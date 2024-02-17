@@ -4,9 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Skill", menuName = "Create New Skill/New Skill")]
 public class Skill : ScriptableObject
 {
+    public Define.Effect effect;
     public string skillName;
     public string explanation;
-    public Define.Effect effect;
     public float skillDamage;
     public float skillCoolTime;
     public float skillRange;

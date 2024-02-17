@@ -9,11 +9,10 @@ using System;
 using System.Linq;
 using System.Threading;
 using UnityEditor.Compilation;
-
+using Debug = UnityEngine.Debug;
 public class Game_Manager
 {
     public Player_Controller player;
-    public List<GameObject> monsters = new();
     public ObjectPool objectPool = new();
     public Stopwatch stopWatch = new();
     public SpawnMonster spawnMonster;
@@ -47,17 +46,15 @@ public class Game_Manager
         }
         if (GameObject.Find("@Monster") == null) { go = new GameObject { name = "@Monster" }; }
         spawnMonster = Util.getOrAddComponent<SpawnMonster>(go);
-        if (GameObject.Find("@Skill")) { go = new GameObject { name = "@Skill" }; }  
+        if (GameObject.Find("@Skill") == null) { go = new GameObject { name = "@Skill" }; }  
         player.updateStatus += increaseKillCount;
     }
     public void stageStart(string Theme)
     {
         init(Theme);
         objectPool.init();
-        foreach (string str in map.monsterType)
-        {
-            objectPool.createObjects(typeof(Monster_Controller), str, 1200);
-        }
+        foreach (string str in map.monsterType) { objectPool.createObjects(typeof(Monster_Controller), str, 1200); }
+        //foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_Skill), skill.skillName, 20); }
         stopWatch.Start();
         isSpawn = true;
         spawnMonster.StartCoroutine(spawnMonster.Spawn());
