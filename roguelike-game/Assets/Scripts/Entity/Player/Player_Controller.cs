@@ -8,7 +8,7 @@ using UnityEngine.Events;
 using UnityEngine.UIElements;
 public class Player_Controller : Base_Controller
 {
-    public List<Base_Skill> acquiredSkill = new();
+    public List<Base_SkillCast> acquiredSkill = new();
     public Action updateStatus = null;
     public Action updateStat = null;
     public Item Item;
@@ -73,7 +73,7 @@ public class Player_Controller : Base_Controller
     }
     private void useSkill()
     {
-        foreach (Base_Skill skill in acquiredSkill)
+        foreach (Base_SkillCast skill in acquiredSkill)
         {
             
         }

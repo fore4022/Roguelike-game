@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class RobbedOfLife : Base_Skill
+public class RobbedOfLife : Base_SkillCast
 {
     public override IEnumerator skillCast()
     {

@@ -38,7 +38,6 @@ public class Game_Manager
         killCount = 0;
         map = Managers.Resource.load<Map_Theme>($"Data/Map_Theme/{Theme}");
         GameObject go = GameObject.Find("Player");
-        if (skills == null) { skills = Managers.Resource.LoadAll<Skill>("Data/Skill/").ToList<Skill>(); }
         if (go == null)
         {
             go = Managers.Resource.instantiate("Prefab/Player", null);
@@ -47,17 +46,8 @@ public class Game_Manager
         if (GameObject.Find("@Monster") == null) { go = new GameObject { name = "@Monster" }; }
         spawnMonster = Util.getOrAddComponent<SpawnMonster>(go);
         if (GameObject.Find("@Skill") == null) { go = new GameObject { name = "@Skill" }; }  
+        if (skills == null) { skills = Managers.Resource.LoadAll<Skill>("Data/Skill/").ToList<Skill>(); }
         player.updateStatus += increaseKillCount;
-    }
-    public void stageStart(string Theme)
-    {
-        init(Theme);
-        objectPool.init();
-        foreach (string str in map.monsterType) { objectPool.createObjects(typeof(Monster_Controller), str, 1200); }
-        //foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_Skill), skill.skillName, 20); }
-        stopWatch.Start();
-        isSpawn = true;
-        spawnMonster.StartCoroutine(spawnMonster.Spawn());
     }
     public void increaseKillCount()
     {   
@@ -66,6 +56,16 @@ public class Game_Manager
         {
             if (killCount % 20 == 0) { player.Hp += player.MaxHp / 1000; }
         }
+    }
+    public void stageStart(string Theme)
+    {
+        init(Theme);
+        objectPool.init();
+        foreach (string str in map.monsterType) { objectPool.createObjects(typeof(Monster_Controller), str, 1200); }
+        foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), "BloodMagicBullet", 20); }
+        stopWatch.Start();
+        isSpawn = true;
+        spawnMonster.StartCoroutine(spawnMonster.Spawn());
     }
     public void stageEnd()
     {

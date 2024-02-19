@@ -22,7 +22,7 @@ public class ObjectPool
         string folderName = null;
         if(count == 0) { return; }
         if(baseType == typeof(Monster_Controller)) { folderName = "Monster"; }
-        else if(baseType == typeof(Base_Skill)) { folderName = "Skill"; }
+        else if(baseType == typeof(Base_SkillCast)) { folderName = "Skill"; }
         if (folderName == null) { return; }
         if (boids.ContainsKey(prefabName))
         {
@@ -68,7 +68,7 @@ public class ObjectPool
         {
             go.transform.SetParent(Managers.Game.spawnMonster.gameObject.transform);
         }
-        else if (baseType == typeof(Base_Skill))
+        else if (baseType == typeof(Base_SkillCast))
         {
             GameObject skill = GameObject.Find("@Skill");
             if (skill == null) { skill = new GameObject { name = "@Skill" }; }

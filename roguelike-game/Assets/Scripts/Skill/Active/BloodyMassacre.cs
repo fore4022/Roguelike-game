@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class BloodyMassacre : Base_Skill
+public class BloodyMassacre : Base_SkillCast
 {
     public override IEnumerator skillCast()
     {

@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public abstract class Base_Skill : MonoBehaviour
+public abstract class Base_SkillCast : MonoBehaviour
 {
     public Skill skill;
-    protected float fielldtime;
     protected string prefabName;
+    protected Transform player;
     protected void Start() { init(); StartCoroutine(skillCast()); }
     private void init()
     {
-        skill = (Skill)Resources.Load($"Data/Skill/{this.GetType().Name}");
-
-        prefabName = this.GetType().Name;
+        prefabName = this.GetType().Name.Replace("_Cast","");
+        skill = (Skill)Resources.Load($"Data/Skill/{prefabName}");
+        player = Managers.Game.player.gameObject.transform;
     }
     public abstract IEnumerator skillCast();
 }
