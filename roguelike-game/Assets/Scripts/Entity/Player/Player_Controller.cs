@@ -8,7 +8,6 @@ using UnityEngine.Events;
 using UnityEngine.UIElements;
 public class Player_Controller : Base_Controller
 {
-    public List<Base_SkillCast> acquiredSkill = new();
     public Action updateStatus = null;
     public Action updateStat = null;
     public Item Item;
@@ -42,6 +41,8 @@ public class Player_Controller : Base_Controller
         anime.runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{name}/{name}");
         anime.speed = animatorPlaySpeed;
         anime.Play("downIdle");
+        GameObject go = GameObject.Find("@Skill");
+        go.AddComponent<BloodMagicBullet_Cast>();
     }
     protected override void Update()
     {
@@ -54,7 +55,6 @@ public class Player_Controller : Base_Controller
         }
         if (Input.anyKey == false) { h = v = 0; }
         setAnime();
-        useSkill();
     }
     protected override void setAnime()
     {
@@ -69,13 +69,6 @@ public class Player_Controller : Base_Controller
             if (anime.GetCurrentAnimatorStateInfo(0).IsName("horizontalMove")) { anime.Play("horizontalIdle"); }
             else if (anime.GetCurrentAnimatorStateInfo(0).IsName("upMove")) { anime.Play("upIdle"); }
             else if (anime.GetCurrentAnimatorStateInfo(0).IsName("downMove")) { anime.Play("downIdle"); }
-        }
-    }
-    private void useSkill()
-    {
-        foreach (Base_SkillCast skill in acquiredSkill)
-        {
-            
         }
     }
     public void getLoot(float gold, float exp)

@@ -74,7 +74,7 @@ public class Monster_Controller : Base_Controller
     protected Vector3 move() { return (player.transform.position - transform.position).normalized; }
     protected override void moving()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, (transform.localScale.x + transform.localScale.y) / 2.75f);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, (transform.localScale.x + transform.localScale.y) / 2.75f, LayerMask.GetMask("Monster"));
         List<Player_Controller> players = colliders.Select(o => o.gameObject.GetComponent<Player_Controller>()).ToList();
         List<Monster_Controller> monsters = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
         players.RemoveAll(o => o == null);

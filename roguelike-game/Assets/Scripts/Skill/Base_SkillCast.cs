@@ -7,6 +7,7 @@ public abstract class Base_SkillCast : MonoBehaviour
     protected string prefabName;
     protected Transform player;
     protected void Start() { init(); StartCoroutine(skillCast()); }
+    protected virtual void Update() { if(Managers.Game.player.Hp <= 0) { StopAllCoroutines(); } }
     private void init()
     {
         prefabName = this.GetType().Name.Replace("_Cast","");

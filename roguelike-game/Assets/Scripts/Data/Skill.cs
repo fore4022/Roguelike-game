@@ -16,5 +16,6 @@ public class Skill : ScriptableObject
     public float increaseDamage;
     public float increaseHp;
     public float magnificationExp;
+    public int skillLevel;
     public bool useType;
 }

@@ -5,37 +5,32 @@ using UnityEngine;
 public class BloodMagicBullet_Cast : Base_SkillCast
 {   
     private List<GameObject> objs = new List<GameObject>();
-    private void Update()
+    protected override void Update()
     {
-        foreach(GameObject obj in objs) { obj.transform.position += obj.transform.forward * Time.deltaTime; }
+        base.Update();
+        foreach(GameObject obj in objs) { obj.transform.position += new Vector3(Mathf.Cos((obj.transform.rotation.eulerAngles.z + 90) * Mathf.Deg2Rad), Mathf.Sin((obj.transform.rotation.eulerAngles.z + 90) * Mathf.Deg2Rad)) * Time.deltaTime * 8; }
     }
     public override IEnumerator skillCast()
     {
         while(true)
         {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(player.position, Camera.main.orthographicSize * 2 * Camera.main.aspect, LayerMask.GetMask("Monster"));
+            if (colliders == null) { colliders = Physics2D.OverlapCircleAll(player.position, Camera.main.orthographicSize * 2 + 1.5f, LayerMask.GetMask("Monster")); }
+            if (colliders == null) { yield return null; }
             GameObject go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), prefabName);
             go.transform.position = player.position;
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(go.transform.position, Camera.main.orthographicSize * 2 * Camera.main.aspect, LayerMask.NameToLayer("Monster"));
-            if (colliders == null) { colliders = Physics2D.OverlapCircleAll(go.transform.position, Camera.main.orthographicSize * 2 + 1.5f, LayerMask.NameToLayer("Monster")); }
             Vector3 direction = new();
-            Debug.Log(colliders.Count());
             foreach (Collider2D col in colliders)
             {
-                Debug.Log(col.gameObject.name);
                 if (direction == new Vector3()) { direction = col.gameObject.transform.position - player.position; }
                 else if (direction.sqrMagnitude > (col.gameObject.transform.position - player.position).sqrMagnitude) { direction = col.gameObject.transform.position - player.position; }
             }
-            Debug.Log(direction);
             direction = direction.normalized;
-            go.transform.rotation = Quaternion.Euler(0, 180, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+            Debug.Log(Mathf.Atan2(direction.y, direction.x) * 45);
+            go.transform.rotation = Quaternion.Euler(0, 0, -90 + Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
             go.AddComponent<Animator>().runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load($"Animation/{prefabName}/{prefabName}");
             objs.Add(go);
             yield return new WaitForSeconds(skill.skillCoolTime);
         }
-    }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(player.transform.position, Camera.main.orthographicSize * 2 * Camera.main.aspect);
     }
 }
