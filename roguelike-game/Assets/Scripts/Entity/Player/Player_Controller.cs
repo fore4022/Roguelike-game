@@ -24,6 +24,7 @@ public class Player_Controller : Base_Controller
     }
     protected override void init()
     {
+        rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
         Managers.Input.keyAction -= moving;
         Managers.Input.keyAction += moving;
         Managers.Input.keyAction -= dash;

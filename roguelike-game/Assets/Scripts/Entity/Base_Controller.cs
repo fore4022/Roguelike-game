@@ -15,7 +15,6 @@ public abstract class Base_Controller : Stat
         rigid = Util.getOrAddComponent<Rigidbody2D>(transform.gameObject);
         anime = Util.getOrAddComponent<Animator>(transform.gameObject);
         rigid.gravityScale = 0f;
-        rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
     protected virtual void init() { }
     protected virtual void Update() { }
