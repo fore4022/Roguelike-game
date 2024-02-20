@@ -8,8 +8,6 @@ public abstract class Base_SkillCast : MonoBehaviour
     protected void Start()
     {
         init();
-        Managers.Game.allStop -= StopCoroutine;
-        Managers.Game.allStop += StopCoroutine;
         StartCoroutine(skillCast());
     }
     protected virtual void Update() { if(Managers.Game.player.Hp <= 0) { StopAllCoroutines(); } }

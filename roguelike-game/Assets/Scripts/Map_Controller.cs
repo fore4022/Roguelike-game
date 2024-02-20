@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Map_Controller : MonoBehaviour
 {
+    private Vector3 z = new Vector3(0, 0, 1);
     private void Start()
     {
-        transform.localScale = new Vector2(Camera.main.orthographicSize * 2 * Camera.main.aspect, Camera.main.orthographicSize * 2) * 2;
+        transform.localScale = new Vector3(Managers.Game.camera_h, Managers.Game.camera_v);
+        transform.position = Managers.Game.player.gameObject.transform.position - z;
     }
     private void Update()
     {
-        if(Managers.Game.player.gameObject.transform.position.x + Camera.main.orthographicSize < transform.position.x + transform.localScale.x)
-        {
-            
-        }
+        if()
     }
 }

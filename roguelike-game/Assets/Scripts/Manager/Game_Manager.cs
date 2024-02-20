@@ -18,6 +18,8 @@ public class Game_Manager
     public SpawnMonster spawnMonster;
     public List<Skill> skills;
     public Map_Theme map;
+    public float camera_v;
+    public float camera_h;
     public float minute { get { return stopWatch.Elapsed.Minutes; } }
     public float second { get { return stopWatch.Elapsed.Seconds; } }
     public float creationCycle;
@@ -32,6 +34,8 @@ public class Game_Manager
     public Action allStop = null;
     private void init(string Theme)
     {
+        camera_v = Camera.main.orthographicSize * 2;
+        camera_h = Camera.main.orthographicSize * 2 * Camera.main.aspect;
         creationCycle = 1f;
         isSpawn = true;
         inBattle = false;
@@ -51,7 +55,7 @@ public class Game_Manager
         if (skills == null) { skills = Managers.Resource.LoadAll<Skill>("Data/Skill/").ToList<Skill>(); }
         go = Managers.Resource.instantiate("Prefab/Map");
         go.GetComponent<SpriteRenderer>().sprite = Managers.Resource.load<Sprite>($"Sprites/Map/{Theme}");
-        go.AddComponent<Map_Controller>();
+        go.AddComponent<MapScroller>();
         player.updateStatus -= increaseKillCount;
         player.updateStatus += increaseKillCount;
     }
