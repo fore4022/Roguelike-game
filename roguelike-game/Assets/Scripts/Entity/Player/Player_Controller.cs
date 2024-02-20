@@ -15,8 +15,8 @@ public class Player_Controller : Base_Controller
     public float necessaryExp;
     public float shieldAmount;
     public int level;
-    private float h;
-    private float v;
+    public float h;
+    public float v;
     protected override void Start()
     {
         base.Start();
@@ -28,6 +28,8 @@ public class Player_Controller : Base_Controller
         Managers.Input.keyAction += moving;
         Managers.Input.keyAction -= dash;
         Managers.Input.keyAction += dash;
+        boxCollider.offset = new Vector2(0.035f, 0);
+        boxCollider.size = new Vector2(0.5f, 1.065f);
         level = 1;
         hp = 100;
         MoveSpeed = 1.8f;

@@ -11,7 +11,7 @@ public class Test : MonoBehaviour
 {
     private void Start()
     {
-        Managers.Game.stageStart("asdf");
+        Managers.Game.stageStart("Ground");
     }
     private void Update()
     {

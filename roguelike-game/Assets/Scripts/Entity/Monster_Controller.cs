@@ -83,7 +83,10 @@ public class Monster_Controller : Base_Controller
         if (players.Count() == 1 && monsters.Count() != 1) { transform.position += separation(monsters); }
     }
     protected override void death() { Managers.Game.player.getLoot(gold, exp); }
-    protected void crash(Collision2D collision) { Managers.Game.player.attacked(attackDamage); }
+    protected void crash(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player")) { Managers.Game.player.attacked(attackDamage); }
+    }
     protected virtual void OnCollisionEnter2D(Collision2D collision) { crash(collision); }
     protected virtual void OnCollisionStay2D(Collision2D collision) { crash(collision); }
     protected override void OnDrawGizmosSelected()

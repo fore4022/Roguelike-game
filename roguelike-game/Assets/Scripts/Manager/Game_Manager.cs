@@ -20,7 +20,6 @@ public class Game_Manager
     public Map_Theme map;
     public float minute { get { return stopWatch.Elapsed.Minutes; } }
     public float second { get { return stopWatch.Elapsed.Seconds; } }
-    public float milliSeconds { get { return stopWatch.Elapsed.Milliseconds; } }
     public float creationCycle;
     public float timer;
     public float basicExp = 75;
@@ -30,6 +29,7 @@ public class Game_Manager
     public int killCount;
     public bool isSpawn;
     public bool inBattle;
+    public Action allStop = null;
     private void init(string Theme)
     {
         creationCycle = 1f;
@@ -43,10 +43,16 @@ public class Game_Manager
             go = Managers.Resource.instantiate("Prefab/Player", null);
             player = go.AddComponent<Player_Controller>();
         }
+        go = GameObject.Find("Main Camera");
+        go.AddComponent<Main_Camera>();
         if (GameObject.Find("@Monster") == null) { go = new GameObject { name = "@Monster" }; }
         spawnMonster = Util.getOrAddComponent<SpawnMonster>(go);
         if (GameObject.Find("@Skill") == null) { go = new GameObject { name = "@Skill" }; }  
         if (skills == null) { skills = Managers.Resource.LoadAll<Skill>("Data/Skill/").ToList<Skill>(); }
+        go = Managers.Resource.instantiate("Prefab/Map");
+        go.GetComponent<SpriteRenderer>().sprite = Managers.Resource.load<Sprite>($"Sprites/Map/{Theme}");
+        go.AddComponent<Map_Controller>();
+        player.updateStatus -= increaseKillCount;
         player.updateStatus += increaseKillCount;
     }
     public void increaseKillCount()
@@ -73,5 +79,6 @@ public class Game_Manager
         isSpawn = false;
         userGold += (int)player.Gold;
         userExp += (int)player.Exp;
+        allStop.Invoke();
     }
 }

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f76d234e93c1e64bad4c1e2cca6a0e5, type: 3}
-  m_Name: asdf
+  m_Name: Ground
   m_EditorClassIdentifier: 
   mapThemeName: asdf
   monsterType:
