@@ -55,8 +55,7 @@ public class Game_Manager
         if (GameObject.Find("@Skill") == null) { go = new GameObject { name = "@Skill" }; }  
         if (skills == null) { skills = Managers.Resource.LoadAll<Skill>("Data/Skill/").ToList<Skill>(); }
         go = Managers.Resource.instantiate("Prefab/Map");
-        go.GetComponent<SpriteRenderer>().sprite = Managers.Resource.load<Sprite>($"Sprites/Map/{Theme}");
-        go.AddComponent<Map_Controller>();
+        go.AddComponent<Map_Scroller>();
         player.updateStatus -= increaseKillCount;
         player.updateStatus += increaseKillCount;
     }
