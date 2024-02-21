@@ -45,6 +45,7 @@ public class Game_Manager
         if (go == null)
         {
             go = Managers.Resource.instantiate("Prefab/Player", null);
+            go.transform.position = Vector3.zero;
             player = go.AddComponent<Player_Controller>();
         }
         go = GameObject.Find("Main Camera");
@@ -75,7 +76,7 @@ public class Game_Manager
         foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), "BloodMagicBullet", 20); }
         stopWatch.Start();
         isSpawn = true;
-        spawnMonster.StartCoroutine(spawnMonster.Spawn());
+        //spawnMonster.StartCoroutine(spawnMonster.Spawn());
     }
     public void stageEnd()
     {
