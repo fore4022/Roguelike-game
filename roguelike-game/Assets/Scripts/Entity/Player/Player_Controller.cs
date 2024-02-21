@@ -33,7 +33,7 @@ public class Player_Controller : Base_Controller
         boxCollider.size = new Vector2(0.5f, 1.065f);
         level = 1;
         hp = 100;
-        MoveSpeed = 1.8f;
+        MoveSpeed = 2.5f;
         animatorPlaySpeed = 0.85f;
         //attackDamage += Item.attackDamage;
         //moveSpeed += Item.moveSpeed;

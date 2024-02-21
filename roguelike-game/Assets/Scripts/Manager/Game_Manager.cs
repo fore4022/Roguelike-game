@@ -31,7 +31,6 @@ public class Game_Manager
     public int killCount;
     public bool isSpawn;
     public bool inBattle;
-    public Action allStop = null;
     private void init(string Theme)
     {
         camera_v = Camera.main.orthographicSize * 2;
@@ -75,7 +74,7 @@ public class Game_Manager
         foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), "BloodMagicBullet", 20); }
         stopWatch.Start();
         isSpawn = true;
-        //spawnMonster.StartCoroutine(spawnMonster.Spawn());
+        spawnMonster.StartCoroutine(spawnMonster.Spawn());
     }
     public void stageEnd()
     {
@@ -83,6 +82,5 @@ public class Game_Manager
         isSpawn = false;
         userGold += (int)player.Gold;
         userExp += (int)player.Exp;
-        allStop.Invoke();
     }
 }
