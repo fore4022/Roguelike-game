@@ -71,7 +71,7 @@ public class Game_Manager
         init(Theme);
         objectPool.init();
         foreach (string str in map.monsterType) { objectPool.createObjects(typeof(Monster_Controller), str, 1200); }
-        foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), "BloodMagicBullet", 20); }
+        foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), skill.skillName, 20); }
         stopWatch.Start();
         isSpawn = true;
         spawnMonster.StartCoroutine(spawnMonster.Spawn());

@@ -38,10 +38,14 @@ public class Monster_Controller : Base_Controller
     }
     protected override void Update()
     {
-        if(Managers.Game.player.Hp >= 0)
+        if(Managers.Game.player.Hp > 0)
         {
             if (state == State.Death) { return; }
-            if (Hp == 0) { anime.Play("death"); state = State.Death; }
+            if (Hp <= 0)
+            { 
+                //anime.Play("death"); 
+                state = State.Death;
+            }
             setAnime();
             setState();
         }
@@ -82,6 +86,7 @@ public class Monster_Controller : Base_Controller
         transform.position += move() * MoveSpeed * Time.deltaTime + separation(monsters);
         if (players.Count() == 1 && monsters.Count() != 1) { transform.position += separation(monsters); }
     }
+    public virtual void attacked(float damage) { hp -= damage; }
     protected override void death() { Managers.Game.player.getLoot(gold, exp); }
     protected void crash(Collision2D collision)
     {

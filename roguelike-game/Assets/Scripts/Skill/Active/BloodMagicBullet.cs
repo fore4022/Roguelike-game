@@ -44,6 +44,7 @@ public class BloodMagicBullet : Base_Skill
     {
         if (collision.gameObject.CompareTag("Monster"))
         {
+            collision.GetComponent<Monster_Controller>().attacked(skill.skillDamage);
             anime.Play("Boom");
             projectileSpeed = 0f;
             Destroy(gameObject.GetComponent<BoxCollider2D>());

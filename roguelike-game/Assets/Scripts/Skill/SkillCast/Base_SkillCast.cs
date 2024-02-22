@@ -5,6 +5,8 @@ public abstract class Base_SkillCast : MonoBehaviour
 {
     public Skill skill;
     protected string prefabName;
+    protected System.Type script;
+    protected RuntimeAnimatorController animeController;
     protected void Start()
     {
         init();
@@ -15,6 +17,8 @@ public abstract class Base_SkillCast : MonoBehaviour
     {
         prefabName = this.GetType().Name.Replace("_Cast","");
         skill = (Skill)Resources.Load($"Data/Skill/{prefabName}");
+        script = System.Type.GetType(prefabName);
+        animeController = (RuntimeAnimatorController)Resources.Load($"Animation/{prefabName}/{prefabName}");
     }
     protected void StopCoroutine() { StopAllCoroutines(); }
     public abstract IEnumerator skillCast();
