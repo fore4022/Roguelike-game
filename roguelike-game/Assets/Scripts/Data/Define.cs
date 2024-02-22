@@ -14,7 +14,7 @@ public class Define
     public enum Effect
     {
         Null,
-        SlowDown,
-        UnableToMove
+        SlowDown = 40,
+        UnableToMove = 100
     }
 }

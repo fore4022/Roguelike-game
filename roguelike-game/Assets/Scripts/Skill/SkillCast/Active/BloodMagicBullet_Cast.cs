@@ -6,7 +6,9 @@ public class BloodMagicBullet_Cast : Base_SkillCast
 {
     public override IEnumerator skillCast()
     {
-        while(true)
+        getResources();
+        Debug.Log(script);
+        while (true)
         {
             Collider2D[] colliders = Physics2D.OverlapCircleAll(Managers.Game.player.gameObject.transform.position, Camera.main.orthographicSize * 2 + 1.5f, LayerMask.GetMask("Monster"));
             if(colliders == null) { yield return null; }
@@ -14,9 +16,10 @@ public class BloodMagicBullet_Cast : Base_SkillCast
             Base_Skill baseSkill = go.AddComponent(script) as Base_Skill;
             baseSkill.skill = skill;
             baseSkill.anime = go.AddComponent<Animator>();
+            baseSkill.anime.runtimeAnimatorController = animeController;
             BoxCollider2D boxCollider = go.AddComponent<BoxCollider2D>();
             boxCollider.isTrigger = true;
-            yield return new WaitForSeconds(skill.skillCoolTime);       
+            yield return new WaitForSeconds(skill.skillCoolTime);
         }
     }
 }

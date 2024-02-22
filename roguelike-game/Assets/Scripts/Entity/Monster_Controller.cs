@@ -11,6 +11,8 @@ public class Monster_Controller : Base_Controller
 {
     [HideInInspector]
     public Monster monsterType;
+    [HideInInspector]
+    public float slowDownAmount;
     protected GameObject player;
     protected enum State
     {
