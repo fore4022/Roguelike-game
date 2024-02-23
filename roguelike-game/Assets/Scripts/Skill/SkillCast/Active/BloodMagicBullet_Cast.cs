@@ -6,8 +6,6 @@ public class BloodMagicBullet_Cast : Base_SkillCast
 {
     public override IEnumerator skillCast()
     {
-        getResources();
-        Debug.Log(script);
         while (true)
         {
             Collider2D[] colliders = Physics2D.OverlapCircleAll(Managers.Game.player.gameObject.transform.position, Camera.main.orthographicSize * 2 + 1.5f, LayerMask.GetMask("Monster"));

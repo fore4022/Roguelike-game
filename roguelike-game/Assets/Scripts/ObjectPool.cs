@@ -11,9 +11,11 @@ public class ObjectPool
     public Dictionary<string, Queue<GameObject>> boids = new();
     public Dictionary<string, Monster> monsterData = new();
     private GameObject objectPool;
+    private GameObject skill;
     public void init()
     {
         if (GameObject.Find("@ObjectPool") == null) { objectPool = new GameObject { name = "@ObjectPool" }; }
+        if (GameObject.Find("@Skill") == null) { skill = new GameObject { name = "@Skill" }; }
         foreach (string str in Managers.Game.map.monsterType) { monsterData.Add(str, Managers.Resource.load<Monster>($"Data/Monster/{str}")); }
     }
     public void createObjects(System.Type baseType, string prefabName, int count, string scriptName = null)
@@ -70,8 +72,7 @@ public class ObjectPool
         }
         else if (baseType == typeof(Base_SkillCast))
         {
-            GameObject skill = GameObject.Find("@Skill");
-            if (skill == null) { skill = new GameObject { name = "@Skill" }; }
+            go.transform.SetParent(skill.transform);
         }
         boids[prefabName] = queue;
         return go;

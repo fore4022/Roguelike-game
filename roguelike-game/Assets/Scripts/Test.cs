@@ -12,6 +12,9 @@ public class Test : MonoBehaviour
     private void Start()
     {
         Managers.Game.stageStart("Ground");
+        GameObject go = GameObject.Find("@Skill");
+        //go.AddComponent<BloodMagicBullet_Cast>();
+        go.AddComponent<BloodyMassacre_Cast>();
     }
     private void Update()
     {

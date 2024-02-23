@@ -5,7 +5,6 @@ public class BloodyMassacre_Cast : Base_SkillCast
 {
     public override IEnumerator skillCast()
     {
-        getResources();
         while(true)
         {
             GameObject go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), prefabName);
@@ -13,9 +12,7 @@ public class BloodyMassacre_Cast : Base_SkillCast
             Base_Skill baseSkill = go.AddComponent(type) as Base_Skill;
             baseSkill.skill = skill;
             baseSkill.anime = go.AddComponent<Animator>();
-            BoxCollider2D boxCollider = go.AddComponent<BoxCollider2D>();
-            boxCollider.isTrigger = true;
-            yield return new WaitForSeconds(skill.skillCoolTime);
+            yield return new WaitForSeconds(skill.skillCoolTime + skill.skillDuration);
         }
     }
 }

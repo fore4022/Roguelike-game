@@ -12,16 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d47eceb190e27994b87ce175868a287b, type: 3}
   m_Name: BloodyMassacre
   m_EditorClassIdentifier: 
+  effect: 0
   skillName: BloodyMassacre
   explanation: 
-  effect: 0
   skillDamage: 12
   skillCoolTime: 3
-  skillRange: 0
+  skillRange: 3
   castingSpeed: 2
   skillDuration: 0
   increaseSkillCooldown: 0
   increaseDamage: 2
   increaseHp: 0
   magnificationExp: 0
+  skillLevel: 0
   useType: 1

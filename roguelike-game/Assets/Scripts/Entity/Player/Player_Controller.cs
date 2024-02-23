@@ -44,8 +44,6 @@ public class Player_Controller : Base_Controller
         anime.runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{name}/{name}");
         anime.speed = animatorPlaySpeed;
         anime.Play("downIdle");
-        GameObject go = GameObject.Find("@Skill");
-        go.AddComponent<BloodMagicBullet_Cast>();
     }
     protected override void Update()
     {

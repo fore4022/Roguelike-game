@@ -51,7 +51,6 @@ public class Game_Manager
         go.AddComponent<Main_Camera>();
         if (GameObject.Find("@Monster") == null) { go = new GameObject { name = "@Monster" }; }
         spawnMonster = Util.getOrAddComponent<SpawnMonster>(go);
-        if (GameObject.Find("@Skill") == null) { go = new GameObject { name = "@Skill" }; }  
         if (skills == null) { skills = Managers.Resource.LoadAll<Skill>("Data/Skill/").ToList<Skill>(); }
         go = Managers.Resource.instantiate("Prefab/Map");
         go.AddComponent<Map_Scroller>();
@@ -71,7 +70,7 @@ public class Game_Manager
         init(Theme);
         objectPool.init();
         foreach (string str in map.monsterType) { objectPool.createObjects(typeof(Monster_Controller), str, 1200); }
-        foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), /*skill.skillName*/"BloodMagicBullet", 20); }
+        foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), /*skill.skillName*/"BloodyMassacre", 20); }
         stopWatch.Start();
         isSpawn = true;
         spawnMonster.StartCoroutine(spawnMonster.Spawn());

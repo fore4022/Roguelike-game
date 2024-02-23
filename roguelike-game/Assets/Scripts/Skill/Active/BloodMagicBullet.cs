@@ -36,7 +36,7 @@ public class BloodMagicBullet : Base_Skill
         {
             if(anime.GetCurrentAnimatorStateInfo(0).IsName("Boom"))
             {
-                if (anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f) { Destroy(gameObject); }
+                if (anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f) { Managers.Game.objectPool.disableObject(this.GetType().Name, this.gameObject); }
             }
         }
     }
@@ -47,7 +47,7 @@ public class BloodMagicBullet : Base_Skill
             collision.GetComponent<Monster_Controller>().attacked(skill.skillDamage);
             anime.Play("Boom");
             projectileSpeed = 0f;
-            Managers.Game.objectPool.disableObject(this.GetType().Name, transform.gameObject);
+            Destroy(gameObject.GetComponent<BoxCollider2D>());
         }
     }
 }

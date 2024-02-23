@@ -85,8 +85,8 @@ public class Monster_Controller : Base_Controller
         List<Monster_Controller> monsters = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
         players.RemoveAll(o => o == null);
         monsters.RemoveAll(o => o == null);
-        transform.position += move() * MoveSpeed * Time.deltaTime + separation(monsters);
-        if (players.Count() == 1 && monsters.Count() != 1) { transform.position += separation(monsters); }
+        transform.position += move() * MoveSpeed * Time.deltaTime + separation(monsters) * slowDownAmount / 100f;
+        if (players.Count() == 1 && monsters.Count() != 1) { transform.position += separation(monsters) * slowDownAmount / 100f; }
     }
     public virtual void attacked(float damage) { hp -= damage; }
     protected override void death() { Managers.Game.player.getLoot(gold, exp); }

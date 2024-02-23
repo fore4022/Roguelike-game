@@ -11,15 +11,17 @@ public abstract class Base_SkillCast : MonoBehaviour
     {
         init();
         StartCoroutine(skillCast());
+        Managers.Game.player.updateStatus -= stop;
+        Managers.Game.player.updateStatus += stop;
     }
-    protected virtual void Update() { if(Managers.Game.player.Hp <= 0) { StopAllCoroutines(); } }
+    private void stop()
+    {
+        if(Managers.Game.player.Hp <= 0) { this.gameObject.SetActive(false); }
+    }
     private void init()
     {
         prefabName = this.GetType().Name.Replace("_Cast","");
         skill = (Skill)Resources.Load($"Data/Skill/{prefabName}");
-    }
-    protected void getResources()
-    {
         script = System.Type.GetType(prefabName);
         animeController = (RuntimeAnimatorController)Resources.Load($"Animation/{prefabName}/{prefabName}");
     }
