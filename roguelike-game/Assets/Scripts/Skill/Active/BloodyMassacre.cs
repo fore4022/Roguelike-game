@@ -23,6 +23,6 @@ public class BloodyMassacre : Base_Skill
             else if (skill.effect == Define.Effect.UnableToMove) { monster.slowDownAmount = (int)Define.Effect.UnableToMove; }
             monster.attacked(skill.skillDamage);
         }
-        if(continueSkill == skill.skillDuration) { Managers.Game.objectPool.disableObject(this.GetType().Name, this.gameObject); }
+        if(continueSkill >= skill.skillDuration) { Managers.Game.objectPool.disableObject(this.GetType().Name, this.gameObject); }
     }
 }

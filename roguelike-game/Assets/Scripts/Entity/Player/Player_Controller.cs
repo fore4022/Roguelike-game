@@ -51,6 +51,7 @@ public class Player_Controller : Base_Controller
         if (hp <= 0) 
         { 
             Managers.Input.keyAction -= moving;
+            h = v = 0;
             anime.Play("death");
             Invoke("death", 1.1f);
         }

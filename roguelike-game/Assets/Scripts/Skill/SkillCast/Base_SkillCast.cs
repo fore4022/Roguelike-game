@@ -16,7 +16,11 @@ public abstract class Base_SkillCast : MonoBehaviour
     }
     private void stop()
     {
-        if(Managers.Game.player.Hp <= 0) { this.gameObject.SetActive(false); }
+        if(Managers.Game.player.Hp <= 0)
+        {
+            Managers.Game.player.updateStatus -= stop;
+            this.gameObject.SetActive(false); 
+        }
     }
     private void init()
     {

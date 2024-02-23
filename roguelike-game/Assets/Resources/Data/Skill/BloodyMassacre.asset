@@ -15,11 +15,11 @@ MonoBehaviour:
   effect: 0
   skillName: BloodyMassacre
   explanation: 
-  skillDamage: 12
+  skillDamage: 0
   skillCoolTime: 3
   skillRange: 3
   castingSpeed: 2
-  skillDuration: 0
+  skillDuration: 1.5
   increaseSkillCooldown: 0
   increaseDamage: 2
   increaseHp: 0
