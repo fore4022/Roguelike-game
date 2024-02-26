@@ -7,6 +7,8 @@ public abstract class Base_SkillCast : MonoBehaviour
     protected string prefabName;
     protected System.Type script;
     protected RuntimeAnimatorController animeController;
+    protected GameObject go;
+    protected Base_Skill baseSkill;
     protected void Start()
     {
         init();

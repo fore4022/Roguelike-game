@@ -10,8 +10,8 @@ public class BloodMagicBullet_Cast : Base_SkillCast
         {
             Collider2D[] colliders = Physics2D.OverlapCircleAll(Managers.Game.player.gameObject.transform.position, Camera.main.orthographicSize * 2 + 1.5f, LayerMask.GetMask("Monster"));
             if(colliders == null) { yield return null; }
-            GameObject go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), prefabName);
-            Base_Skill baseSkill = go.AddComponent(script) as Base_Skill;
+            go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), prefabName);
+            baseSkill = go.AddComponent(script) as Base_Skill;
             baseSkill.skill = skill;
             baseSkill.anime = go.AddComponent<Animator>();
             baseSkill.anime.runtimeAnimatorController = animeController;

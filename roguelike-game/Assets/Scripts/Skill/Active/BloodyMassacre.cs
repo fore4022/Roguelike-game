@@ -6,7 +6,7 @@ using UnityEngine;
 public class BloodyMassacre : Base_Skill
 {
     private float continueSkill;
-    protected override void Start()
+    protected override void init()
     {
         continueSkill = 0f;
         transform.localScale = new Vector3(skill.skillRange * 2, skill.skillRange * 2, 1);

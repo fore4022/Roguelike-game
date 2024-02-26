@@ -5,9 +5,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 public abstract class Base_Controller : Stat
 {
+    protected Animator anime;
     protected BoxCollider2D boxCollider;
     protected Rigidbody2D rigid;
-    protected Animator anime;
     protected float animatorPlaySpeed;
     protected virtual void Start()
     {

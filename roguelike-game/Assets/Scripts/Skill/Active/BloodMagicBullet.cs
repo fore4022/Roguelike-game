@@ -8,7 +8,7 @@ public class BloodMagicBullet : Base_Skill
 {
     private float projectileSpeed;
     private Vector3 direction;
-    protected override void Start()
+    protected override void init()
     {
         Transform player = Managers.Game.player.gameObject.transform;
         Collider2D[] colliders = Physics2D.OverlapCircleAll(player.position, Managers.Game.camera_v, LayerMask.GetMask("Monster"));
@@ -23,10 +23,6 @@ public class BloodMagicBullet : Base_Skill
         direction = direction.normalized;
         transform.position = player.position;
         transform.rotation = Quaternion.Euler(0, 0, -90 + Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
-        init();
-    }
-    private void init()
-    {
         projectileSpeed = 8f;
     }
     protected override void Update()
