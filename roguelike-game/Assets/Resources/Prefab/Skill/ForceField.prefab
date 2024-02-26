@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3554257285674808846}
   - component: {fileID: 2418579774638215519}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: ForceField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3800,7 +3800,7 @@ ParticleSystem:
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
-    enabled: 1
+    enabled: 0
     serializedVersion: 2
     inside: 1
     outside: 0

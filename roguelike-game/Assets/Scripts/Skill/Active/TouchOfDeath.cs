@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 public class TouchOfDeath : Base_Skill
 {
+    public Animator anime;
     public float delayTime;
     protected override void init() { transform.rotation = new Quaternion(0, 0, Random.Range(0, 361), 0); }
     protected override void Update()

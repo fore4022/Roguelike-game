@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 public class CorpseExplosion : Base_Skill
 {
+    public Animator anime;
     protected override void Start()
     {
         base.Start();

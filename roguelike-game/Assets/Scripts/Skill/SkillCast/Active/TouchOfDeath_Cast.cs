@@ -15,8 +15,8 @@ public class TouchOfDeath_Cast : Base_SkillCast
         {
             for(int i = 0; i < skill.numberOfCast; i++)
             {
-                baseSkill = go.AddComponent(script) as Base_Skill;
-                baseSkill.skill = skill;
+                TouchOfDeath newScript= go.AddComponent(script) as TouchOfDeath;
+                newScript.skill = skill;
                 go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), prefabName);
                 do
                 {
@@ -24,8 +24,8 @@ public class TouchOfDeath_Cast : Base_SkillCast
                     scale = Vector3.one * Random.Range(1f, skill.skillRange);
                     col = Physics2D.OverlapBox(position, scale, LayerMask.GetMask("Player"));
                 } while (col != null);
-                baseSkill.anime = go.AddComponent<Animator>();
-                baseSkill.anime.runtimeAnimatorController = animeController;
+                newScript.anime = go.AddComponent<Animator>();
+                newScript.anime.runtimeAnimatorController = animeController;
                 BoxCollider2D boxCollider = go.AddComponent<BoxCollider2D>();
                 (go.GetComponent(script) as TouchOfDeath).delayTime = Random.Range(0f, skill.numberOfCast / 10f);
                 boxCollider.isTrigger = true;

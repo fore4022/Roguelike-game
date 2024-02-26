@@ -5,6 +5,7 @@ using Unity.Android.Types;
 using UnityEngine;
 public class BloodyMassacre : Base_Skill
 {
+    public Animator anime;
     private float continueSkill;
     protected override void init()
     {

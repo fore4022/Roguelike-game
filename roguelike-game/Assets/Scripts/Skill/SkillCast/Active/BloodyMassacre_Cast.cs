@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 public class BloodyMassacre_Cast : Base_SkillCast
 {
@@ -11,8 +12,7 @@ public class BloodyMassacre_Cast : Base_SkillCast
         while(true)
         {
             go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), prefabName);
-            System.Type type = System.Type.GetType(prefabName);
-            baseSkill = go.AddComponent(type) as Base_Skill;
+            BloodyMassacre baseSkill =  go.AddComponent(script) as BloodyMassacre;
             baseSkill.skill = skill;
             baseSkill.anime = go.AddComponent<Animator>();
             baseSkill.anime.runtimeAnimatorController = animeController;

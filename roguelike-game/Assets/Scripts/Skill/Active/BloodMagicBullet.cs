@@ -8,6 +8,7 @@ public class BloodMagicBullet : Base_Skill
 {
     private float projectileSpeed;
     private Vector3 direction;
+    public Animator anime;
     protected override void init()
     {
         Transform player = Managers.Game.player.gameObject.transform;

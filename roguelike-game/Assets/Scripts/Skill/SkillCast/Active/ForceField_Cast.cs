@@ -9,9 +9,9 @@ public class ForceField_Cast : Base_SkillCast
         while (true)
         {   
             go = Managers.Game.objectPool.activateObject(typeof(Base_Skill), prefabName);
-            baseSkill = go.GetComponent(script) as Base_Skill;
-            baseSkill.skill = skill;
-            yield return null;
+            ForceField newScript = go.GetComponent(script) as ForceField;
+            newScript.skill = skill;
+            yield return new WaitForSeconds(2222222f);
         }
     }
 }

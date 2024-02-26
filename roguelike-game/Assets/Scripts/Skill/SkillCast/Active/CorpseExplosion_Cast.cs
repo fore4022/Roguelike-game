@@ -19,10 +19,10 @@ public class CorpseExplosion_Cast : Base_SkillCast
                 go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), prefabName);
                 go.gameObject.transform.position = colliders[rand].gameObject.transform.position;
                 monsters.Remove(monsters[rand]);
-                baseSkill = go.AddComponent(script) as Base_Skill;
-                baseSkill.skill = skill;
-                baseSkill.anime = go.AddComponent<Animator>();
-                baseSkill.anime.runtimeAnimatorController = animeController;
+                CorpseExplosion newScript = go.AddComponent(script) as CorpseExplosion;
+                newScript.skill = skill;
+                newScript.anime = go.AddComponent<Animator>();
+                newScript.anime.runtimeAnimatorController = animeController;
                 BoxCollider2D boxCollider = go.AddComponent<BoxCollider2D>();
                 boxCollider.isTrigger = true;
             }
