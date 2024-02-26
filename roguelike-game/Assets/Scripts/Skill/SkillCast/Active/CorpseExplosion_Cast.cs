@@ -5,7 +5,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 public class CorpseExplosion_Cast : Base_SkillCast
 {
-    public override IEnumerator skillCast()
+    protected override IEnumerator skillCast()
     {
         while(true)
         {

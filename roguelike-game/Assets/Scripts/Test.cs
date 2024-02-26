@@ -15,7 +15,7 @@ public class Test : MonoBehaviour
         GameObject go = GameObject.Find("@Skill");
         //go.AddComponent<BloodMagicBullet_Cast>();
         //go.AddComponent<BloodyMassacre_Cast>();
-        go.AddComponent<CorpseExplosion_Cast>();
+        //go.AddComponent<CorpseExplosion_Cast>();
     }
     private void Update()
     {

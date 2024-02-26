@@ -5,7 +5,7 @@ public class BloodyMassacre_Cast : Base_SkillCast
 {
     private SpriteRenderer render;
     private float colorA;
-    public override IEnumerator skillCast()
+    protected override IEnumerator skillCast()
     {
         colorA = 0.15f;
         while(true)

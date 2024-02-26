@@ -24,4 +24,7 @@ MonoBehaviour:
   increaseDamage: 0
   increaseHp: 0
   magnificationExp: 0
+  increaseNumberOfCast: 0
+  numberOfCast: 1
+  skillLevel: 0
   useType: 1

@@ -90,10 +90,12 @@ public class Monster_Controller : Base_Controller
     }
     public virtual void attacked(float damage) { hp -= damage; }
     protected override void death() { Managers.Game.player.getLoot(gold, exp); }
-    protected void crash(Collision2D collision)
+    public int monsterCount()
     {
-        if (collision.gameObject.CompareTag("Player")) { Managers.Game.player.attacked(attackDamage); }
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, (transform.localScale.x + transform.localScale.y) / 2, LayerMask.GetMask("Monster"));
+        return colliders.Count();
     }
+    protected void crash(Collision2D collision) { if (collision.gameObject.CompareTag("Player")) { Managers.Game.player.attacked(attackDamage); }}
     protected virtual void OnCollisionEnter2D(Collision2D collision) { crash(collision); }
     protected virtual void OnCollisionStay2D(Collision2D collision) { crash(collision); }
     protected override void OnDrawGizmosSelected()

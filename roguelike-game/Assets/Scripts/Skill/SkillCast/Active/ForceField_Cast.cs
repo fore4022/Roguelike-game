@@ -1,10 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-public class ForceField : Base_SkillCast
+public class ForceField_Cast : Base_SkillCast
 {
-    public override IEnumerator skillCast()
+    protected override IEnumerator skillCast()
     {
-        yield return null;
+        while (true)
+        {   
+            go = Managers.Game.objectPool.activateObject(typeof(Base_Skill), prefabName);
+            baseSkill = go.GetComponent(script) as Base_Skill;
+            baseSkill.skill = skill;
+            yield return null;
+        }
     }
 }

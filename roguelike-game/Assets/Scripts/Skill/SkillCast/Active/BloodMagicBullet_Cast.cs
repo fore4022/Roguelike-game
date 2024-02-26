@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 public class BloodMagicBullet_Cast : Base_SkillCast
 {
-    public override IEnumerator skillCast()
+    protected override IEnumerator skillCast()
     {
         while (true)
         {
