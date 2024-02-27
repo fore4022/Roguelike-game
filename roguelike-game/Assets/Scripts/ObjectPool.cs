@@ -66,14 +66,8 @@ public class ObjectPool
         Queue<GameObject> queue = boids[prefabName];
         GameObject go = queue.Dequeue();
         go.SetActive(true);
-        if (baseType == typeof(Monster_Controller))
-        {
-            go.transform.SetParent(Managers.Game.spawnMonster.gameObject.transform);
-        }
-        else if (baseType == typeof(Base_SkillCast))
-        {
-            go.transform.SetParent(skill.transform);
-        }
+        if (baseType == typeof(Monster_Controller)) { go.transform.SetParent(Managers.Game.spawnMonster.gameObject.transform); }
+        else if (baseType == typeof(Base_SkillCast)) { go.transform.SetParent(skill.transform); }
         boids[prefabName] = queue;
         return go;
     }

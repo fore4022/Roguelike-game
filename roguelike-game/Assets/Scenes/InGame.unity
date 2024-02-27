@@ -133,15 +133,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 645200066605766664, guid: b41d527007b36084da04a4125550158c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.27065566
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 645200066605766664, guid: b41d527007b36084da04a4125550158c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.3546946
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 645200066605766664, guid: b41d527007b36084da04a4125550158c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.0885787
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 645200066605766664, guid: b41d527007b36084da04a4125550158c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -189,6 +189,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3554257285674808846, guid: b41d527007b36084da04a4125550158c, type: 3}
       propertyPath: TriggerModule.outside
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3554257285674808846, guid: b41d527007b36084da04a4125550158c, type: 3}
+      propertyPath: TriggerModule.colliderQueryMode
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3554257285674808846, guid: b41d527007b36084da04a4125550158c, type: 3}
