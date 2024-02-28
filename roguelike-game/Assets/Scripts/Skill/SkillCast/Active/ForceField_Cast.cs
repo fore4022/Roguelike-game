@@ -11,7 +11,7 @@ public class ForceField_Cast : Base_SkillCast
             go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), prefabName);
             ForceField newScript = go.AddComponent(script) as ForceField;
             newScript.skill = skill;
-            yield return new WaitForSeconds(2222222f);
+            yield return new WaitForSeconds(skill.skillCoolTime);
         }
     }
 }

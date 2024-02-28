@@ -16,7 +16,7 @@ public class Test : MonoBehaviour
         //go.AddComponent<BloodMagicBullet_Cast>();
         //go.AddComponent<BloodyMassacre_Cast>();
         //go.AddComponent<CorpseExplosion_Cast>();
-        //go.AddComponent<ForceField_Cast>();
+        go.AddComponent<ForceField_Cast>();
     }
     private void Update()
     {
