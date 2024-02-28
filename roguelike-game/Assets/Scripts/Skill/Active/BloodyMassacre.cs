@@ -1,29 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Android.Types;
 using UnityEngine;
 public class BloodyMassacre : Base_Skill
 {
     public Animator anime;
-    private float continueSkill;
+    private Vector3 direction;
+    private float projectileSpeed;
     protected override void init()
     {
-        continueSkill = 0f;
-        transform.localScale = new Vector3(skill.skillRange * 2, skill.skillRange * 2, 1);
+        Transform player = Managers.Game.player.gameObject.transform;
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(player.position, Managers.Game.camera_v + 1.5f, LayerMask.GetMask("Monster"));
+        if (colliders.Count() == 0) { return; }
+        direction = new();
+        foreach (Collider2D col in colliders)
+        {
+            if (direction == new Vector3()) { direction = col.gameObject.transform.position - player.position; }
+            else if (direction.sqrMagnitude > (col.gameObject.transform.position - player.position).sqrMagnitude) { direction = col.gameObject.transform.position - player.position; }
+        }
+        direction = direction.normalized;
+        transform.position = player.position;
+        transform.rotation = Quaternion.Euler(0, 0, -90 + Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+        projectileSpeed = 12f;
     }
     protected override void Update()
     {
-        continueSkill += Time.deltaTime;
-        transform.position = Managers.Game.player.gameObject.transform.position;
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, skill.skillRange / 2, LayerMask.GetMask("Monster"));
-        foreach (Collider2D col in colliders)
-        {
-            Monster_Controller monster = col.gameObject.GetComponent<Monster_Controller>();
-            if (skill.effect == Define.Effect.SlowDown) { monster.slowDownAmount = (int)Define.Effect.SlowDown; }
-            else if (skill.effect == Define.Effect.UnableToMove) { monster.slowDownAmount = (int)Define.Effect.UnableToMove; }
-            monster.attacked(skill.skillDamage);
-        }
-        if(continueSkill >= skill.skillDuration) { Managers.Game.objectPool.disableObject(this.GetType().Name, this.gameObject); }
+
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        
     }
 }

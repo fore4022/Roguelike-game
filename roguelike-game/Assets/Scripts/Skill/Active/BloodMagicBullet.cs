@@ -6,14 +6,13 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 public class BloodMagicBullet : Base_Skill
 {
-    private float projectileSpeed;
-    private Vector3 direction;
     public Animator anime;
+    private Vector3 direction;
+    private float projectileSpeed;
     protected override void init()
     {
         Transform player = Managers.Game.player.gameObject.transform;
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(player.position, Managers.Game.camera_v, LayerMask.GetMask("Monster"));
-        if (colliders.Count() == 0) { colliders = Physics2D.OverlapCircleAll(player.position, Managers.Game.camera_v + 1.5f, LayerMask.GetMask("Monster")); }
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(player.position, Managers.Game.camera_v + 1.5f, LayerMask.GetMask("Monster"));
         if (colliders.Count() == 0) { return; }
         direction = new();
         foreach (Collider2D col in colliders)

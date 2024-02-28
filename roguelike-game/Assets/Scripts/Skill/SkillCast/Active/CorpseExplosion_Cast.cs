@@ -12,6 +12,7 @@ public class CorpseExplosion_Cast : Base_SkillCast
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, Camera.main.orthographicSize * 2 * Camera.main.aspect, LayerMask.GetMask("Monster"));
             List<Monster_Controller> monsters = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>().Hp <= 0 ? o.gameObject.GetComponent<Monster_Controller>() : null).ToList();
             monsters.RemoveAll(o => o == null);
+            if(monsters.Count() == 0) { yield return null; }
             int rand;
             for(int i = 0; i < skill.numberOfCast; i++)
             {

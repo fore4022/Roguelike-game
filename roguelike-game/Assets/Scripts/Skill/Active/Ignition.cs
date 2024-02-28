@@ -4,7 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using System;
-public class ForceField : Base_Skill
+public class Ignition : Base_Skill
 {
     private List<ParticleSystem.Particle> enter = new();
     private ParticleSystem.TriggerModule trigger;

@@ -100,7 +100,7 @@ public class Monster_Controller : Base_Controller
         while(true)
         {
             time += Time.deltaTime;
-            if (time >= 3) { Managers.Game.objectPool.disableObject(this.GetType().Name, this.gameObject); }
+            if (time >= 3) { Managers.Game.objectPool.disableObject(this.gameObject.name.Replace("(Clone)",""), this.gameObject); }
             yield return null;
         }
     }
