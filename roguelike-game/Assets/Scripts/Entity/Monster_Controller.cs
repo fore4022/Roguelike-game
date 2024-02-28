@@ -89,7 +89,21 @@ public class Monster_Controller : Base_Controller
         if (players.Count() == 1 && monsters.Count() != 1) { transform.position += separation(monsters) * slowDownAmount / 100f; }
     }
     public virtual void attacked(float damage) { hp -= damage; }
-    protected override void death() { Managers.Game.player.getLoot(gold, exp); }
+    protected override void death() 
+    {
+        Managers.Game.player.getLoot(gold, exp);
+        StartCoroutine(remainingTime());
+    }
+    protected IEnumerator remainingTime()
+    {
+        float time = 0;
+        while(true)
+        {
+            time += Time.deltaTime;
+            if (time >= 3) { Managers.Game.objectPool.disableObject(this.GetType().Name, this.gameObject); }
+            yield return null;
+        }
+    }
     public int monsterCount()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, (transform.localScale.x + transform.localScale.y) / 2, LayerMask.GetMask("Monster"));

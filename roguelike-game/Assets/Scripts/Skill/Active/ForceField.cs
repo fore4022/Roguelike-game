@@ -6,15 +6,14 @@ using UnityEngine;
 using System;
 public class ForceField : Base_Skill
 {
-    private List<ParticleSystem.Particle> inside = new();
+    private List<ParticleSystem.Particle> enter = new();
     private ParticleSystem.TriggerModule trigger;
     private ParticleSystem particleSys;
-    private int numInside;
+    private int numEnter;
     private float duration;
     private void Awake() { particleSys = GetComponent<ParticleSystem>(); }
     protected override void init()
     {
-        Debug.Log("asdf");
         duration = 0;
         Collider2D[] colliders = Physics2D.OverlapBoxAll(Managers.Game.player.gameObject.transform.position, new Vector2(Managers.Game.camera_h, Managers.Game.camera_v), LayerMask.GetMask("Monster"));
         List<Monster_Controller> monsters = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
@@ -34,37 +33,40 @@ public class ForceField : Base_Skill
         }
         else { pos = new Vector3(Managers.Game.camera_h, Managers.Game.camera_v); }
         transform.position = pos;
+        ParticleSystem.MainModule forceField = particleSys.main;
+        forceField.startLifetime = 1;
+        forceField.startSpeed = new ParticleSystem.MinMaxCurve(8, 10);
+        forceField.startSize = 0.35f;
+        forceField.maxParticles = 70;
         trigger = particleSys.trigger;
         trigger.enabled = true;
         trigger.enter = ParticleSystemOverlapAction.Callback;
         trigger.inside = ParticleSystemOverlapAction.Callback;
         trigger.exit = ParticleSystemOverlapAction.Ignore;
         trigger.colliderQueryMode = ParticleSystemColliderQueryMode.All;
+        ParticleSystem.EmissionModule emission = particleSys.emission;
+        emission.enabled = true;
+        emission.rateOverTime = 1000;
+        emission.rateOverDistance = 0;
+        ParticleSystem.ShapeModule shape = particleSys.shape;
+        shape.enabled = true;
+        ParticleSystem.LimitVelocityOverLifetimeModule limitVelocity = particleSys.limitVelocityOverLifetime;
+        limitVelocity.enabled = true;
+        limitVelocity.dampen = 0.2f;
+        ParticleSystemRenderer render = particleSys.GetComponent<ParticleSystemRenderer>();
+        render.material = Managers.Resource.load<Material>("Material/Fragments");
     }
     protected override void Update()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, skill.skillRange * 1.25f, LayerMask.GetMask("Monster"));
-        if(colliders.Count() != 0)
-        {
-            if(trigger.colliderCount != 0)
-            {
-                foreach(Collider2D col in colliders) { trigger.AddCollider(col); }
-            }
-            else
-            {
-                int num;
-                for(int i = 0; i < trigger.colliderCount; i++)
-                {
-                    
-                }
-            }
-        }
+        for (int i = 0; i < trigger.colliderCount; i++) { trigger.RemoveCollider(i); }
+        for (int i = 0; i < colliders.Count(); i++) { trigger.AddCollider(colliders[i]); }
         duration += Time.deltaTime;
         if (duration >= skill.skillDuration) { Managers.Game.objectPool.disableObject(this.GetType().Name, this.gameObject); }
     }
     private void OnParticleTrigger()
     {
-        numInside = particleSys.GetTriggerParticles(ParticleSystemTriggerEventType.Inside, inside, out ParticleSystem.ColliderData insideData);
-        for (int i = 0; i < numInside; i++) { insideData.GetCollider(i, 0).gameObject.GetComponent<Monster_Controller>().attacked(skill.skillDamage); }
+        numEnter = particleSys.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, enter, out ParticleSystem.ColliderData insideData);
+        for (int i = 0; i < numEnter; i++) { insideData.GetCollider(i, 0).gameObject.GetComponent<Monster_Controller>().attacked(skill.skillDamage); }
     }
 }
