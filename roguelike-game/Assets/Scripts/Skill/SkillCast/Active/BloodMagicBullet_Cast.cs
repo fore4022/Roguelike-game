@@ -15,7 +15,7 @@ public class BloodMagicBullet_Cast : Base_SkillCast
             List<Monster_Controller> monsters = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
             if (monsters.Count() == 0) { yield return null; }
             go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), prefabName);
-            BloodMagicBullet newScript = gameObject.AddComponent(script) as BloodMagicBullet;
+            BloodMagicBullet newScript = go.AddComponent(script) as BloodMagicBullet;
             newScript.skill = skill;
             newScript.anime = go.AddComponent<Animator>();
             newScript.anime.runtimeAnimatorController = animeController;

@@ -66,7 +66,7 @@ public class Ignition : Base_Skill
     }
     private void OnParticleTrigger()
     {
-        numEnter = particleSys.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, enter, out ParticleSystem.ColliderData insideData);
-        for (int i = 0; i < numEnter; i++) { insideData.GetCollider(i, 0).gameObject.GetComponent<Monster_Controller>().attacked(skill.skillDamage); }
+        numEnter = particleSys.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, enter, out ParticleSystem.ColliderData enterData);
+        for (int i = 0; i < numEnter; i++) { enterData.GetCollider(i, 0).gameObject.GetComponent<Monster_Controller>().attacked(skill.skillDamage); }
     }
 }
