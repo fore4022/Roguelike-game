@@ -3,30 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 using TMPro;
-public class Stat_UI : UI_Popup
+public class Quit_UI : UI_Popup
 {
     enum Buttons
     {
-        exit
-    }
-    enum Images
-    {
-
+        Quit
     }
     private void Start()
     {
         init();
-        Managers.Game.player.updateStat += statUpdate;
     }
     protected override void init()
     {
         base.init();
-        
-    }
-    private void statUpdate()
-    {
-
+        bind<Button>(typeof(Buttons));
+        GameObject quit = get<Button>((int)Buttons.Quit).gameObject;
+        AddUIEvent(quit, (PointerEventData data) => { Application.Quit(); }, Define.UIEvent.Click);
     }
 }
