@@ -4,10 +4,11 @@ using UnityEngine;
 public abstract class Base_SkillCast : MonoBehaviour
 {
     public Skill skill;
-    protected string prefabName;
     protected System.Type script;
     protected RuntimeAnimatorController animeController;
     protected GameObject go;
+
+    protected string prefabName;
     protected void Start()
     {
         init();

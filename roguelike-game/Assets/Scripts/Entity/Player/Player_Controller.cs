@@ -11,12 +11,14 @@ public class Player_Controller : Base_Controller
     public Action updateStatus = null;
     public Action updateStat = null;
     public Item Item;
+
     public float skillCooldownReduction;
     public float necessaryExp;
     public float shieldAmount;
-    public int level;
     public float h;
     public float v;
+
+    public int level;
     protected override void Start()
     {
         base.Start();
@@ -27,8 +29,7 @@ public class Player_Controller : Base_Controller
         rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
         Managers.Input.keyAction -= moving;
         Managers.Input.keyAction += moving;
-        Managers.Input.keyAction -= dash;
-        Managers.Input.keyAction += dash;
+
         boxCollider.offset = new Vector2(0.035f, 0);
         boxCollider.size = new Vector2(0.5f, 1.065f);
         level = 1;
@@ -109,10 +110,6 @@ public class Player_Controller : Base_Controller
             transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v);
             transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0) * (h == 1 ? 1 : 0));
         }
-    }
-    private void dash()
-    {
-
     }
     protected override void death()
     {

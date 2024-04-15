@@ -13,12 +13,14 @@ public class Monster_Controller : Base_Controller
     public Monster monsterType;
     [HideInInspector]
     public float slowDownAmount;
+
     protected GameObject player;
     protected enum State
     {
         Moving, Death
     }
     protected State state;
+
     protected float interval = 0.2f;
     protected override void Start()
     {

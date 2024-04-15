@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 using System.Diagnostics;
 using UnityEngine.Events;
 using System.Linq;
-
 public class Test : MonoBehaviour
 {
     private void Start()
@@ -17,6 +16,7 @@ public class Test : MonoBehaviour
         //go.AddComponent<BloodyMassacre_Cast>();
         //go.AddComponent<CorpseExplosion_Cast>();
         go.AddComponent<Ignition_Cast>();
+        go.AddComponent<BloodMagicBullet_Cast>();
     }
     private void Update()
     {

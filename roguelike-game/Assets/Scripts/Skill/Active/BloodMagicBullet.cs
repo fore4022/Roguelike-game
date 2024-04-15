@@ -46,5 +46,5 @@ public class BloodMagicBullet : Base_Skill
             Destroy(gameObject.GetComponent<BoxCollider2D>());
         }
     }
-    private void OnBecameInvisible() { Managers.Game.objectPool.disableObject(this.GetType().Name, this.gameObject); }
+    private void OnBecameInvisible() { if (projectileSpeed != 0) { Managers.Game.objectPool.disableObject(this.GetType().Name, this.gameObject); } }
 }

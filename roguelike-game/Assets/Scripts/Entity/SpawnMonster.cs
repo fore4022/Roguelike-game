@@ -6,6 +6,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 public class SpawnMonster : MonoBehaviour
 {
+    private float xRange = 7.5f;
+    private float yRange = 11f;
     public IEnumerator Spawn()
     {
         GameObject go;
@@ -31,13 +33,13 @@ public class SpawnMonster : MonoBehaviour
         float y;
         if (UnityEngine.Random.Range(0, 2) == 1)
         {
-            x = UnityEngine.Random.Range(-7.5f, 7.51f) >= 0 ? 7.5f : -7.5f;
-            y = UnityEngine.Random.Range(-11f, 11.1f);
+            x = UnityEngine.Random.Range(-xRange, xRange + 0.1f) >= 0 ? xRange : -xRange;
+            y = UnityEngine.Random.Range(-yRange, yRange + 0.1f);
         }
         else
         {
-            y = UnityEngine.Random.Range(-11f, 11.1f) >= 0 ? -11f : 11f;
-            x = UnityEngine.Random.Range(-7.5f, 7.51f);
+            y = UnityEngine.Random.Range(-yRange, yRange + 0.1f) >= 0 ? -yRange : yRange;
+            x = UnityEngine.Random.Range(-xRange, xRange + 0.1f);
         }
         return new Vector3(Managers.Game.player.gameObject.transform.position.x + x, Managers.Game.player.gameObject.transform.position.y + y, 0);
     }

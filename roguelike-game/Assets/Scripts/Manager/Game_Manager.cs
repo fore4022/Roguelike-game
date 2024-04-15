@@ -18,17 +18,21 @@ public class Game_Manager
     public SpawnMonster spawnMonster;
     public List<Skill> skills;
     public Map_Theme map;
+
     public float camera_v;
     public float camera_h;
     public float minute { get { return stopWatch.Elapsed.Minutes; } }
     public float second { get { return stopWatch.Elapsed.Seconds; } }
+
     public float creationCycle;
-    public float timer;
     public float basicExp = 75;
     public float increaseExp = 100;
+    public float timer;
+
     public int userGold;
     public int userExp;
     public int killCount;
+
     public bool isSpawn;
     public bool inBattle;
     private void init(string Theme)
@@ -52,18 +56,15 @@ public class Game_Manager
         if (GameObject.Find("@Monster") == null) { go = new GameObject { name = "@Monster" }; }
         spawnMonster = Util.getOrAddComponent<SpawnMonster>(go);
         if (skills == null) { skills = Managers.Resource.LoadAll<Skill>("Data/Skill/").ToList<Skill>(); }
-        go = Managers.Resource.instantiate("Prefab/Map");
-        go.AddComponent<Map_Scroller>();
+        //go = Managers.Resource.instantiate("Prefab/Map");
+        //go.AddComponent<Map_Scroller>();
         player.updateStatus -= increaseKillCount;
         player.updateStatus += increaseKillCount;
     }
     public void increaseKillCount()
     {   
         killCount++;
-        if(player.Hp != player.MaxHp)
-        {
-            if (killCount % 20 == 0) { player.Hp += player.MaxHp / 1000; }
-        }
+        if (player.Hp != player.MaxHp) { if (killCount % 20 == 0) { player.Hp += player.MaxHp / 1000; } }
     }
     public void stageStart(string Theme)
     {
@@ -71,6 +72,7 @@ public class Game_Manager
         objectPool.init();
         foreach (string str in map.monsterType) { objectPool.createObjects(typeof(Monster_Controller), str, 1200); }
         foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), /*skill.skillName*/"Ignition", 20); }
+        foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), /*skill.skillName*/"BloodMagicBullet", 20); }
         stopWatch.Start();
         isSpawn = true;
         spawnMonster.StartCoroutine(spawnMonster.Spawn());
