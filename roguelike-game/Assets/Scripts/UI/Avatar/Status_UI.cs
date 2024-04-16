@@ -11,7 +11,7 @@ public class Status_UI : UI_Scene
         Exp,
         Hp
     }
-    enum TMP
+    enum TMPro
     {
         Level
     }
@@ -24,15 +24,15 @@ public class Status_UI : UI_Scene
     {
         base.init();
         bind<Slider>(typeof(Sliders));
-        bind<TMP_Text>(typeof(TMP));
+        bind<TextMeshProUGUI>(typeof(TMPro));
         GameObject Exp = get<Slider>((int)Sliders.Exp).gameObject;
         GameObject Hp = get<Slider>((int)Sliders.Hp).gameObject;
-        GameObject Level = get<TMP_Text>((int)TMP.Level).gameObject;
+        GameObject Level = get<TMP_Text>((int)TMPro.Level).gameObject;
     }
     private void statusUpdate()
     {
         get<Slider>((int)Sliders.Exp).value = Managers.Game.player.Exp / Managers.Game.player.necessaryExp;
         get<Slider>((int)Sliders.Hp).value = Managers.Game.player.Hp / Managers.Game.player.MaxHp;
-        get<TMP_Text>((int)TMP.Level).text = Managers.Game.player.level.ToString();
+        get<TMP_Text>((int)TMPro.Level).text = Managers.Game.player.level.ToString();
     }
 }

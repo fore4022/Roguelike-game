@@ -31,7 +31,8 @@ public class Player_Controller : Base_Controller
         Managers.Input.keyAction += moving;
 
         boxCollider.offset = new Vector2(0.035f, 0);
-        boxCollider.size = new Vector2(0.5f, 1.065f);
+        boxCollider.size = new Vector2(0.5f, 1.065f);//size
+
         level = 1;
         hp = 100;
         MoveSpeed = 2.5f;
@@ -40,6 +41,7 @@ public class Player_Controller : Base_Controller
         //moveSpeed += Item.moveSpeed;
         //Hp = maxHp;
         //transform.localScale += new Vector3(Item.playerSizeIncrease, Item.playerSizeIncrease, 0);
+
         string name = transform.gameObject.name;
         name = name.Replace("(Clone)", "");
         anime.runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{name}/{name}");
@@ -116,6 +118,9 @@ public class Player_Controller : Base_Controller
         Destroy(this.gameObject);
         Managers.Game.stageEnd();
     }
+    private void crash(Collision2D collision) { if (collision.gameObject.CompareTag("Monster")) { Managers.Game.player.attacked(attackDamage); } }
+    private void OnCollisionEnter2D(Collision2D collision) { crash(collision); }
+    private void OnCollisionStay2D(Collision2D collision) { crash(collision); }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

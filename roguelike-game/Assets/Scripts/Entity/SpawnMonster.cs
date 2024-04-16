@@ -29,18 +29,18 @@ public class SpawnMonster : MonoBehaviour
     }
     private Vector3 position()
     {
-        float x;
-        float y;
+        float x = Managers.Game.player.gameObject.transform.position.x;
+        float y = Managers.Game.player.gameObject.transform.position.y;
         if (UnityEngine.Random.Range(0, 2) == 1)
         {
-            x = UnityEngine.Random.Range(-xRange, xRange + 0.1f) >= 0 ? xRange : -xRange;
-            y = UnityEngine.Random.Range(-yRange, yRange + 0.1f);
+            x += UnityEngine.Random.Range(-xRange, xRange + 0.1f) >= 0 ? xRange : -xRange;
+            y += UnityEngine.Random.Range(-yRange, yRange + 0.1f);
         }
         else
         {
-            y = UnityEngine.Random.Range(-yRange, yRange + 0.1f) >= 0 ? -yRange : yRange;
-            x = UnityEngine.Random.Range(-xRange, xRange + 0.1f);
+            y += UnityEngine.Random.Range(-yRange, yRange + 0.1f) >= 0 ? -yRange : yRange;
+            x += UnityEngine.Random.Range(-xRange, xRange + 0.1f);
         }
-        return new Vector3(Managers.Game.player.gameObject.transform.position.x + x, Managers.Game.player.gameObject.transform.position.y + y, 0);
+        return new Vector3(x, y, 0);
     }
 }

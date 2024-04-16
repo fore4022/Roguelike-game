@@ -46,8 +46,9 @@ public class Monster_Controller : Base_Controller
         {
             if (state == State.Death) { return; }
             if (Hp <= 0)
-            { 
-                //anime.Play("death"); 
+            {
+                //anime.Play("death");
+                boxCollider.enabled = false;
                 state = State.Death;
             }
             setAnime();
@@ -111,9 +112,6 @@ public class Monster_Controller : Base_Controller
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, (transform.localScale.x + transform.localScale.y) / 2, LayerMask.GetMask("Monster"));
         return colliders.Count();
     }
-    protected void crash(Collision2D collision) { if (collision.gameObject.CompareTag("Player")) { Managers.Game.player.attacked(attackDamage); }}
-    protected virtual void OnCollisionEnter2D(Collision2D collision) { crash(collision); }
-    protected virtual void OnCollisionStay2D(Collision2D collision) { crash(collision); }
     protected override void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;

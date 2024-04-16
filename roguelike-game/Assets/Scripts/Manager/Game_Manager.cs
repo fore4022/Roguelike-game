@@ -32,17 +32,23 @@ public class Game_Manager
     public int userGold;
     public int userExp;
     public int killCount;
+    public int a;
 
     public bool isSpawn;
     public bool inBattle;
-    private void init(string Theme)
+
+    private void Start()
     {
         camera_v = Camera.main.orthographicSize * 2;
         camera_h = Camera.main.orthographicSize * 2 * Camera.main.aspect;
+    }
+    private void init(string Theme)
+    {
         creationCycle = 1f;
         isSpawn = true;
         inBattle = false;
         killCount = 0;
+
         map = Managers.Resource.load<Map_Theme>($"Data/Map_Theme/{Theme}");
         GameObject go = GameObject.Find("Player");
         if (go == null)
@@ -51,8 +57,10 @@ public class Game_Manager
             go.transform.position = Vector3.zero;
             player = go.AddComponent<Player_Controller>();
         }
+
         go = GameObject.Find("Main Camera");
         go.AddComponent<Main_Camera>();
+
         if (GameObject.Find("@Monster") == null) { go = new GameObject { name = "@Monster" }; }
         spawnMonster = Util.getOrAddComponent<SpawnMonster>(go);
         if (skills == null) { skills = Managers.Resource.LoadAll<Skill>("Data/Skill/").ToList<Skill>(); }

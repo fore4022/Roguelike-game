@@ -14,8 +14,8 @@ public class ObjectPool
     private GameObject skill;
     public void init()
     {
-        if (GameObject.Find("@ObjectPool") == null) { objectPool = new GameObject { name = "@ObjectPool" }; }
         if (GameObject.Find("@Skill") == null) { skill = new GameObject { name = "@Skill" }; }
+        if (GameObject.Find("@ObjectPool") == null) { objectPool = new GameObject { name = "@ObjectPool" }; }
         foreach (string str in Managers.Game.map.monsterType) { monsterData.Add(str, Managers.Resource.load<Monster>($"Data/Monster/{str}")); }
     }
     public void createObjects(System.Type baseType, string prefabName, int count, string scriptName = null)

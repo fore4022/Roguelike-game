@@ -15,23 +15,14 @@ public abstract class UI_Base : Util
         _objects.Add(typeof(T), objects);
         for(int i = 0; i< names.Length; i++)
         {
-            if(typeof(T) == typeof(GameObject))
-            {
-                objects[i] = FindChild(gameObject, names[i], true);
-            }
-            else
-            {
-                objects[i] = FindChild<T>(gameObject, names[i], true);
-            }
+            if (typeof(T) == typeof(GameObject)) { objects[i] = FindChild(gameObject, names[i], true); }
+            else { objects[i] = FindChild<T>(gameObject, names[i], true); }
         }
     }
     public T get<T>(int idx) where T : UnityEngine.Object
     {
         UnityEngine.Object[] objects = null;
-        if(_objects.TryGetValue(typeof(T),out objects) == false)
-        {
-            return null;
-        }
+        if (_objects.TryGetValue(typeof(T), out objects) == false) { return null; }
         return objects[idx] as T;
     }
     public static void AddUIEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)

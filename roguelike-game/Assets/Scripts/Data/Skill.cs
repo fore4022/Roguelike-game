@@ -5,8 +5,10 @@ using UnityEngine;
 public class Skill : ScriptableObject
 {
     public Define.Effect effect;
+
     public string skillName;
     public string explanation;
+
     public float skillDamage;
     public float skillCoolTime;
     public float skillRange;
@@ -16,8 +18,10 @@ public class Skill : ScriptableObject
     public float increaseDamage;
     public float increaseHp;
     public float magnificationExp;
+
     public int increaseNumberOfCast;
     public int numberOfCast;
     public int skillLevel;
+
     public bool useType;
 }
