@@ -74,8 +74,8 @@ public class ObjectPool
     public void disableObject(string prefabName, GameObject go)
     {
         Queue<GameObject> queue = boids[prefabName];
-        go.SetActive(false);
         go.transform.SetParent(objectPool.transform);
+        go.SetActive(false);
         queue.Enqueue(go);
         boids[prefabName] = queue;
     }

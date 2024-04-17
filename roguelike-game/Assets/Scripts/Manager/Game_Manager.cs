@@ -18,6 +18,7 @@ public class Game_Manager
     public SpawnMonster spawnMonster;
     public List<Skill> skills;
     public Map_Theme map;
+    public GameObject skill;
 
     public float camera_v;
     public float camera_h;
@@ -37,19 +38,18 @@ public class Game_Manager
     public bool isSpawn;
     public bool inBattle;
 
-    private void Start()
+    private void init(string Theme)
     {
         camera_v = Camera.main.orthographicSize * 2;
         camera_h = Camera.main.orthographicSize * 2 * Camera.main.aspect;
-    }
-    private void init(string Theme)
-    {
+
         creationCycle = 1f;
         isSpawn = true;
         inBattle = false;
         killCount = 0;
 
         map = Managers.Resource.load<Map_Theme>($"Data/Map_Theme/{Theme}");
+        skill = GameObject.Find("@Skill");
         GameObject go = GameObject.Find("Player");
         if (go == null)
         {
@@ -64,6 +64,7 @@ public class Game_Manager
         if (GameObject.Find("@Monster") == null) { go = new GameObject { name = "@Monster" }; }
         spawnMonster = Util.getOrAddComponent<SpawnMonster>(go);
         if (skills == null) { skills = Managers.Resource.LoadAll<Skill>("Data/Skill/").ToList<Skill>(); }
+
         //go = Managers.Resource.instantiate("Prefab/Map");
         //go.AddComponent<Map_Scroller>();
         player.updateStatus -= increaseKillCount;

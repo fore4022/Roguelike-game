@@ -36,7 +36,7 @@ public class Player_Controller : Base_Controller
         level = 1;
         hp = 100;
         MoveSpeed = 2.5f;
-        animatorPlaySpeed = 0.85f;
+        animatorPlaySpeed = 0.4f;
         //attackDamage += Item.attackDamage;
         //moveSpeed += Item.moveSpeed;
         //Hp = maxHp;
@@ -46,7 +46,6 @@ public class Player_Controller : Base_Controller
         name = name.Replace("(Clone)", "");
         anime.runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{name}/{name}");
         anime.speed = animatorPlaySpeed;
-        anime.Play("downIdle");
     }
     protected override void Update()
     {
@@ -63,18 +62,8 @@ public class Player_Controller : Base_Controller
     }
     protected override void setAnime()
     {
-        if (h != 0) { anime.Play("horizontalMove"); }
-        else if (v != 0)
-        {
-            if (v == 1) { anime.Play("upMove"); }
-            else { anime.Play("downMove"); }
-        }
-        else
-        {
-            if (anime.GetCurrentAnimatorStateInfo(0).IsName("horizontalMove")) { anime.Play("horizontalIdle"); }
-            else if (anime.GetCurrentAnimatorStateInfo(0).IsName("upMove")) { anime.Play("upIdle"); }
-            else if (anime.GetCurrentAnimatorStateInfo(0).IsName("downMove")) { anime.Play("downIdle"); }
-        }
+        if (h != 0 || v != 0) { anime.Play("move"); }
+        else { anime.Play("idle"); }
     }
     public void getLoot(float gold, float exp)
     {
@@ -107,11 +96,8 @@ public class Player_Controller : Base_Controller
     {
         h = Input.GetAxisRaw("Horizontal");
         v = Input.GetAxisRaw("Vertical");
-        if (h != 0 || v != 0) 
-        {
-            transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v);
-            transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0) * (h == 1 ? 1 : 0));
-        }
+        if (h != 0 || v != 0) { transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v); }
+        if(h != 0) { transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0) * (h < 0 ? 0 : 1)); }
     }
     protected override void death()
     {
