@@ -29,12 +29,13 @@ public class SelectSkill_UI : UI_Popup
     private void OnEnable()
     {
         int rand;
-        System.Type scriptType = null;
+        List<Skill> skills = Managers.Game.skills.Where(o => o.skillLevel < 5).ToList();
         for(int i = 0; i < 3; i++)
         {
-            rand = Random.Range(0, Managers.Game.skills.Count);
-            Skill skill = Managers.Game.skills[rand];
-            scriptType = System.Type.GetType($"{skill.skillName}_Cast");
+            rand = Random.Range(0, skills.Count);
+            Skill skill = skills[rand];
+            skills.Remove(skill);
+            System.Type scriptType = System.Type.GetType($"{skill.skillName}_Cast");
 
             GameObject panel = get<Image>(i).gameObject;
             TextMeshProUGUI name = get<TextMeshProUGUI>(i).gameObject.GetComponent<TextMeshProUGUI>();
@@ -45,7 +46,12 @@ public class SelectSkill_UI : UI_Popup
 
             AddUIEvent(panel, (PointerEventData data) =>
             {
-                
+                if(Managers.Game.skill.GetComponent(scriptType) == null) { Managers.Game.skill.AddComponent(scriptType); }
+                else 
+                {
+                    Base_SkillCast cast = Managers.Game.skill.GetComponent(scriptType) as Base_SkillCast;
+                    cast.skill.skillLevel++;
+                }
                 Managers.UI.closePopupUI();
             });
         }
