@@ -5,7 +5,7 @@ using System.Dynamic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-public class BloodMagicBullet_Cast : Base_SkillCast
+public class FireBall_Cast : Base_SkillCast
 {
     protected override IEnumerator skillCast()
     {
@@ -15,7 +15,7 @@ public class BloodMagicBullet_Cast : Base_SkillCast
             List<Monster_Controller> monsters = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
             if (monsters.Count() == 0) { yield return null; }
             go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), prefabName);
-            BloodMagicBullet newScript = go.AddComponent(script) as BloodMagicBullet;
+            FireBall newScript = go.AddComponent(script) as FireBall;
             newScript.skill = skill;
             newScript.anime = go.AddComponent<Animator>();
             newScript.anime.runtimeAnimatorController = animeController;

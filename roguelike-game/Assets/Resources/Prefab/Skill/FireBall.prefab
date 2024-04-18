@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3565442547610692845}
   - component: {fileID: 8414223637053497379}
   m_Layer: 0
-  m_Name: BloodMagicBullet
+  m_Name: FireBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

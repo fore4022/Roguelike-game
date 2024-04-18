@@ -4,7 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-public class BloodMagicBullet : Base_Skill
+public class FireBall : Base_Skill
 {
     public Animator anime;
     private Vector3 direction;

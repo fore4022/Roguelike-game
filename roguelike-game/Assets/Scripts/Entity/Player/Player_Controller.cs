@@ -30,8 +30,7 @@ public class Player_Controller : Base_Controller
         Managers.Input.keyAction -= moving;
         Managers.Input.keyAction += moving;
 
-        boxCollider.offset = new Vector2(0.035f, 0);
-        boxCollider.size = new Vector2(0.5f, 1.065f);//size
+        boxCollider.size = new Vector2(0.9f, 1.7f);
 
         level = 1;
         hp = 100;

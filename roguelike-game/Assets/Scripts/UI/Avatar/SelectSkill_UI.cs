@@ -11,7 +11,10 @@ public class SelectSkill_UI : UI_Popup
     {
         Panel1,
         Panel2,
-        Panel3
+        Panel3,
+        Skill1,
+        Skill2,
+        Skill3
     }
     enum TMPro
     {
@@ -20,7 +23,10 @@ public class SelectSkill_UI : UI_Popup
         name3,
         explain1,
         explain2,
-        explain3
+        explain3,
+        level1,
+        level2,
+        level3
     }
     private void Start()
     {
@@ -38,11 +44,16 @@ public class SelectSkill_UI : UI_Popup
             System.Type scriptType = System.Type.GetType($"{skill.skillName}_Cast");
 
             GameObject panel = get<Image>(i).gameObject;
+            GameObject skillImage = get<Image>(i).gameObject;
             TextMeshProUGUI name = get<TextMeshProUGUI>(i).gameObject.GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI explain = get<TextMeshProUGUI>(i).gameObject.GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI explain = get<TextMeshProUGUI>(i + 3).gameObject.GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI level = get<TextMeshProUGUI>(i + 6).gameObject.GetComponent<TextMeshProUGUI>();
 
+            //skillImage.image = ;
             name.text = skill.skillName;
             explain.text = skill.explanation;
+            if(skill.skillLevel == 0) { level.text = "new"; }
+            else { level.text = skill.skillLevel.ToString() + "Lv"; }
 
             AddUIEvent(panel, (PointerEventData data) =>
             {
