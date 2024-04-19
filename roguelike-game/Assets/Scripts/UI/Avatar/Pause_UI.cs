@@ -10,10 +10,7 @@ public class Pause_UI : UI_Scene
     {
         Pause
     }
-    private void Start()
-    {
-        init();
-    }
+    private void Start() { init(); }
     protected override void init()
     {
         base.init();

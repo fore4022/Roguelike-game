@@ -28,10 +28,7 @@ public class SelectSkill_UI : UI_Popup
         level2,
         level3
     }
-    private void Start()
-    {
-        init();
-    }
+    private void Start() { init(); }
     private void OnEnable()
     {
         int rand;
@@ -43,19 +40,19 @@ public class SelectSkill_UI : UI_Popup
             skills.Remove(skill);
             System.Type scriptType = System.Type.GetType($"{skill.skillName}_Cast");
 
-            GameObject panel = get<Image>(i).gameObject;
-            GameObject skillImage = get<Image>(i).gameObject;
+            Image panel = get<Image>(i);
+            Image skillImage = get<Image>(i);
             TextMeshProUGUI name = get<TextMeshProUGUI>(i).gameObject.GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI explain = get<TextMeshProUGUI>(i + 3).gameObject.GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI level = get<TextMeshProUGUI>(i + 6).gameObject.GetComponent<TextMeshProUGUI>();
 
-            //skillImage.image = ;
+            skillImage.sprite = Managers.Resource.load<Sprite>($"sprites/Icon/{skill.skillName}");
             name.text = skill.skillName;
             explain.text = skill.explanation;
             if(skill.skillLevel == 0) { level.text = "new"; }
             else { level.text = skill.skillLevel.ToString() + "Lv"; }
 
-            AddUIEvent(panel, (PointerEventData data) =>
+            AddUIEvent(panel.gameObject, (PointerEventData data) =>
             {
                 if(Managers.Game.skill.GetComponent(scriptType) == null) { Managers.Game.skill.AddComponent(scriptType); }
                 else 

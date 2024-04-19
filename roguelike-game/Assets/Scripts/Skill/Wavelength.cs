@@ -5,12 +5,12 @@ using UnityEngine;
 public class Wavelength : Base_Skill
 {
     public Animator anime;
-    private int projectileSpeed;
+    //private int projectileSpeed;
     protected override void init()
     {
         transform.position = Managers.Game.player.gameObject.transform.position;
         //anime.play(?)
-        projectileSpeed = 12;
+        //projectileSpeed = 12;
     }
     protected override void Update()
     {

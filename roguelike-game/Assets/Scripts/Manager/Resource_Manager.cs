@@ -3,14 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Resource_Manager
 {
-    public T load<T>(string path) where T : Object
-    {
-        return Resources.Load<T>(path);
-    }
-    public T[] LoadAll<T>(string path) where T : Object
-    {
-        return Resources.LoadAll<T>(path);
-    }
+    public T load<T>(string path) where T : Object { return Resources.Load<T>(path); }
+    public T[] LoadAll<T>(string path) where T : Object { return Resources.LoadAll<T>(path); }
     public GameObject instantiate(string path, Transform transform = null)
     {
         GameObject prefab = load<GameObject>($"{path}");

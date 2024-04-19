@@ -12,10 +12,7 @@ public class Menu_UI : UI_Popup
         Stat,
         Quit
     }
-    private void Start()
-    {
-        init();
-    }
+    private void Start() { init(); }
     protected override void init()
     {
         base.init();
