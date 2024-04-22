@@ -8,7 +8,7 @@ public class Result_UI : UI_Popup
 {
     enum Buttons
     {
-
+        
     }
     enum TMPro
     {

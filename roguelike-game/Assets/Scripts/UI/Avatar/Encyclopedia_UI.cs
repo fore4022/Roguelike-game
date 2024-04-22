@@ -29,5 +29,4 @@ public class Encyclopedia_UI : UI_Popup
 }
 /*
 page1, page2, page3
-
 */
