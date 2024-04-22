@@ -11,7 +11,7 @@ public class FireBall_Cast : Base_SkillCast
     {
         while (true)
         {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(Managers.Game.player.gameObject.transform.position, Managers.Game.camera_v + 1.5f, LayerMask.GetMask("Monster"));
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(Managers.Game.player.gameObject.transform.position, Managers.Game.camera_h + 1.5f, LayerMask.GetMask("Monster"));
             List<Monster_Controller> monsters = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
             if (monsters.Count() == 0) { yield return null; }
             go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), prefabName);

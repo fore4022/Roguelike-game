@@ -20,8 +20,8 @@ public class Game_Manager
     public Map_Theme map;
     public GameObject skill;
 
-    public float camera_v;
     public float camera_h;
+    public float camera_w;
     public float minute { get { return stopWatch.Elapsed.Minutes; } }
     public float second { get { return stopWatch.Elapsed.Seconds; } }
 
@@ -40,8 +40,8 @@ public class Game_Manager
 
     private void init(string Theme)
     {
-        camera_v = Camera.main.orthographicSize * 2;
-        camera_h = Camera.main.orthographicSize * 2 * Camera.main.aspect;
+        camera_h = Camera.main.orthographicSize * 2;
+        camera_w = Camera.main.orthographicSize * 2 * Camera.main.aspect;
 
         creationCycle = 1f;
         isSpawn = true;

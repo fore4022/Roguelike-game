@@ -8,7 +8,7 @@ public class Ignition_Cast : Base_SkillCast
     {
         while (true)
         {
-            Collider2D[] colliders = Physics2D.OverlapBoxAll(Managers.Game.player.gameObject.transform.position, new Vector2(Managers.Game.camera_h, Managers.Game.camera_v), LayerMask.GetMask("Monster"));
+            Collider2D[] colliders = Physics2D.OverlapBoxAll(Managers.Game.player.gameObject.transform.position, new Vector2(Managers.Game.camera_w, Managers.Game.camera_h), LayerMask.GetMask("Monster"));
             List<Monster_Controller> monsters = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
             if(monsters.Count() == 0) { yield return null; }
             go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), prefabName);

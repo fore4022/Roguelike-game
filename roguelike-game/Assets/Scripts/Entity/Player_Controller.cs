@@ -89,6 +89,7 @@ public class Player_Controller : Base_Controller
     public void attacked(float damage)
     {
         hp -= damage;
+        Debug.Log(damage);
         updateStatus.Invoke();
     }
     protected override void moving()
@@ -103,12 +104,12 @@ public class Player_Controller : Base_Controller
         Destroy(this.gameObject);
         Managers.Game.stageEnd();
     }
-    private void crash(Collision2D collision) { if (collision.gameObject.CompareTag("Monster")) { Managers.Game.player.attacked(attackDamage); } }
+    private void crash(Collision2D collision) { if (collision.gameObject.CompareTag("Monster")) { attacked(collision.gameObject.GetComponent<Monster_Controller>().AttackDamage); } }
     private void OnCollisionEnter2D(Collision2D collision) { crash(collision); }
     private void OnCollisionStay2D(Collision2D collision) { crash(collision); }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position, new Vector2(Camera.main.orthographicSize * 2 * Camera.main.aspect, Camera.main.orthographicSize * 2));
+        Gizmos.DrawWireCube(transform.position, new Vector2(Managers.Game.camera_w, Managers.Game.camera_h));
     }
 }

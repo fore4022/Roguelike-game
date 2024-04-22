@@ -10,7 +10,7 @@ public class Main_UI : UI_Scene
     enum Buttons
     {
         Start,
-        Help,
+        Encyclopedia,
         Quit
     }
     private void Start() { init(); }
@@ -19,30 +19,30 @@ public class Main_UI : UI_Scene
         base.init();
         bind<Button>(typeof(Buttons));
         GameObject start = get<Button>((int)Buttons.Start).gameObject;
-        GameObject help = get<Button>((int)Buttons.Start).gameObject;
-        GameObject quit = get<Button>((int)Buttons.Start).gameObject;
+        GameObject encyclopedia = get<Button>((int)Buttons.Encyclopedia).gameObject;
+        GameObject quit = get<Button>((int)Buttons.Quit).gameObject;
         //start
         AddUIEvent(start, (PointerEventData data) =>
         {
-
+            
         }, Define.UIEvent.Click);
         AddUIEvent(start, (PointerEventData data) =>
         {
 
         }, Define.UIEvent.Enter);
-        //help
-        AddUIEvent(help, (PointerEventData data) =>
+        //encyclopedia
+        AddUIEvent(encyclopedia, (PointerEventData data) =>
         {
-
+            Managers.UI.showPopupUI<Encyclopedia_UI>();
         }, Define.UIEvent.Click);
-        AddUIEvent(help, (PointerEventData data) =>
+        AddUIEvent(encyclopedia, (PointerEventData data) =>
         {
 
         }, Define.UIEvent.Enter);
         //quit
         AddUIEvent(quit, (PointerEventData data) =>
         {
-
+            Managers.UI.showPopupUI<Quit_UI>();
         }, Define.UIEvent.Click);
         AddUIEvent(quit, (PointerEventData data) =>
         {

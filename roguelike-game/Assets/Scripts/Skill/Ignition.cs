@@ -15,7 +15,7 @@ public class Ignition : Base_Skill
     protected override void init()
     {
         duration = 0;
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(Managers.Game.player.gameObject.transform.position, new Vector2(Managers.Game.camera_h, Managers.Game.camera_v), LayerMask.GetMask("Monster"));
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(Managers.Game.player.gameObject.transform.position, new Vector2(Managers.Game.camera_w, Managers.Game.camera_h), LayerMask.GetMask("Monster"));
         List<Monster_Controller> monsters = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
         monsters.RemoveAll(o => o == null);
         Vector3 pos = Vector3.zero;
@@ -31,7 +31,7 @@ public class Ignition : Base_Skill
                 }
             }
         }
-        else { pos = new Vector3(Managers.Game.camera_h, Managers.Game.camera_v); }
+        else { pos = new Vector3(Managers.Game.camera_w, Managers.Game.camera_h); }
         transform.position = pos;
         ParticleSystem.MainModule forceField = particleSys.main;
         forceField.startLifetime = 1;

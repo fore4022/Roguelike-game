@@ -11,7 +11,7 @@ public class Map_Scroller : MonoBehaviour
     {
         render = Util.getOrAddComponent<Renderer>(gameObject);
         render.material = Managers.Resource.load<Material>($"Material/{Managers.Game.map.mapThemeName}");
-        transform.localScale = new Vector3(Managers.Game.camera_h, Managers.Game.camera_v, 1);
+        transform.localScale = new Vector3(Managers.Game.camera_w, Managers.Game.camera_h, 1);
         transform.position = Managers.Game.player.gameObject.transform.position;
         render.material.SetFloat("_Glossiness", 0f);
         Managers.Resource.instantiate("Prefab/DirectionalLight", gameObject.transform);
