@@ -29,7 +29,7 @@ public abstract class Base_SkillCast : MonoBehaviour
         prefabName = this.GetType().Name.Replace("_Cast","");
         skill = (Skill)Resources.Load($"Data/Skill/{prefabName}");
         script = System.Type.GetType(prefabName);
-        animeController = (RuntimeAnimatorController)Resources.Load($"Animation/{prefabName}/{prefabName}");
+        animeController = (RuntimeAnimatorController)Resources.Load($"Animation/Skill/{prefabName}/{prefabName}");
     }
     protected abstract IEnumerator skillCast();
 }

@@ -47,17 +47,12 @@ public class Monster_Controller : Base_Controller
             if (state == State.Death) { return; }
             if (Hp <= 0)
             {
-                //anime.Play("death");
                 boxCollider.enabled = false;
                 state = State.Death;
             }
             setAnime();
             setState();
         }
-    }
-    protected override void setAnime()
-    {
-        
     }
     private void setState()
     {
@@ -67,7 +62,7 @@ public class Monster_Controller : Base_Controller
                 moving();
                 break;
             case State.Death:
-                death();
+                StartCoroutine(death());
                 break;
         }
     }
@@ -94,18 +89,17 @@ public class Monster_Controller : Base_Controller
         if (players.Count() == 1 && monsters.Count() != 1) { transform.position += separation(monsters) * slowDownAmount / 100f; }
     }
     public virtual void attacked(float damage) { hp -= damage; }
-    protected override void death() 
+    protected override IEnumerator death() 
     {
-        Managers.Game.player.getLoot(gold, exp);
-        StartCoroutine(remainingTime());
-    }
-    protected IEnumerator remainingTime()
-    {
-        float time = 0;
-        while(true)
+        anime.Play("death");
+        while (true)
         {
-            time += Time.deltaTime;
-            if (time >= 3) { Managers.Game.objectPool.disableObject(this.gameObject.name.Replace("(Clone)",""), this.gameObject); }
+            if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
+            {
+                Managers.Game.player.getLoot(gold, exp);
+                Managers.Game.objectPool.disableObject(this.gameObject.name.Replace("(Clone)", ""), this.gameObject);
+                break;
+            }
             yield return null;
         }
     }

@@ -53,8 +53,7 @@ public class Player_Controller : Base_Controller
         { 
             Managers.Input.keyAction -= moving;
             h = v = 0;
-            anime.Play("death");
-            Invoke("death", 1.1f);
+            StartCoroutine(death());
         }
         if (Input.anyKey == false) { h = v = 0; }
         setAnime();
@@ -89,7 +88,6 @@ public class Player_Controller : Base_Controller
     public void attacked(float damage)
     {
         hp -= damage;
-        Debug.Log(damage);
         updateStatus.Invoke();
     }
     protected override void moving()
@@ -99,10 +97,19 @@ public class Player_Controller : Base_Controller
         if (h != 0 || v != 0) { transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v); }
         if(h != 0) { transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0) * (h < 0 ? 0 : 1)); }
     }
-    protected override void death()
+    protected override IEnumerator death()
     {
-        Destroy(this.gameObject);
-        Managers.Game.stageEnd();
+        anime.Play("death");
+        while (true)
+        {
+            if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
+            {
+                Destroy(this.gameObject);
+                Managers.Game.stageEnd();
+                break;
+            }
+            yield return null;
+        }
     }
     private void crash(Collision2D collision) { if (collision.gameObject.CompareTag("Monster")) { attacked(collision.gameObject.GetComponent<Monster_Controller>().AttackDamage); } }
     private void OnCollisionEnter2D(Collision2D collision) { crash(collision); }

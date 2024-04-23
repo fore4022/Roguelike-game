@@ -81,7 +81,7 @@ public class Game_Manager
         init(Theme);
         objectPool.init();
 
-        foreach (string str in map.monsterType) { objectPool.createObjects(typeof(Monster_Controller), str, 1200); }
+        foreach (string str in map.monsterType) { objectPool.createObjects(typeof(Monster_Controller), str, 600); }
         foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), /*skill.skillName*/"Ignition", 20); }
         foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), /*skill.skillName*/"FireBall", 20); }
 

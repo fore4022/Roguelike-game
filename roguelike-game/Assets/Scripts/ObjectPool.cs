@@ -57,7 +57,7 @@ public class ObjectPool
             {
                 Monster_Controller script = go.AddComponent(scriptType) as Monster_Controller;
                 script.monsterType = monsterData[prefabName];
-                //go.GetComponent<Animator>().runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{prefabName}/{prefabName}");
+                go.AddComponent<Animator>().runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/Monster/{prefabName}/{prefabName}");
             }
         }
     }
