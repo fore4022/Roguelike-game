@@ -14,16 +14,17 @@ public class Game_Manager
 {
     public Player_Controller player;
     public ObjectPool objectPool = new();
-    public Stopwatch stopWatch = new();
     public SpawnMonster spawnMonster;
     public List<Skill> skills;
     public Map_Theme map;
     public GameObject skill;
+    public Stopwatch stopWatch = new();
+
+    public float minute { get { return stopWatch.Elapsed.Minutes; } }
+    public float second { get { return stopWatch.Elapsed.Seconds; } }
 
     public float camera_h;
     public float camera_w;
-    public float minute { get { return stopWatch.Elapsed.Minutes; } }
-    public float second { get { return stopWatch.Elapsed.Seconds; } }
 
     public float creationCycle;
     public float basicExp = 75;
@@ -82,7 +83,6 @@ public class Game_Manager
         objectPool.init();
 
         foreach (string str in map.monsterType) { objectPool.createObjects(typeof(Monster_Controller), str, 600); }
-        foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), /*skill.skillName*/"Ignition", 20); }
         foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), /*skill.skillName*/"FireBall", 20); }
 
         stopWatch.Start();

@@ -13,11 +13,11 @@ public class Player_Controller : Base_Controller
     public Item Item;
 
     public float skillCooldownReduction;
-    public float necessaryExp;
     public float shieldAmount;
     public float h;
     public float v;
 
+    public int necessaryExp;
     public int level;
     protected override void Start()
     {
@@ -63,7 +63,7 @@ public class Player_Controller : Base_Controller
         if (h != 0 || v != 0) { anime.Play("move"); }
         else { anime.Play("idle"); }
     }
-    public void getLoot(float gold, float exp)
+    public void getLoot(int gold, int exp)
     {
         Gold -= gold;
         Exp -= exp;
@@ -74,7 +74,7 @@ public class Player_Controller : Base_Controller
     {
         while (true)
         {
-            necessaryExp = (float)(Managers.Game.basicExp + Managers.Game.increaseExp * 1.15 * (level - 1) * ((level - 1) / 50));
+            necessaryExp = (int)(Managers.Game.basicExp + Managers.Game.increaseExp * 1.15 * (level - 1) * ((level - 1) / 50));
             if (exp >= necessaryExp)
             {
                 exp -= necessaryExp;
@@ -85,7 +85,7 @@ public class Player_Controller : Base_Controller
             else { break; }
         }
     }
-    public void attacked(float damage)
+    public void attacked(int damage)
     {
         hp -= damage;
         updateStatus.Invoke();

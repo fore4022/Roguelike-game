@@ -8,13 +8,16 @@ public class Monster : ScriptableObject
     {
         closeDistance, longDistance
     }
-    public string monsterName;
     public MonsterType monsterType;
-    public float attackDamage;
-    public float attackSpeed;
+
+    public string monsterName;
+
     public float moveSpeed;
+
+    public int attackDamage;
     public int hp;
     public int maxHp;
-    public float gold;
-    public float exp;
+    public int attackSpeed;
+    public int gold;
+    public int exp;
 }

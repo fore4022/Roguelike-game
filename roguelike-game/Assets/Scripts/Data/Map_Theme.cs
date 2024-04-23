@@ -6,5 +6,7 @@ public class Map_Theme : ScriptableObject
 {
     public string mapThemeName;
     public List<string> monsterType = new List<string>();
+    public string bossMonsterType;
+    public string specialMonsterType;
     public int difficulty;
 }

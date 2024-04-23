@@ -1,17 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System;
+using JetBrains.Annotations;
 [Serializable]
 public class User
 {
-    public List<Base_Skill> skills;
-    public Stat stat;
+    public int gold;
+    public int userLevel;
+    public int maxStage;
 
-    public int level;
-    public int monsterCount;
     public float exp;
-    public float time;
 }

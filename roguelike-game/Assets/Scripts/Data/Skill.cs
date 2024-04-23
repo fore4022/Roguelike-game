@@ -9,7 +9,6 @@ public class Skill : ScriptableObject
     public string skillName;
     public string explanation;
 
-    public float skillDamage;
     public float skillCoolTime;
     public float skillRange;
     public float castingSpeed;
@@ -21,6 +20,7 @@ public class Skill : ScriptableObject
 
     public int increaseNumberOfCast;
     public int numberOfCast;
+    public int skillDamage;
     public int skillLevel;
 
     public bool useType;

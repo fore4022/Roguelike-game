@@ -13,13 +13,12 @@ public class Monster_Controller : Base_Controller
     public Monster monsterType;
     [HideInInspector]
     public float slowDownAmount;
-
-    protected GameObject player;
-    protected enum State
+    private enum State
     {
-        Moving, Death
+        Moving,
+        Death
     }
-    protected State state;
+    private State state;
 
     protected float interval = 0.2f;
     protected override void Start()
@@ -27,18 +26,16 @@ public class Monster_Controller : Base_Controller
         base.Start();
         state = State.Moving;
     }
-    protected void OnEnable()
-    {
-        player = Managers.Game.player.gameObject;
-        init();
-    }
+    private void OnEnable() { init(); }
     protected override void init()
     {
-        attackDamage = monsterType.attackDamage + Managers.Game.minute / 2;
+        attackDamage = monsterType.attackDamage + (int)Managers.Game.minute / 2;//
+        maxHp = monsterType.maxHp + (int)Managers.Game.minute / 2;
+        gold = monsterType.gold + (int)(Managers.Game.minute / 4f);
+        exp = monsterType.exp + (int)(Managers.Game.minute / 4f);
+
         moveSpeed = monsterType.moveSpeed;
-        hp = monsterType.hp + Managers.Game.minute / 2;
-        gold = monsterType.gold + (Managers.Game.minute / 4f);
-        exp = monsterType.exp + (Managers.Game.minute / 4f);
+        hp = maxHp;
     }
     protected override void Update()
     {
@@ -66,7 +63,7 @@ public class Monster_Controller : Base_Controller
                 break;
         }
     }
-    protected Vector3 separation(IEnumerable<Monster_Controller> monsters)
+    private Vector3 separation(IEnumerable<Monster_Controller> monsters)
     {
         Vector3 vec = Vector3.zero;
         foreach (Monster_Controller boid in monsters) { vec += (transform.position - boid.transform.position).normalized; }
@@ -75,7 +72,7 @@ public class Monster_Controller : Base_Controller
         if (Mathf.Abs(vec.x) < 0.000075f || Mathf.Abs(vec.y) < 0.000075f) { vec = Vector3.zero; }
         return vec;
     }
-    protected Vector3 move() { return (player.transform.position - transform.position).normalized; }
+    private Vector3 move() { return (Managers.Game.player.gameObject.transform.position - transform.position).normalized; }
     protected override void moving()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, (transform.localScale.x + transform.localScale.y) / 2.75f, LayerMask.GetMask("Monster"));
@@ -88,7 +85,7 @@ public class Monster_Controller : Base_Controller
         transform.position += move() * MoveSpeed * Time.deltaTime + separation(monsters) * slowDownAmount / 100f;
         if (players.Count() == 1 && monsters.Count() != 1) { transform.position += separation(monsters) * slowDownAmount / 100f; }
     }
-    public virtual void attacked(float damage) { hp -= damage; }
+    public virtual void attacked(int damage) { hp -= damage; }
     protected override IEnumerator death() 
     {
         anime.Play("death");
