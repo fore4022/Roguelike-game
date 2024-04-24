@@ -6,10 +6,6 @@ using UnityEngine.EventSystems;
 using TMPro;
 public class Result_UI : UI_Popup
 {
-    enum Buttons
-    {
-        
-    }
     enum TMPro
     {
 
@@ -18,7 +14,6 @@ public class Result_UI : UI_Popup
     protected override void init()
     {
         base.init();
-        bind<Button>(typeof(Buttons));
         bind<TextMeshProUGUI>(typeof(TMPro));
     }
 }

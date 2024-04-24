@@ -4,24 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-public class Encyclopedia_UI : UI_Popup
+public class Timer_UI : UI_Scene
 {
-    enum Images
-    {
-
-    }
     enum TMPro
     {
-
+        Timer
     }
     private void Start() { init(); }
+    private void Update() { get<TextMeshProUGUI>((int)TMPro.Timer).text = $"{Managers.Game.minute} : {Managers.Game.second}"; }
     protected override void init()
     {
         base.init();
-        bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));
     }
 }
-/*
-page1, page2, page3
-*/

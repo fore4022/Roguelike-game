@@ -6,20 +6,27 @@ using UnityEngine.EventSystems;
 using TMPro;
 public class Menu_UI : UI_Popup
 {
-    enum Buttons
+    enum Images
     {
         ReStart,
         Stat,
-        Quit
+        Quit,
+        Setting
     }
     private void Start() { init(); }
+    private void OnEnable() 
+    {
+        Time.timeScale = 0f;
+        Managers.Game.stopWatch.Stop();
+    }
     protected override void init()
     {
         base.init();
-        bind<Button>(typeof(Buttons));
-        GameObject reStart = get<Button>((int)Buttons.ReStart).gameObject;
-        GameObject stat = get<Button>((int)Buttons.Stat).gameObject;
-        GameObject quit = get<Button>((int)Buttons.Quit).gameObject;
+        bind<Image>(typeof(Images));
+        GameObject reStart = get<Image>((int)Images.ReStart).gameObject;
+        GameObject stat = get<Image>((int)Images.Stat).gameObject;
+        GameObject quit = get<Image>((int)Images.Quit).gameObject;
+        GameObject setting = get<Image>((int)Images.Setting).gameObject;
         AddUIEvent(reStart, (PointerEventData data) =>
         {
             Time.timeScale = 1f;
@@ -30,6 +37,10 @@ public class Menu_UI : UI_Popup
         {
             Managers.UI.closePopupUI();
             //Managers.UI.showPopupUI<>();
+        }, Define.UIEvent.Click);
+        AddUIEvent(setting, (PointerEventData data) =>
+        {
+            //
         }, Define.UIEvent.Click);
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 public class Pause_UI : UI_Scene
 {
-    enum Buttons
+    enum Images
     {
         Pause
     }
@@ -14,12 +14,15 @@ public class Pause_UI : UI_Scene
     protected override void init()
     {
         base.init();
-        bind<Button>(typeof(Buttons));
-        GameObject pause = get<Button>((int)Buttons.Pause).gameObject;
+        bind<Image>(typeof(Images));
+        GameObject pause = get<Image>((int)Images.Pause).gameObject;
         AddUIEvent(pause, (PointerEventData data) => 
         {
-            Managers.UI.closePopupUI();
             Managers.UI.showPopupUI<Menu_UI>("Menu");
         }, Define.UIEvent.Click); 
+        AddUIEvent(pause, (PointerEventData data) =>
+        {
+
+        }, Define.UIEvent.Enter);
     }
 }

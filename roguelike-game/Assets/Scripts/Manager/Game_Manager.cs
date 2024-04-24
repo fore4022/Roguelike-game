@@ -83,7 +83,10 @@ public class Game_Manager
 
         stopWatch.Start();
         isSpawn = true;
+
         Managers.UI.showSceneUI<Status_UI>("Status");
+        Managers.UI.showSceneUI<Timer_UI>("Timer");
+        Managers.UI.showSceneUI<Pause_UI>("Pause");
 
         spawnMonster.StartCoroutine(spawnMonster.Spawn());
     }

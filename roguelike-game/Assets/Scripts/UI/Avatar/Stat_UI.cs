@@ -7,14 +7,6 @@ using UnityEngine.UIElements;
 using TMPro;
 public class Stat_UI : UI_Popup
 {
-    enum Buttons
-    {
-        exit
-    }
-    enum Images
-    {
-
-    }
     private void Start()
     {
         init();

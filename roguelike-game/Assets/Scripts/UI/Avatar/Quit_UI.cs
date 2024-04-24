@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 public class Quit_UI : UI_Popup
 {
-    enum Buttons
+    enum Images
     {
         Quit
     }
@@ -14,8 +14,9 @@ public class Quit_UI : UI_Popup
     protected override void init()
     {
         base.init();
-        bind<Button>(typeof(Buttons));
-        GameObject quit = get<Button>((int)Buttons.Quit).gameObject;
+        bind<Image>(typeof(Images));
+        GameObject quit = get<Image>((int)Images.Quit).gameObject;
+        quit.AddComponent<Button>();
         AddUIEvent(quit, (PointerEventData data) => { Application.Quit(); }, Define.UIEvent.Click);
     }
 }
