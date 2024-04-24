@@ -58,7 +58,7 @@ public class Player_Controller : Base_Controller
         if (Input.anyKey == false) { h = v = 0; }
         setAnime();
     }
-    protected override void setAnime()
+    private void setAnime()
     {
         if (h != 0 || v != 0) { anime.Play("move"); }
         else { anime.Play("idle"); }

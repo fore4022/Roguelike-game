@@ -13,6 +13,7 @@ public class FireBall : Base_Skill
     {
         Transform player = Managers.Game.player.gameObject.transform;
         Collider2D[] colliders = Physics2D.OverlapCircleAll(player.position, Managers.Game.camera_h + 1.5f, LayerMask.GetMask("Monster"));
+       
         if (colliders.Count() == 0) { return; }
         direction = new();
         foreach (Collider2D col in colliders)

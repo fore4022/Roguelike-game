@@ -12,7 +12,6 @@ public class Test : MonoBehaviour
     {
         Managers.Game.stageStart("Ground");
         GameObject go = GameObject.Find("@Skill");
-        go.AddComponent<Ignition_Cast>();
         go.AddComponent<FireBall_Cast>();
     }
     private void Update()

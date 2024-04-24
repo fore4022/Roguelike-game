@@ -19,7 +19,6 @@ public abstract class Base_Controller : Stat
     protected virtual IEnumerator death() { yield return null; }
     protected virtual void init() { }
     protected virtual void Update() { }
-    protected virtual void setAnime() { }
     protected virtual void moving() { }
     protected virtual void OnDrawGizmosSelected() { }
 }

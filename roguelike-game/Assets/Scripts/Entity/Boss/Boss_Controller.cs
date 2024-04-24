@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 public class Boss_Controller : Base_Controller
 {
@@ -28,10 +29,21 @@ public class Boss_Controller : Base_Controller
     }
     protected override void Update()
     {
-        
+        if(Managers.Game.player.Hp > 0)
+        {
+            if (state == State.Death) { return; }
+            if (hp <= 0)
+            {
+                boxCollider.enabled = false;
+                state = State.Death;
+            }
+            setState();
+        }
     }
-    private void setState()
+    protected void setState() { }
+    protected override void OnDrawGizmosSelected()
     {
-
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, (transform.localScale.x + transform.localScale.y) / 2.75f);
     }
 }

@@ -26,12 +26,15 @@ public class ObjectPool
         if(baseType == typeof(Monster_Controller)) { folderName = "Monster"; }
         else if(baseType == typeof(Base_SkillCast)) { folderName = "Skill"; }
         if (folderName == null) { return; }
+        
         if (boids.ContainsKey(prefabName))
         {
             queue = boids[prefabName];
             for (int i = 0; i < count; i++)
             {
-                GameObject go = Managers.Resource.instantiate($"Prefab/{folderName}/{prefabName}", objectPool.transform);
+                GameObject go;
+                if (folderName == "Monster") { go = Managers.Resource.instantiate($"Prefab/monster", objectPool.transform); }
+                else { go = Managers.Resource.instantiate($"Prefab/{folderName}/{prefabName}", objectPool.transform); }
                 go.SetActive(false);
                 queue.Enqueue(go);
             }
@@ -42,12 +45,15 @@ public class ObjectPool
             queue = new Queue<GameObject>();
             for(int i = 0; i < count; i++)
             {
-                GameObject go = Managers.Resource.instantiate($"Prefab/{folderName}/{prefabName}", objectPool.transform);
+                GameObject go;
+                if (folderName == "Monster") { go = Managers.Resource.instantiate($"Prefab/monster", objectPool.transform); }
+                else { go = Managers.Resource.instantiate($"Prefab/{folderName}/{prefabName}", objectPool.transform); }
                 go.SetActive(false);
                 queue.Enqueue(go);
             }
             boids.Add(prefabName, queue);
         }
+
         System.Type scriptType = null;
         if (scriptName != null) { scriptType = System.Type.GetType(scriptName); }
         if(folderName == "Monster")

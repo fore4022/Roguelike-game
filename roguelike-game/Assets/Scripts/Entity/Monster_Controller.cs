@@ -47,7 +47,6 @@ public class Monster_Controller : Base_Controller
                 boxCollider.enabled = false;
                 state = State.Death;
             }
-            setAnime();
             setState();
         }
     }
@@ -94,7 +93,7 @@ public class Monster_Controller : Base_Controller
             if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
             {
                 Managers.Game.player.getLoot(gold, exp);
-                Managers.Game.objectPool.disableObject(this.gameObject.name.Replace("(Clone)", ""), this.gameObject);
+                Managers.Game.objectPool.disableObject(monsterType.monsterName, this.gameObject);
                 break;
             }
             yield return null;
