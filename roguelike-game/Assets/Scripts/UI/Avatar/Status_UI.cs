@@ -25,14 +25,14 @@ public class Status_UI : UI_Scene
         base.init();
         bind<Slider>(typeof(Sliders));
         bind<TextMeshProUGUI>(typeof(TMPro));
-        GameObject Exp = get<Slider>((int)Sliders.Exp).gameObject;
-        GameObject Hp = get<Slider>((int)Sliders.Hp).gameObject;
-        GameObject Level = get<TMP_Text>((int)TMPro.Level).gameObject;
+
+        get<Slider>((int)Sliders.Exp).value = 0;
     }
     private void statusUpdate()
     {
-        get<Slider>((int)Sliders.Exp).value = Managers.Game.player.Exp / Managers.Game.player.necessaryExp;
-        get<Slider>((int)Sliders.Hp).value = Managers.Game.player.Hp / Managers.Game.player.MaxHp;
-        get<TMP_Text>((int)TMPro.Level).text = Managers.Game.player.level.ToString();
+        get<Slider>((int)Sliders.Exp).value = Managers.Game.player.Exp / (float)Managers.Game.player.necessaryExp;
+        Debug.Log(Managers.Game.player.Exp / (float)Managers.Game.player.necessaryExp);
+        //get<Slider>((int)Sliders.Hp).value = Managers.Game.player.Hp / Managers.Game.player.MaxHp;
+        //get<TextMeshProUGUI>((int)TMPro.Level).text = Managers.Game.player.level.ToString();
     }
 }

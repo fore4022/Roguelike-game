@@ -43,6 +43,8 @@ public class Player_Controller : Base_Controller
 
         string name = transform.gameObject.name;
         name = name.Replace("(Clone)", "");
+
+        anime = Util.getOrAddComponent<Animator>(transform.gameObject);
         anime.runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{name}/{name}");
         anime.speed = animatorPlaySpeed;
     }
@@ -65,25 +67,21 @@ public class Player_Controller : Base_Controller
     }
     public void getLoot(int gold, int exp)
     {
-        Gold -= gold;
-        Exp -= exp;
+        Gold += gold;
+        Exp += exp;
         checkExp();
         //updateStat.Invoke();
     }
     private void checkExp()
     {
-        while (true)
+        necessaryExp = (int)(Managers.Game.basicExp + 15 * (level - 1)) * (1 + level / 8);
+        if (exp >= necessaryExp)
         {
-            necessaryExp = (int)(Managers.Game.basicExp + Managers.Game.increaseExp * 1.15 * (level - 1) * ((level - 1) / 50));
-            if (exp >= necessaryExp)
-            {
-                exp -= necessaryExp;
-                level++;
-                updateStatus.Invoke();
-                updateStat.Invoke();
-            }
-            else { break; }
+            exp -= necessaryExp;
+            level++;
+            updateStat.Invoke();
         }
+        updateStatus.Invoke();
     }
     public void attacked(int damage)
     {

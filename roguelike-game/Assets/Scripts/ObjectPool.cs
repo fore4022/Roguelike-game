@@ -10,6 +10,7 @@ public class ObjectPool
 {
     public Dictionary<string, Queue<GameObject>> boids = new();
     public Dictionary<string, Monster> monsterData = new();
+
     private GameObject objectPool;
     private GameObject skill;
     public void init()

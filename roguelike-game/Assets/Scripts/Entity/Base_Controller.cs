@@ -13,7 +13,6 @@ public abstract class Base_Controller : Stat
     {
         boxCollider = Util.getOrAddComponent<BoxCollider2D>(transform.gameObject);
         rigid = Util.getOrAddComponent<Rigidbody2D>(transform.gameObject);
-        anime = Util.getOrAddComponent<Animator>(transform.gameObject);
         rigid.gravityScale = 0f;
     }
     protected virtual IEnumerator death() { yield return null; }

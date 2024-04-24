@@ -25,6 +25,11 @@ public class Monster_Controller : Base_Controller
     {
         base.Start();
         state = State.Moving;
+
+        rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        anime = GetComponent<Animator>();
+        anime.speed = 0.25f;
     }
     private void OnEnable() { init(); }
     protected override void init()
@@ -39,7 +44,7 @@ public class Monster_Controller : Base_Controller
     }
     protected override void Update()
     {
-        if(Managers.Game.player.Hp > 0)
+        if (Managers.Game.player.Hp > 0)
         {
             if (state == State.Death) { return; }
             if (Hp <= 0)
@@ -87,6 +92,7 @@ public class Monster_Controller : Base_Controller
     public virtual void attacked(int damage) { hp -= damage; }
     protected override IEnumerator death() 
     {
+        anime.speed = 1f;
         anime.Play("death");
         while (true)
         {

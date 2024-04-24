@@ -12,12 +12,14 @@ using UnityEditor.Compilation;
 using Debug = UnityEngine.Debug;
 public class Game_Manager
 {
+    public List<Skill> skills;
+
     public Player_Controller player;
     public ObjectPool objectPool = new();
     public SpawnMonster spawnMonster;
-    public List<Skill> skills;
     public Map_Theme map;
     public GameObject skill;
+
     public Stopwatch stopWatch = new();
 
     public float minute { get { return stopWatch.Elapsed.Minutes; } }
@@ -26,9 +28,8 @@ public class Game_Manager
     public float camera_h;
     public float camera_w;
 
-    public float creationCycle;
     public float basicExp = 75;
-    public float increaseExp = 100;
+    public float creationCycle;
     public float timer;
 
     public int userGold;
@@ -72,11 +73,6 @@ public class Game_Manager
         player.updateStatus -= increaseKillCount;
         player.updateStatus += increaseKillCount;
     }
-    public void increaseKillCount()
-    {   
-        killCount++;
-        if (player.Hp != player.MaxHp) { if (killCount % 20 == 0) { player.Hp += player.MaxHp / 1000; } }
-    }
     public void stageStart(string Theme)
     {
         init(Theme);
@@ -87,6 +83,8 @@ public class Game_Manager
 
         stopWatch.Start();
         isSpawn = true;
+        Managers.UI.showSceneUI<Status_UI>("Status");
+
         spawnMonster.StartCoroutine(spawnMonster.Spawn());
     }
     public void stageEnd()
@@ -95,5 +93,10 @@ public class Game_Manager
         isSpawn = false;
         userGold += (int)player.Gold;
         userExp += (int)player.Exp;
+    }
+    public void increaseKillCount()
+    {   
+        killCount++;
+        if (player.Hp != player.MaxHp) { if (killCount % 20 == 0) { player.Hp += player.MaxHp / 1000; } }
     }
 }
