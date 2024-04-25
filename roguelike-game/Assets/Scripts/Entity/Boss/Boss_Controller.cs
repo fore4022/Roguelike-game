@@ -20,7 +20,7 @@ public class Boss_Controller : Base_Controller
     private void OnEnable() { init(); }
     protected override void init()
     {
-        attackDamage = monsterType.attackDamage;//
+        damage = monsterType.attackDamage;//
         maxHp = monsterType.maxHp;
         gold = monsterType.gold;
         exp = monsterType.exp;

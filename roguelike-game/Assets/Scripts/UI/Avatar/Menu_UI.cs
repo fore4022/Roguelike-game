@@ -27,6 +27,7 @@ public class Menu_UI : UI_Popup
         GameObject stat = get<Image>((int)Images.Stat).gameObject;
         GameObject quit = get<Image>((int)Images.Quit).gameObject;
         GameObject setting = get<Image>((int)Images.Setting).gameObject;
+
         AddUIEvent(reStart, (PointerEventData data) =>
         {
             Time.timeScale = 1f;

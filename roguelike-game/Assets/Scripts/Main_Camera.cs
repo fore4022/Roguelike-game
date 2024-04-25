@@ -13,6 +13,9 @@ public class Main_Camera : MonoBehaviour
     private void Start()
     {
         cam = GetComponent<Camera>();
+
+        this.gameObject.transform.position = Managers.Game.player.gameObject.transform.position;
+
         Managers.Input.keyAction -= zoomOut;
         Managers.Input.keyAction += zoomOut;
     }

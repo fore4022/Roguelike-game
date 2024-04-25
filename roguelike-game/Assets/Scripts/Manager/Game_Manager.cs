@@ -19,6 +19,7 @@ public class Game_Manager
     public SpawnMonster spawnMonster;
     public Map_Theme map;
     public GameObject skill;
+    public Item item;
 
     public Stopwatch stopWatch = new();
 
@@ -34,8 +35,6 @@ public class Game_Manager
 
     public int userGold;
     public int userExp;
-    public int killCount;
-    public int a;
 
     public bool isSpawn;
     public bool inBattle;
@@ -48,7 +47,6 @@ public class Game_Manager
         creationCycle = 1f;
         isSpawn = true;
         inBattle = false;
-        killCount = 0;
 
         map = Managers.Resource.load<Map_Theme>($"Data/Map_Theme/{Theme}");
         skill = GameObject.Find("@Skill");
@@ -69,9 +67,6 @@ public class Game_Manager
 
         //go = Managers.Resource.instantiate("Prefab/Map");
         //go.AddComponent<Map_Scroller>();
-
-        player.updateStatus -= increaseKillCount;
-        player.updateStatus += increaseKillCount;
     }
     public void stageStart(string Theme)
     {
@@ -98,10 +93,5 @@ public class Game_Manager
         userExp += (int)player.Exp;
 
         Time.timeScale = 0f;
-    }
-    public void increaseKillCount()
-    {   
-        killCount++;
-        if (player.Hp != player.MaxHp) { if (killCount % 20 == 0) { player.Hp += player.MaxHp / 1000; } }
     }
 }

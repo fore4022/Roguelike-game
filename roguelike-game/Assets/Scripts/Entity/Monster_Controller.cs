@@ -34,7 +34,7 @@ public class Monster_Controller : Base_Controller
     private void OnEnable() { init(); }
     protected override void init()
     {
-        attackDamage = monsterType.attackDamage + (int)Managers.Game.minute / 2;//
+        damage = monsterType.attackDamage + (int)Managers.Game.minute / 2;//
         maxHp = monsterType.maxHp + (int)Managers.Game.minute / 2;
         gold = monsterType.gold + (int)(Managers.Game.minute / 4f);
         exp = monsterType.exp + (int)(Managers.Game.minute / 4f);
@@ -94,11 +94,11 @@ public class Monster_Controller : Base_Controller
     {
         anime.speed = 1f;
         anime.Play("death");
+        Managers.Game.player.getLoot(gold, exp);
         while (true)
         {
             if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
             {
-                Managers.Game.player.getLoot(gold, exp);
                 Managers.Game.objectPool.disableObject(monsterType.monsterName, this.gameObject);
                 break;
             }

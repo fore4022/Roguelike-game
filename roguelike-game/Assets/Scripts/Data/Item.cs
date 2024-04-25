@@ -6,13 +6,12 @@ public class Item : ScriptableObject
 {
     public string itemName;
     public string explanation;
-    public Define.Effect effect;
-    public float attackDamage;
-    public float attackSpeed;
-    public float moveSpeed;
-    public float skillCooldownReduction;
-    public float skillRangeIncrease;
-    public float playerSizeIncrease;
-    public float expGainMultiplier;
-    public float goldAcquisitionMultiplier;
+
+    public int hp = 1;
+    public int damage = 1;
+    public int skillCooldownReduction;
+
+    public float moveSpeed = 1;
+    public float expMagnification = 1;
+    public float goldMagnification = 1;
 }

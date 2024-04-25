@@ -18,8 +18,5 @@ public class Main_UI : UI_Scene
     {
         base.init();
         bind<Image>(typeof(Images));
-        GameObject start = get<Image>((int)Images.Start).gameObject;
-        GameObject encyclopedia = get<Image>((int)Images.Encyclopedia).gameObject;
-        GameObject quit = get<Image>((int)Images.Quit).gameObject;
     }
 }

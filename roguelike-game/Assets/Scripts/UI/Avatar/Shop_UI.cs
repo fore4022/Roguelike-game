@@ -4,21 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-using static System.Net.Mime.MediaTypeNames;
-
-public class Timer_UI : UI_Scene
+public class Shop_UI : UI_Scene
 {
+    enum Images
+    {
+
+    }
     enum TMPro
     {
-        Timer
+
     }
-    private TextMeshProUGUI timer;
     private void Start() { init(); }
-    private void Update() { timer.text = $"{Managers.Game.minute} : {Managers.Game.second}"; }
     protected override void init()
     {
         base.init();
+        bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));
-        timer = get<TextMeshProUGUI>((int)TMPro.Timer);
     }
 }

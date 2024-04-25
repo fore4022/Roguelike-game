@@ -16,34 +16,42 @@ public class Status_UI : UI_Scene
     {
         Level
     }
+    private Slider exp;
+    private Slider hp;
+    private TextMeshProUGUI level;
     private void Start()
     {
         init();
+        Managers.Game.player.updateStatus -= statusUpdate;
         Managers.Game.player.updateStatus += statusUpdate;
-
-        get<Slider>((int)Sliders.Exp).value = 0;
-        get<Slider>((int)Sliders.Hp).value = Managers.Game.player.MaxHp;
-        get<TextMeshProUGUI>((int)TMPro.Level).text = Managers.Game.player.level.ToString();
     }
     private void Update()
     {
         if (Managers.Game.player.enabled)
         {
             pos = Camera.main.WorldToScreenPoint(new Vector2(Managers.Game.player.gameObject.transform.position.x, Managers.Game.player.gameObject.transform.position.y - Managers.Game.player.gameObject.transform.localScale.y));
-            get<Slider>((int)Sliders.Hp).gameObject.transform.position = pos;
+            hp.transform.position = pos;
         }
-        if (Managers.Game.player.Hp <= 0) { get<Slider>((int)Sliders.Hp).gameObject.SetActive(false); }
+        if (Managers.Game.player.Hp <= 0) { hp.gameObject.SetActive(false); }
     }
     protected override void init()
     {
         base.init();
         bind<Slider>(typeof(Sliders));
         bind<TextMeshProUGUI>(typeof(TMPro));
+
+        exp = get<Slider>((int)Sliders.Exp);
+        hp = get<Slider>((int)Sliders.Hp);
+        level = get<TextMeshProUGUI>((int)TMPro.Level);
+
+        exp.value = 0;
+        hp.value = Managers.Game.player.MaxHp;
+        level.text = Managers.Game.player.level.ToString();
     }
     private void statusUpdate()
     {
-        get<Slider>((int)Sliders.Exp).value = Managers.Game.player.Exp / (float)Managers.Game.player.necessaryExp;
-        get<Slider>((int)Sliders.Hp).value = Managers.Game.player.Hp / (float)Managers.Game.player.MaxHp;
-        get<TextMeshProUGUI>((int)TMPro.Level).text = Managers.Game.player.level.ToString();
+        exp.value = Managers.Game.player.Exp / (float)Managers.Game.player.necessaryExp;
+        hp.value = Managers.Game.player.Hp / (float)Managers.Game.player.MaxHp;
+        level.text = Managers.Game.player.level.ToString();
     }
 }

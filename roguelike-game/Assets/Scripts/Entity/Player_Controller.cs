@@ -10,10 +10,12 @@ public class Player_Controller : Base_Controller
 {
     public Action updateStatus = null;
     public Action updateStat = null;
-    public Item Item;
+
+    private Item item;
 
     public float skillCooldownReduction;
     public float shieldAmount;
+
     public float h;
     public float v;
 
@@ -27,24 +29,25 @@ public class Player_Controller : Base_Controller
     protected override void init()
     {
         rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
+
         Managers.Input.keyAction -= moving;
         Managers.Input.keyAction += moving;
 
         boxCollider.size = new Vector2(0.9f, 1.7f);
 
+        if(Managers.Game.item == null) { item = ScriptableObject.CreateInstance<Item>(); }
+        else { item = Managers.Game.item; }
+
         level = 1;
-        maxHp = 100;
-        MoveSpeed = 2.5f;
-        animatorPlaySpeed = 0.4f;
-        //attackDamage += Item.attackDamage;
-        //moveSpeed += Item.moveSpeed;
-        //Hp = maxHp;
-        //transform.localScale += new Vector3(Item.playerSizeIncrease, Item.playerSizeIncrease, 0);
-        hp = maxHp;
+        maxHp = hp = (int)(100 * item.hp);
+        damage = 10 * item.damage;
+        skillCooldownReduction = item.skillCooldownReduction;
+        MoveSpeed = 2.5f * item.moveSpeed;
 
         string name = transform.gameObject.name;
         name = name.Replace("(Clone)", "");
 
+        animatorPlaySpeed = 0.4f;
         anime = Util.getOrAddComponent<Animator>(transform.gameObject);
         anime.runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{name}/{name}");
         anime.speed = animatorPlaySpeed;
@@ -68,10 +71,12 @@ public class Player_Controller : Base_Controller
     }
     public void getLoot(int gold, int exp)
     {
-        Gold += gold;
-        Exp += exp;
+        Gold += (int)(gold * item.goldMagnification);
+        Exp += (int)(exp * item.expMagnification);
         checkExp();
+
         //updateStat.Invoke();
+        updateStatus.Invoke();
     }
     private void checkExp()
     {
@@ -80,9 +85,8 @@ public class Player_Controller : Base_Controller
         {
             exp -= necessaryExp;
             level++;
-            updateStat.Invoke();
+            necessaryExp = (int)(Managers.Game.basicExp + 15 * (level - 1)) * (1 + level / 8);
         }
-        updateStatus.Invoke();
     }
     public void attacked(int damage)
     {
@@ -110,7 +114,7 @@ public class Player_Controller : Base_Controller
             yield return null;
         }
     }
-    private void crash(Collision2D collision) { if (collision.gameObject.CompareTag("Monster")) { attacked(collision.gameObject.GetComponent<Monster_Controller>().AttackDamage); } }
+    private void crash(Collision2D collision) { if (collision.gameObject.CompareTag("Monster")) { attacked(collision.gameObject.GetComponent<Monster_Controller>().Damage); } }
     private void OnCollisionEnter2D(Collision2D collision) { crash(collision); }
     private void OnCollisionStay2D(Collision2D collision) { crash(collision); }
     private void OnDrawGizmos()

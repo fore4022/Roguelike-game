@@ -10,7 +10,6 @@ public class Stat_UI : UI_Popup
     private void Start()
     {
         init();
-        Managers.Game.player.updateStat += statUpdate;
     }
     protected override void init()
     {
