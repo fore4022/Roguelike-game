@@ -33,13 +33,14 @@ public class Player_Controller : Base_Controller
         boxCollider.size = new Vector2(0.9f, 1.7f);
 
         level = 1;
-        hp = 100;
+        maxHp = 100;
         MoveSpeed = 2.5f;
         animatorPlaySpeed = 0.4f;
         //attackDamage += Item.attackDamage;
         //moveSpeed += Item.moveSpeed;
         //Hp = maxHp;
         //transform.localScale += new Vector3(Item.playerSizeIncrease, Item.playerSizeIncrease, 0);
+        hp = maxHp;
 
         string name = transform.gameObject.name;
         name = name.Replace("(Clone)", "");
@@ -102,7 +103,7 @@ public class Player_Controller : Base_Controller
         {
             if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
             {
-                Destroy(this.gameObject);
+                this.gameObject.SetActive(false);
                 Managers.Game.stageEnd();
                 break;
             }

@@ -96,6 +96,8 @@ public class Game_Manager
         isSpawn = false;
         userGold += (int)player.Gold;
         userExp += (int)player.Exp;
+
+        Time.timeScale = 0f;
     }
     public void increaseKillCount()
     {   

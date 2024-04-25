@@ -27,8 +27,12 @@ public class Status_UI : UI_Scene
     }
     private void Update()
     {
-        pos = Camera.main.WorldToScreenPoint(new Vector2(Managers.Game.player.gameObject.transform.position.x, Managers.Game.player.gameObject.transform.position.y - Managers.Game.player.gameObject.transform.localScale.y));
-        get<Slider>((int)Sliders.Hp).gameObject.transform.position = pos;
+        if (Managers.Game.player.enabled)
+        {
+            pos = Camera.main.WorldToScreenPoint(new Vector2(Managers.Game.player.gameObject.transform.position.x, Managers.Game.player.gameObject.transform.position.y - Managers.Game.player.gameObject.transform.localScale.y));
+            get<Slider>((int)Sliders.Hp).gameObject.transform.position = pos;
+        }
+        if (Managers.Game.player.Hp <= 0) { get<Slider>((int)Sliders.Hp).gameObject.SetActive(false); }
     }
     protected override void init()
     {
