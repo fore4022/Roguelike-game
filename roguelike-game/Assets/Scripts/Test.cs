@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using System.Diagnostics;
 using UnityEngine.Events;
 using System.Linq;
+using Debug = UnityEngine.Debug;
 public class Test : MonoBehaviour
 {
     private void Start()
@@ -16,6 +17,6 @@ public class Test : MonoBehaviour
     }
     private void Update()
     {
-
+        Debug.Log($"{DateTime.Now.Hour} : {DateTime.Now.Minute} : {DateTime.Now.Second}");
     }
 }

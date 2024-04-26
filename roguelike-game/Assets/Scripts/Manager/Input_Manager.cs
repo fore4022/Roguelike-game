@@ -7,13 +7,16 @@ public class Input_Manager
     public Action keyAction = null;
     public void OnUpdate()
     {
-        if(Input.anyKey == false)
+        #if UNITY_EDITOR
         {
-            return;
+            if (Input.anyKey == false) { return; }
+            if (keyAction != null) { keyAction.Invoke(); }
         }
-        if(keyAction != null)
+        #endif
+        #if UNITY_ANDROID
         {
-            keyAction.Invoke();
+            
         }
+        #endif
     }
 }

@@ -95,10 +95,19 @@ public class Player_Controller : Base_Controller
     }
     protected override void moving()
     {
-        h = Input.GetAxisRaw("Horizontal");
-        v = Input.GetAxisRaw("Vertical");
-        if (h != 0 || v != 0) { transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v); }
-        if(h != 0) { transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0) * (h < 0 ? 0 : 1)); }
+        #if UNITY_EDITOR
+        {
+            h = Input.GetAxisRaw("Horizontal");
+            v = Input.GetAxisRaw("Vertical");
+            if (h != 0 || v != 0) { transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v); }
+            if(h != 0) { transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0) * (h < 0 ? 0 : 1)); }
+        }
+        #endif
+        #if UNITY_ANDROID
+        {
+
+        }
+        #endif
     }
     protected override IEnumerator death()
     {
@@ -107,7 +116,6 @@ public class Player_Controller : Base_Controller
         {
             if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
             {
-                this.gameObject.SetActive(false);
                 Managers.Game.stageEnd();
                 break;
             }
