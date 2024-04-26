@@ -66,7 +66,6 @@ public class Game_Manager
         if (skills == null) { skills = Managers.Resource.LoadAll<Skill>("Data/Skill/").ToList<Skill>(); }
 
         //go = Managers.Resource.instantiate("Prefab/Map");
-        //go.AddComponent<Map_Scroller>();
     }
     public void stageStart(string Theme)
     {

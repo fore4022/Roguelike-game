@@ -17,6 +17,6 @@ public class Test : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log($"{DateTime.Now.Hour} : {DateTime.Now.Minute} : {DateTime.Now.Second}");
+        //Debug.Log($"{DateTime.Now.Hour} : {DateTime.Now.Minute} : {DateTime.Now.Second}");
     }
 }
