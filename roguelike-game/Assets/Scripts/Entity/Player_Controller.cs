@@ -13,6 +13,8 @@ public class Player_Controller : Base_Controller
 
     private Item item;
 
+    private Vector2 direction;
+
     public float skillCooldownReduction;
     public float shieldAmount;
 
@@ -95,22 +97,24 @@ public class Player_Controller : Base_Controller
     }
     protected override void moving()
     {
-        //#if UNITY_EDITOR
-        //{
-        //    h = Input.GetAxisRaw("Horizontal");
-        //    v = Input.GetAxisRaw("Vertical");
-        //    if (h != 0 || v != 0) { transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v); }
-        //    if (h != 0) { transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0) * (h < 0 ? 0 : 1)); }
-        //}
-        //#endif
-        //#if UNITY_ANDROID
-        //{
-        //    if (Input.touchCount > 0) { Managers.UI.showPopupUI<Controller_UI>("Controller"); }
-        //}
-        //#endif
+#if UNITY_EDITOR
+        {
+            h = Input.GetAxisRaw("Horizontal");
+            v = Input.GetAxisRaw("Vertical");
+        }
+#endif
+#if UNITY_ANDROID
+        {
+            if (Input.touchCount == 1) 
+            {
+                direction = (Input.GetTouch(0).deltaPosition - Input.GetTouch(0).position).normalized;
 
-        h = Input.GetAxisRaw("Horizontal");
-        v = Input.GetAxisRaw("Vertical");
+                h = direction.x;
+                v = direction.y;
+            }
+        }
+#endif
+        Debug.Log($"{h}, {v}");
         if (h != 0 || v != 0) { transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v); }
         if (h != 0) { transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0) * (h < 0 ? 0 : 1)); }
     }
