@@ -29,7 +29,7 @@ public class Game_Manager
     public float camera_h;
     public float camera_w;
 
-    public float basicExp = 75;
+    public float basicExp = 55;
     public float creationCycle;
     public float timer;
 

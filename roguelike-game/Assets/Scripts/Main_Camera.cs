@@ -34,7 +34,7 @@ public class Main_Camera : MonoBehaviour
     }
     private void zoomOut()
     {
-        if (cam.orthographicSize < 10) { cam.orthographicSize += 1 * Time.deltaTime * value; }
-        else { cam.orthographicSize = 10; }
+        if (cam.orthographicSize < 13) { cam.orthographicSize += 1 * Time.deltaTime * value; }
+        else { cam.orthographicSize = 13; }
     }
 }

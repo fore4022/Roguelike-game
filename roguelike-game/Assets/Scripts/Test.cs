@@ -15,11 +15,5 @@ public class Test : MonoBehaviour
         GameObject go = GameObject.Find("@Skill");
         go.AddComponent<FireBall_Cast>();
     }
-    private void Update()
-    {
-        //Debug.Log($"{DateTime.Now.Hour} : {DateTime.Now.Minute} : {DateTime.Now.Second}");
-        //Debug.Log(Input.touchCount);
-        //Debug.Log(Input.GetTouch(0).position);
-        //Debug.Log(Input.GetTouch(0).deltaPosition);
-    }
+    private void Update() { }
 }
