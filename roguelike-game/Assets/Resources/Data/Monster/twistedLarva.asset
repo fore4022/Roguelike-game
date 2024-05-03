@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterType: 0
   monsterName: twistedLarva
-  moveSpeed: 1.65
+  moveSpeed: 1.75
   attackDamage: 1
   hp: 2
   maxHp: 2

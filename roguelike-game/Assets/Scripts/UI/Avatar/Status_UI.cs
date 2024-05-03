@@ -27,6 +27,8 @@ public class Status_UI : UI_Scene
     }
     private void Update()
     {
+        if(Managers.Game.player.Hp == Managers.Game.player.MaxHp) { hp.gameObject.SetActive(false); return; }
+        else { hp.gameObject.SetActive(true); }
         if (Managers.Game.player.enabled)
         {
             pos = Camera.main.WorldToScreenPoint(new Vector2(Managers.Game.player.gameObject.transform.position.x, Managers.Game.player.gameObject.transform.position.y - Managers.Game.player.gameObject.transform.localScale.y));

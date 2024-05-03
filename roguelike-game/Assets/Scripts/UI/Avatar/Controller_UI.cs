@@ -6,28 +6,26 @@ using UnityEngine.EventSystems;
 using TMPro;
 public class Controller_UI : UI_Popup
 {
-    private GameObject controller;
-    private GameObject controllUnit;
+    private GameObject controllerUnit;
+    private GameObject controllerBar;
     enum Images
     {
-        Controller,
-        ControllUnit
+        ControllerUnit,
+        ControllerBar
     }
-    private void Start() { init(); }
-    private void OnEnable()
+    private void Awake() { init(); }
+    private void OnEnable() { controllerUnit.transform.position = Input.GetTouch(0).position; }
+    private void Update() 
     {
-        //controller;
-    }
-    private void Update()
-    {
-        //controllUnit.transform.position = ;
+        if (Managers.Game.player.Hp < 0) { controllerBar.transform.position = Input.GetTouch(0).position; }
+        else { Managers.UI.closePopupUI(); }
     }
     protected override void init()
     {
         base.init();
         bind<Image>(typeof(Images));
 
-        controller = get<Image>((int)Images.Controller).gameObject;
-        controllUnit = get<Image>((int)Images.ControllUnit).gameObject;
+        controllerUnit = get<Image>((int)Images.ControllerUnit).gameObject;
+        controllerBar = get<Image>((int)Images.ControllerBar).gameObject;
     }
 }

@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f21307ab5bd254946aec6ba56f6c6555, type: 3}
   m_Name: larva
   m_EditorClassIdentifier: 
-  monsterName: larva
   monsterType: 0
+  monsterName: larva
+  moveSpeed: 1.5
   attackDamage: 1
-  attackSpeed: 1
-  moveSpeed: 1.25
   hp: 2
   maxHp: 2
+  attackSpeed: 1
   gold: 1
   exp: 1

@@ -69,6 +69,11 @@ public class Player_Controller : Base_Controller
             StartCoroutine(death());
         }
         if (Input.anyKey == false) { h = v = 0; }
+#if UNITY_ANDROID
+        {
+            if(Input.touchCount == 0) { Managers.UI.closePopupUI(); }
+        }
+#endif
         setAnime();
     }
     private void setAnime()
@@ -110,9 +115,14 @@ public class Player_Controller : Base_Controller
 #endif
 #if UNITY_ANDROID
         {
-            if (Input.touchCount == 1) 
+            if (Input.touchCount == 1)
             {
-                if (Input.GetTouch(0).phase == TouchPhase.Began) { enterPoint = Input.GetTouch(0).position; return; }
+                if (Input.GetTouch(0).phase == TouchPhase.Began)
+                {
+                    if(Managers.UI.PopupStack.Count < 1) { Managers.UI.showPopupUI<Controller_UI>("Controller"); }
+                    enterPoint = Input.GetTouch(0).position;
+                    return;
+                }
 
                 direction = (Input.GetTouch(0).position - enterPoint).normalized;
 

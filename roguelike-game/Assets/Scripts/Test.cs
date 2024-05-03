@@ -15,5 +15,4 @@ public class Test : MonoBehaviour
         GameObject go = GameObject.Find("@Skill");
         go.AddComponent<FireBall_Cast>();
     }
-    private void Update() { }
 }
