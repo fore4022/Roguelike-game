@@ -49,7 +49,7 @@ public class Player_Controller : Base_Controller
         maxHp = hp = (int)(100 * item.hp);
         damage = 10 * item.damage;
         skillCooldownReduction = item.skillCooldownReduction;
-        MoveSpeed = 2.5f * item.moveSpeed;
+        MoveSpeed = 2 * item.moveSpeed;
 
         string name = transform.gameObject.name;
         name = name.Replace("(Clone)", "");
@@ -119,8 +119,8 @@ public class Player_Controller : Base_Controller
             {
                 if (Input.GetTouch(0).phase == TouchPhase.Began)
                 {
-                    if(Managers.UI.PopupStack.Count < 1) { Managers.UI.showPopupUI<Controller_UI>("Controller"); }
                     enterPoint = Input.GetTouch(0).position;
+                    if(Managers.UI.PopupStack.Count < 1) { Managers.UI.showPopupUI<Controller_UI>("Controller"); }
                     return;
                 }
 
@@ -141,7 +141,13 @@ public class Player_Controller : Base_Controller
         {
             if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
             {
+                for (; ; )
+                {
+                    if(Managers.UI.SceneStack.Count > 0) { Managers.UI.closeSceneUI(); }
+                    else { break; }
+                }
                 Managers.Game.stageEnd();
+                //show
                 break;
             }
             yield return null;

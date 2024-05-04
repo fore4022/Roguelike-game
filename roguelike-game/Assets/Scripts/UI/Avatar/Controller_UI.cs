@@ -14,10 +14,10 @@ public class Controller_UI : UI_Popup
         ControllerBar
     }
     private void Awake() { init(); }
-    private void OnEnable() { controllerUnit.transform.position = Input.GetTouch(0).position; }
+    private void OnEnable() { controllerUnit.transform.position = Managers.Game.player.enterPoint; }
     private void Update() 
     {
-        if (Managers.Game.player.Hp < 0) { controllerBar.transform.position = Input.GetTouch(0).position; }
+        if (Managers.Game.player.Hp > 0) { controllerBar.transform.position = Managers.Game.player.enterPoint + Vector2.ClampMagnitude(Input.GetTouch(0).position - Managers.Game.player.enterPoint, 100); }
         else { Managers.UI.closePopupUI(); }
     }
     protected override void init()

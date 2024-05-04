@@ -46,6 +46,9 @@ public class Status_UI : UI_Scene
         hp = get<Slider>((int)Sliders.Hp);
         level = get<TextMeshProUGUI>((int)TMPro.Level);
 
+        exp.interactable = false;
+        hp.interactable = false;
+
         exp.value = 0;
         hp.value = Managers.Game.player.MaxHp;
         level.text = Managers.Game.player.level.ToString();
