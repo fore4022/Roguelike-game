@@ -81,6 +81,7 @@ public class Game_Manager
         Managers.UI.showSceneUI<Status_UI>("Status");
         Managers.UI.showSceneUI<Timer_UI>("Timer");
         Managers.UI.showSceneUI<Pause_UI>("Pause");
+        Managers.UI.showPopupUI<Controller_UI>("Controller");
 
         spawnMonster.StartCoroutine(spawnMonster.Spawn());
     }

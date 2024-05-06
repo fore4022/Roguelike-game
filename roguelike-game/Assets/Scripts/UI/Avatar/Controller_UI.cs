@@ -10,14 +10,20 @@ public class Controller_UI : UI_Popup
     private GameObject controllerBar;
     enum Images
     {
+        ControllPanel,
         ControllerUnit,
         ControllerBar
     }
     private void Awake() { init(); }
-    private void OnEnable() { controllerUnit.transform.position = Managers.Game.player.enterPoint; }
     private void Update() 
     {
-        if (Managers.Game.player.Hp > 0) { controllerBar.transform.position = Managers.Game.player.enterPoint + Vector2.ClampMagnitude(Input.GetTouch(0).position - Managers.Game.player.enterPoint, 100); }
+        if (Managers.Game.player.Hp > 0)
+        {
+            if(Input.touchCount > 1)
+            {
+                if (controllerUnit.activeSelf) { controllerBar.transform.position = Managers.Game.player.enterPoint + Vector2.ClampMagnitude(Input.GetTouch(0).position - Managers.Game.player.enterPoint, 100); }
+            }
+        }
         else { Managers.UI.closePopupUI(); }
     }
     protected override void init()
@@ -25,7 +31,18 @@ public class Controller_UI : UI_Popup
         base.init();
         bind<Image>(typeof(Images));
 
+        GameObject controllPanel = get<Image>((int)Images.ControllPanel).gameObject;
         controllerUnit = get<Image>((int)Images.ControllerUnit).gameObject;
         controllerBar = get<Image>((int)Images.ControllerBar).gameObject;
+
+        AddUIEvent(controllPanel, (PointerEventData data) =>
+        {
+            controllerUnit.SetActive(true);
+            controllerUnit.transform.position = Managers.Game.player.enterPoint;
+        }, Define.UIEvent.Down);
+        AddUIEvent(controllPanel, (PointerEventData data) =>
+        {
+            controllerUnit.SetActive(false);
+        }, Define.UIEvent.Exit);
     }
 }

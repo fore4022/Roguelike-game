@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
+using Unity.VisualScripting;
+
 public abstract class UI_Base : Util
 {
     Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
@@ -45,6 +47,10 @@ public abstract class UI_Base : Util
             case Define.UIEvent.Exit:
                 evt.OnPointerExitHandler -= action;
                 evt.OnPointerExitHandler += action;
+                break;
+            case Define.UIEvent.Down:
+                evt.OnPointerDownHandler -= action;
+                evt.OnPointerDownHandler += action;
                 break;
         }
     }

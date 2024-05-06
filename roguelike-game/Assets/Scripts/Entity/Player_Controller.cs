@@ -69,11 +69,6 @@ public class Player_Controller : Base_Controller
             StartCoroutine(death());
         }
         if (Input.anyKey == false) { h = v = 0; }
-#if UNITY_ANDROID
-        {
-            if(Input.touchCount == 0) { Managers.UI.closePopupUI(); }
-        }
-#endif
         setAnime();
     }
     private void setAnime()
@@ -105,7 +100,7 @@ public class Player_Controller : Base_Controller
         hp -= damage;
         updateStatus.Invoke();
     }
-    protected override void moving()
+    protected override void moving()    
     {
 #if UNITY_EDITOR
         {
@@ -120,7 +115,6 @@ public class Player_Controller : Base_Controller
                 if (Input.GetTouch(0).phase == TouchPhase.Began)
                 {
                     enterPoint = Input.GetTouch(0).position;
-                    if(Managers.UI.PopupStack.Count < 1) { Managers.UI.showPopupUI<Controller_UI>("Controller"); }
                     return;
                 }
 
