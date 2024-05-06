@@ -52,6 +52,10 @@ public abstract class UI_Base : Util
                 evt.OnPointerDownHandler -= action;
                 evt.OnPointerDownHandler += action;
                 break;
+            case Define.UIEvent.Up:
+                evt.OnPointerUpHandler -= action;
+                evt.OnPointerUpHandler += action;
+                break;
         }
     }
 }

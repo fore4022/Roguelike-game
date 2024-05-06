@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
-public class UI_EventHandler : Util, IPointerClickHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+public class UI_EventHandler : Util, IPointerClickHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     public Action<PointerEventData> OnClickHandler = null;
     public Action<PointerEventData> OnDragHandler = null;
     public Action<PointerEventData> OnPointerEnterHandler = null;
     public Action<PointerEventData> OnPointerExitHandler = null;
     public Action<PointerEventData> OnPointerDownHandler = null;
+    public Action<PointerEventData> OnPointerUpHandler = null;
     public void OnPointerClick(PointerEventData eventData)
     {
         if (OnClickHandler != null) { OnClickHandler.Invoke(eventData); }
@@ -30,5 +31,9 @@ public class UI_EventHandler : Util, IPointerClickHandler, IDragHandler, IPointe
     public void OnPointerDown(PointerEventData eventData)
     {
         if(OnPointerDownHandler != null) { OnPointerDownHandler.Invoke(eventData); }
+    }
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if(OnPointerUpHandler != null) { OnPointerUpHandler.Invoke(eventData); }
     }
 }

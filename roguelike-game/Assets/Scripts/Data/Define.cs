@@ -10,7 +10,8 @@ public class Define
         Drag,
         Enter,
         Exit,
-        Down
+        Down,
+        Up
     }
     public enum Effect
     {

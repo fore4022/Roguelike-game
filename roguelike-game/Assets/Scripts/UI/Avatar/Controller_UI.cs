@@ -14,12 +14,16 @@ public class Controller_UI : UI_Popup
         ControllerUnit,
         ControllerBar
     }
-    private void Awake() { init(); }
+    private void Start()
+    {
+        init();
+        controllerUnit.SetActive(false);
+    }
     private void Update() 
     {
         if (Managers.Game.player.Hp > 0)
         {
-            if(Input.touchCount > 1)
+            if(Input.touchCount > 0)
             {
                 if (controllerUnit.activeSelf) { controllerBar.transform.position = Managers.Game.player.enterPoint + Vector2.ClampMagnitude(Input.GetTouch(0).position - Managers.Game.player.enterPoint, 100); }
             }
@@ -38,11 +42,11 @@ public class Controller_UI : UI_Popup
         AddUIEvent(controllPanel, (PointerEventData data) =>
         {
             controllerUnit.SetActive(true);
-            controllerUnit.transform.position = Managers.Game.player.enterPoint;
+            controllerUnit.transform.position = Input.GetTouch(0).position;
         }, Define.UIEvent.Down);
         AddUIEvent(controllPanel, (PointerEventData data) =>
         {
             controllerUnit.SetActive(false);
-        }, Define.UIEvent.Exit);
+        }, Define.UIEvent.Up);
     }
 }
