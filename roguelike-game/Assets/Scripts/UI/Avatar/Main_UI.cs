@@ -1,41 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-using UnityEngine.SceneManagement;
-using System.Linq;
-using System.IO;
 public class Main_UI : UI_Scene
 {
-    enum Images
+    private TextMeshProUGUI timer;
+    private GameObject stageName;
+    private GameObject stagePanel;
+    enum Buttons
     {
         Start,
-        Setting
+        Etc,
+        Help
+    }
+    enum Images
+    {
+        StagePanel
     }
     enum TMPro
     {
-
+        Timer,
+        StageName
     }
-    private void Start() { init(); }
+    private void Start() 
+    {
+        init();
+        Transform pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform;
+
+        RectTransform rectTransform = this.gameObject.GetComponent<RectTransform>();
+        rectTransform.anchorMax = new Vector2(1, 1);
+        rectTransform.offsetMin = new Vector2(0, 0);
+        rectTransform.offsetMax = new Vector2(1, 1);
+        this.gameObject.transform.SetParent(pos);
+    }
+    private void Update() { /*timer.text = "";*/ }
     protected override void init()
     {
         base.init();
+        bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));
 
-        GameObject start = get<Image>((int)Images.Start).gameObject;
-        GameObject setting = get<Image>((int)Images.Setting).gameObject;
+        GameObject start = get<Button>((int)Buttons.Start).gameObject;
+        GameObject etc = get<Button>((int)Buttons.Etc).gameObject;
+        GameObject help = get<Button>((int)Buttons.Help).gameObject;
 
-        AddUIEvent(start, (PointerEventData data) => 
-        {
-            
-        }, Define.UIEvent.Click);
-
-        AddUIEvent(setting, (PointerEventData data) =>
-        {
-            
-        }, Define.UIEvent.Click);
+        //stagePanel = get<Image>((int)Images.StagePanel).gameObject;
+        //timer = get<TextMeshProUGUI>((int)TMPro.Timer);
+        //stageName = get<TextMeshProUGUI>((int)TMPro.StageName).gameObject;
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.Timeline;
 using UnityEngine;
 public class Main_Camera : MonoBehaviour
@@ -13,6 +14,8 @@ public class Main_Camera : MonoBehaviour
     private void Start()
     {
         cam = GetComponent<Camera>();
+
+        cam.orthographicSize = 8;
 
         this.gameObject.transform.position = Managers.Game.player.gameObject.transform.position;
 
