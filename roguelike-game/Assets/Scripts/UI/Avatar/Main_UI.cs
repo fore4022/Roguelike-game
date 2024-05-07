@@ -32,6 +32,7 @@ public class Main_UI : UI_Scene
 
         this.gameObject.transform.SetParent(pos);
         RectTransform rectTransform = this.gameObject.GetComponent<RectTransform>();
+
         rectTransform.sizeDelta = pos.GetComponentInParent<RectTransform>().rect.size;
         rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
         rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
