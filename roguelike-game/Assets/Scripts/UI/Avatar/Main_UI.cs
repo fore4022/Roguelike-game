@@ -30,13 +30,14 @@ public class Main_UI : UI_Scene
         init();
         Transform pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform;
 
-        RectTransform rectTransform = this.gameObject.GetComponent<RectTransform>();
-        rectTransform.anchorMax = new Vector2(1, 1);
-        rectTransform.offsetMin = new Vector2(0, 0);
-        rectTransform.offsetMax = new Vector2(1, 1);
         this.gameObject.transform.SetParent(pos);
+        RectTransform rectTransform = this.gameObject.GetComponent<RectTransform>();
+        rectTransform.sizeDelta = pos.GetComponentInParent<RectTransform>().rect.size;
+        rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+        rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+        rectTransform.anchoredPosition = Vector2.zero;
     }
-    private void Update() { /*timer.text = "";*/ }
+    private void Update() { timer.text = ""; }
     protected override void init()
     {
         base.init();
@@ -48,8 +49,8 @@ public class Main_UI : UI_Scene
         GameObject etc = get<Button>((int)Buttons.Etc).gameObject;
         GameObject help = get<Button>((int)Buttons.Help).gameObject;
 
-        //stagePanel = get<Image>((int)Images.StagePanel).gameObject;
-        //timer = get<TextMeshProUGUI>((int)TMPro.Timer);
-        //stageName = get<TextMeshProUGUI>((int)TMPro.StageName).gameObject;
+        stagePanel = get<Image>((int)Images.StagePanel).gameObject;
+        timer = get<TextMeshProUGUI>((int)TMPro.Timer);
+        stageName = get<TextMeshProUGUI>((int)TMPro.StageName).gameObject;
     }
 }

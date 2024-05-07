@@ -15,7 +15,7 @@ public class Input_Manager
 #endif
 #if UNITY_ANDROID
         {
-            keyAction.Invoke();
+            if(keyAction != null) { keyAction.Invoke(); }
         }
 #endif
     }

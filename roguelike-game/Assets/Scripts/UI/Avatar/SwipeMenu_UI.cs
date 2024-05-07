@@ -33,7 +33,9 @@ public class SwipeMenu_UI : UI_Scene
     private void Start()
     {
         init();
+        Managers.UI.showSceneUI<Store_UI>("Store");
         Managers.UI.showSceneUI<Main_UI>("Main");
+        Managers.UI.showSceneUI<Belongings_UI>("Belongings");
     }
     protected override void init()
     {
