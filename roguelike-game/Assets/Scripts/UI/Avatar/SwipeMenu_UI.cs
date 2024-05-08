@@ -9,9 +9,6 @@ using System.Linq;
 using System.IO;
 public class SwipeMenu_UI : UI_Scene
 {
-    public GameObject storePage;
-    public GameObject mainPage;
-    public GameObject belongingsPage;
     enum Buttons
     {
         StoreButton,
@@ -20,15 +17,14 @@ public class SwipeMenu_UI : UI_Scene
     }
     enum Images
     {
-        StorePage,
-        MainPage,
-        BelongingsPage
+        DragAndDropHandler
     }
     enum TMPro
     {
         StoreTxt,
         MainTxt,
-        BelongingsTxt
+        BelongingsTxt,
+        Gold
     }
     private void Start()
     {
@@ -44,13 +40,10 @@ public class SwipeMenu_UI : UI_Scene
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));
 
-        storePage = get<Image>((int)Images.StorePage).gameObject;
-        mainPage = get<Image>((int)Images.MainPage).gameObject;
-        belongingsPage = get<Image>((int)Images.BelongingsPage).gameObject;
-
         GameObject storeButton = get<Button>((int)Buttons.StoreButton).gameObject;
         GameObject mainButton = get<Button>((int)Buttons.MainButton).gameObject;
         GameObject belongingsButton = get<Button>((int)Buttons.BelongingsButton).gameObject;
+        GameObject dragAndDropHandler = get<Image>((int)Images.DragAndDropHandler).gameObject;
 
         AddUIEvent(storeButton, (PointerEventData data) =>
         {
@@ -66,5 +59,18 @@ public class SwipeMenu_UI : UI_Scene
         {
 
         }, Define.UIEvent.Click);
+
+        AddUIEvent(dragAndDropHandler, (PointerEventData data) =>
+        {
+            
+        }, Define.UIEvent.BeginDrag);
+        AddUIEvent(dragAndDropHandler, (PointerEventData data) =>
+        {
+            
+        }, Define.UIEvent.Drag);
+        AddUIEvent(dragAndDropHandler, (PointerEventData data) =>
+        {
+            
+        }, Define.UIEvent.EndDrag);
     }
 }

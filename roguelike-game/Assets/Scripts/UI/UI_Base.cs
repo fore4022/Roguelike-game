@@ -36,10 +36,6 @@ public abstract class UI_Base : Util
                 evt.OnClickHandler -= action;
                 evt.OnClickHandler += action;
                 break;
-            case Define.UIEvent.Drag:
-                evt.OnDragHandler -= action;
-                evt.OnDragHandler += action;
-                break;
             case Define.UIEvent.Enter:
                 evt.OnPointerEnterHandler -= action;
                 evt.OnPointerEnterHandler += action;
@@ -55,6 +51,18 @@ public abstract class UI_Base : Util
             case Define.UIEvent.Up:
                 evt.OnPointerUpHandler -= action;
                 evt.OnPointerUpHandler += action;
+                break;
+            case Define.UIEvent.BeginDrag:
+                evt.OnBeginDragHandler -= action;
+                evt.OnBeginDragHandler += action;
+                break;
+            case Define.UIEvent.Drag:
+                evt.OnDragHandler -= action;
+                evt.OnDragHandler += action;
+                break;
+            case Define.UIEvent.EndDrag:
+                evt.OnEndDragHandler -= action;
+                evt.OnEndDragHandler += action;
                 break;
         }
     }

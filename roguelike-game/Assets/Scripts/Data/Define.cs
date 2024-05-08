@@ -7,11 +7,13 @@ public class Define
     public enum UIEvent
     {
         Click,
-        Drag,
         Enter,
         Exit,
         Down,
-        Up
+        Up,
+        BeginDrag,
+        Drag,
+        EndDrag
     }
     public enum Effect
     {

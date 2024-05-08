@@ -60,8 +60,7 @@ public class Store_UI : UI_Scene
         price3,
         price4,
         price5,
-        price6,
-        Gold
+        price6
     }
     private void Start()
     {
