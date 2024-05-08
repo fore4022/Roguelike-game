@@ -23,6 +23,7 @@ public class Main_UI : UI_Scene
     enum TMPro
     {
         Timer,
+        Gold,
         StageName
     }
     private void Start() 

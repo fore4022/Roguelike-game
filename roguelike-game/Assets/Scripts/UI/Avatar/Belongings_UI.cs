@@ -12,6 +12,12 @@ public class Belongings_UI : UI_Scene
     }
     enum Images
     {
+        Panel,
+        Panel1,
+        Panel2
+    }
+    enum Sliders
+    {
 
     }
     enum TMPro
@@ -21,7 +27,7 @@ public class Belongings_UI : UI_Scene
     private void Start() 
     {
         init();
-        Transform pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform;
+        Transform pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform;//scene
 
         this.gameObject.transform.SetParent(pos);
         RectTransform rectTransform = this.gameObject.GetComponent<RectTransform>();
@@ -36,6 +42,7 @@ public class Belongings_UI : UI_Scene
         base.init();
         bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
+        bind<Slider>(typeof(Sliders));
         bind<TextMeshProUGUI>(typeof(TMPro));
 
 

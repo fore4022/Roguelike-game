@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using TMPro;
 public class Store_UI : UI_Scene
 {
+    public List<Item> itemDatas = new List<Item>();
+
     private GameObject merchandise1;
     private GameObject merchandise2;
     private GameObject merchandise3;
@@ -20,13 +22,6 @@ public class Store_UI : UI_Scene
     private TextMeshProUGUI productName5;
     private TextMeshProUGUI productName6;
 
-    private TextMeshProUGUI rating1;
-    private TextMeshProUGUI rating2;
-    private TextMeshProUGUI rating3;
-    private TextMeshProUGUI rating4;
-    private TextMeshProUGUI rating5;
-    private TextMeshProUGUI rating6;
-
     private TextMeshProUGUI price1;
     private TextMeshProUGUI price2;
     private TextMeshProUGUI price3;
@@ -35,6 +30,12 @@ public class Store_UI : UI_Scene
     private TextMeshProUGUI price6;
     enum Buttons
     {
+        Purchase1,
+        Purchase2,
+        Purchase3,
+        Purchase4,
+        Purchase5,
+        Purchase6,
         Refresh
     }
     enum Images
@@ -54,18 +55,13 @@ public class Store_UI : UI_Scene
         ProductName4,
         ProductName5,
         ProductName6,
-        Rating1,
-        Rating2,
-        Rating3,
-        Rating4,
-        Rating5,
-        Rating6,
         price1,
         price2,
         price3,
         price4,
         price5,
-        price6
+        price6,
+        Gold
     }
     private void Start()
     {
@@ -88,5 +84,13 @@ public class Store_UI : UI_Scene
         bind<TextMeshProUGUI>(typeof(TMPro));
 
         GameObject refresh = get<Button>((int)Buttons.Refresh).gameObject;
+
+        for(int i = 0; i < 6; i++)
+        {
+            AddUIEvent(get<Button>(i).gameObject, (PointerEventData data) =>
+            {
+                
+            }, Define.UIEvent.Click);
+        }
     }
 }

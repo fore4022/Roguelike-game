@@ -6,10 +6,16 @@ using UnityEngine.EventSystems;
 using TMPro;
 public class Menu_UI : UI_Popup
 {
+    private GameObject reStart;
+    private GameObject belongings;
+    private GameObject quit;
+    private GameObject setting;
+    private Image panel;
     enum Images
     {
+        Panel,
         ReStart,
-        Stat,
+        Belongings,
         Quit,
         Setting
     }
@@ -23,17 +29,16 @@ public class Menu_UI : UI_Popup
     {
         base.init();
         bind<Image>(typeof(Images));
-        GameObject reStart = get<Image>((int)Images.ReStart).gameObject;
-        GameObject stat = get<Image>((int)Images.Stat).gameObject;
-        GameObject quit = get<Image>((int)Images.Quit).gameObject;
-        GameObject setting = get<Image>((int)Images.Setting).gameObject;
+        reStart = get<Image>((int)Images.ReStart).gameObject;
+        belongings = get<Image>((int)Images.Belongings).gameObject;
+        quit = get<Image>((int)Images.Quit).gameObject;
+        setting = get<Image>((int)Images.Setting).gameObject;
+        panel = get<Image>((int)Images.Panel);
 
-        AddUIEvent(reStart, (PointerEventData data) =>
-        {
-            Time.timeScale = 1f;
-            Managers.UI.closePopupUI();
-        }, Define.UIEvent.Click); ;
-        AddUIEvent(stat, (PointerEventData data) => { Managers.UI.showPopupUI<Stat_UI>("Stat"); }, Define.UIEvent.Click);
+        panel.color = new Color(255f, 255f, 255f, 0.3f);
+
+        AddUIEvent(reStart, (PointerEventData data) => { StartCoroutine(rStart()); }, Define.UIEvent.Click); ;
+        AddUIEvent(belongings, (PointerEventData data) => { Managers.UI.showSceneUI<Belongings_UI>("Belongings"); }, Define.UIEvent.Click);
         AddUIEvent(quit, (PointerEventData data) => 
         {
             Managers.UI.closePopupUI();
@@ -43,5 +48,26 @@ public class Menu_UI : UI_Popup
         {
             //
         }, Define.UIEvent.Click);
+    }
+    private IEnumerator rStart()
+    {
+        reStart.SetActive(false);
+        belongings.SetActive(false);
+        quit.SetActive(false);
+        setting.SetActive(false);
+
+        int i = 0;
+        while(true)
+        {
+            float value = 1f - (i / 255f);
+            panel.color = new Color(value, value, value, 0.3f);
+            i += 2;
+            if (i >= 160) { break; }
+            yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
+        }
+
+        Managers.Game.stopWatch.Start();
+        Time.timeScale = 1f;
+        Managers.UI.closePopupUI();
     }
 }

@@ -18,11 +18,8 @@ public class Pause_UI : UI_Scene
         GameObject pause = get<Image>((int)Images.Pause).gameObject;
         AddUIEvent(pause, (PointerEventData data) => 
         {
+            Managers.Game.stopWatch.Stop();
             Managers.UI.showPopupUI<Menu_UI>("Menu");
         }, Define.UIEvent.Click); 
-        AddUIEvent(pause, (PointerEventData data) =>
-        {
-
-        }, Define.UIEvent.Enter);
     }
 }

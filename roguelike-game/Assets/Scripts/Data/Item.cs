@@ -4,8 +4,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item", menuName = "Create New Item/New Item")]
 public class Item : ScriptableObject
 {
+    public enum Rating
+    {
+
+    }
+
     public string itemName;
     public string explanation;
+    public string itemImage;
 
     public int hp = 1;
     public int damage = 1;

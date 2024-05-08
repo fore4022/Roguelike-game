@@ -6,15 +6,15 @@ using Unity.VisualScripting;
 using UnityEngine;
 public class SpawnMonster : MonoBehaviour
 {
-    private float xRange = 7.5f;
-    private float yRange = 11f;
+    private float xRange = 9.5f;
+    private float yRange = 13f;
     public IEnumerator Spawn()
     {
         GameObject go;
         float seconds = Managers.Game.creationCycle;
         while (Managers.Game.isSpawn)
         {
-            if (Managers.Game.minute != 0 && (((Managers.Game.minute % 8 == 0) && (Managers.Game.second % 8 == 0)) || Managers.Game.minute % 25 == 0)) { Managers.Game.inBattle = true; } // 8분이 아니고, 시간이 0이 아니고, 25분이 아니면 inBattle = true;
+            if (Managers.Game.minute != 0 && (((Managers.Game.minute % 8 == 0) && (Managers.Game.second % 8 == 0)) || Managers.Game.minute % 25 == 0)) { Managers.Game.inBattle = true; }
 
             if (!Managers.Game.inBattle)
             {
