@@ -10,11 +10,12 @@ using UnityEditor.Experimental.GraphView;
 
 public class SwipeMenu_UI : UI_Scene
 {
-    public float relocationDelay;
+    public float relocationDelay = 0.15f;
 
     private Vector2 enterPoint;
     private Vector2 direction;
 
+    private float relocationValue;
     private int origin;
 
     private RectTransform panel;
@@ -39,6 +40,9 @@ public class SwipeMenu_UI : UI_Scene
     private void Start()
     {
         init();
+
+        relocationValue = this.gameObject.GetComponent<RectTransform>().sizeDelta.x;
+
         Managers.UI.showSceneUI<Store_UI>("Store");
         Managers.UI.showSceneUI<Main_UI>("Main");
         Managers.UI.showSceneUI<Belongings_UI>("Belongings");
@@ -111,7 +115,7 @@ public class SwipeMenu_UI : UI_Scene
         }, Define.UIEvent.Drag);
         AddUIEvent(dragAndDropHandler, (PointerEventData data) =>
         {
-            StartCoroutine(relocation());
+            if(direction.x > relocationValue / 3) { StartCoroutine(relocation()); }
         }, Define.UIEvent.EndDrag);
     }
     private IEnumerator relocation()
@@ -121,10 +125,9 @@ public class SwipeMenu_UI : UI_Scene
         if(direction.x > 0) { origin++; }
         else { origin--; }
 
-        Debug.Log((Mathf.Abs(direction.x)));
-        Debug.Log(Managers.Game.camera_w);
-        while(timer == relocationDelay / (Mathf.Abs(direction.x) / Managers.Game.camera_w))
+        while (timer == relocationDelay / (Mathf.Abs(direction.x) / relocationValue))
         {
+            panel.position += new Vector3((relocationValue - Mathf.Abs(direction.x)) * (relocationDelay / (Mathf.Abs(direction.x) / relocationValue)), 0, 0) * origin;
             timer += Time.deltaTime;
             yield return null;
         }

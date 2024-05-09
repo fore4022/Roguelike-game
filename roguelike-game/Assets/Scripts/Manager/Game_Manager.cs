@@ -26,8 +26,8 @@ public class Game_Manager
     public float minute { get { return stopWatch.Elapsed.Minutes; } }
     public float second { get { return stopWatch.Elapsed.Seconds; } }
 
-    public float camera_h;
-    public float camera_w;
+    public float camera_h { get { return Camera.main.orthographicSize * 2; } }
+    public float camera_w { get { return Camera.main.orthographicSize * 2 * Camera.main.aspect; } }
 
     public float basicExp = 55;
     public float creationCycle;
@@ -38,12 +38,6 @@ public class Game_Manager
 
     public bool isSpawn;
     public bool inBattle;
-
-    private void Start()
-    {
-        camera_h = Camera.main.orthographicSize * 2;
-        camera_w = Camera.main.orthographicSize * 2 * Camera.main.aspect;
-    }
     private void init(string Theme)
     {
         creationCycle = 1f;
