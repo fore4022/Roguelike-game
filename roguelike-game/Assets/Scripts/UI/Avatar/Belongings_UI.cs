@@ -15,6 +15,7 @@ public class Belongings_UI : UI_Scene
         Panel,
         Panel1,
         Panel2
+            //Gold
     }
     enum Sliders
     {

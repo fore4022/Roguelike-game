@@ -39,11 +39,13 @@ public class Game_Manager
     public bool isSpawn;
     public bool inBattle;
 
-    private void init(string Theme)
+    private void Start()
     {
         camera_h = Camera.main.orthographicSize * 2;
         camera_w = Camera.main.orthographicSize * 2 * Camera.main.aspect;
-
+    }
+    private void init(string Theme)
+    {
         creationCycle = 1f;
         isSpawn = true;
         inBattle = false;

@@ -5,10 +5,19 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System.Linq;
 using System.IO;
+using UnityEditor.Experimental.GraphView;
+
 public class SwipeMenu_UI : UI_Scene
 {
+    public float relocationDelay;
+
+    private Vector2 enterPoint;
+    private Vector2 direction;
+
+    private int origin;
+
+    private RectTransform panel;
     enum Buttons
     {
         StoreButton,
@@ -17,15 +26,16 @@ public class SwipeMenu_UI : UI_Scene
     }
     enum Images
     {
-        DragAndDropHandler
+        DragAndDropHandler,
+        Panel
     }
     enum TMPro
     {
         StoreTxt,
         MainTxt,
-        BelongingsTxt,
-        Gold
+        BelongingsTxt
     }
+    private void OnEnable() { origin = 0; }
     private void Start()
     {
         init();
@@ -45,32 +55,78 @@ public class SwipeMenu_UI : UI_Scene
         GameObject belongingsButton = get<Button>((int)Buttons.BelongingsButton).gameObject;
         GameObject dragAndDropHandler = get<Image>((int)Images.DragAndDropHandler).gameObject;
 
+        panel = get<Image>((int)Images.Panel).gameObject.GetComponent<RectTransform>();
+        panel.pivot = panel.position = new Vector2(0, 0);
+
         AddUIEvent(storeButton, (PointerEventData data) =>
         {
-
+            origin = -1;
+            StartCoroutine(relocation());
         }, Define.UIEvent.Click);
 
         AddUIEvent(mainButton, (PointerEventData data) =>
         {
-
+            origin = 0;
+            StartCoroutine(relocation());
         }, Define.UIEvent.Click);
 
         AddUIEvent(belongingsButton, (PointerEventData data) =>
         {
-
+            origin = 1;
+            StartCoroutine(relocation());
         }, Define.UIEvent.Click);
 
         AddUIEvent(dragAndDropHandler, (PointerEventData data) =>
         {
-            
+#if UNITY_EDITOR
+            enterPoint = Input.mousePosition;
+#endif
+#if UNITY_ANDROID
+            enterPoint = Input.GetTouch(0).position;
+#endif
         }, Define.UIEvent.BeginDrag);
         AddUIEvent(dragAndDropHandler, (PointerEventData data) =>
         {
-            
+#if UNITY_EDITOR
+            direction = (Vector2)Input.mousePosition - enterPoint;
+#endif
+#if UNITY_ANDROID
+            direction = Input.GetTouch(0).position - enterPoint;
+#endif
+            if(direction.x != 0) 
+            {
+                switch(origin)
+                {
+                    case -1:
+                        if(direction.x > 0) { panel.position = new Vector3(direction.x, 0, 0); }
+                        break;
+                    case 1:
+                        if(direction.x < 0) { panel.position = new Vector3(direction.x, 0, 0); }
+                        break;
+                    default:
+                        panel.position = new Vector3(direction.x, 0, 0);
+                        break;
+                }
+            }
         }, Define.UIEvent.Drag);
         AddUIEvent(dragAndDropHandler, (PointerEventData data) =>
         {
-            
+            StartCoroutine(relocation());
         }, Define.UIEvent.EndDrag);
+    }
+    private IEnumerator relocation()
+    {
+        float timer = 0;
+
+        if(direction.x > 0) { origin++; }
+        else { origin--; }
+
+        Debug.Log((Mathf.Abs(direction.x)));
+        Debug.Log(Managers.Game.camera_w);
+        while(timer == relocationDelay / (Mathf.Abs(direction.x) / Managers.Game.camera_w))
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
     }
 }
