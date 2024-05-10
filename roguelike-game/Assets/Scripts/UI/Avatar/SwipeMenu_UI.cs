@@ -104,13 +104,13 @@ public class SwipeMenu_UI : UI_Scene
                 switch (origin)
                 {
                     case 1:
-                        if (direction.x < 0) { panel.position = new Vector3(direction.x, 0, 0); }
+                        if (direction.x < 0) { panel.position = new Vector3(direction.x + relocationValue * origin, 0, 0); }
                         break;
                     case 2:
-                        if (direction.x > 0) { panel.position = new Vector3(direction.x, 0, 0); }
+                        if (direction.x > 0) { panel.position = new Vector3(direction.x + relocationValue * origin, 0, 0); }
                         break;
                     default:
-                        panel.position = new Vector3(direction.x, 0, 0);
+                        panel.position = new Vector3(direction.x + relocationValue * origin, 0, 0);
                         break;
                 }
             }
@@ -121,19 +121,32 @@ public class SwipeMenu_UI : UI_Scene
     {
         float timer = 0;
 
-        if (direction.x > relocationValue / 3)
+        if(direction != Vector2.zero)
         {
-            if (direction.x > 0 && origin < 1) { origin++; }
-            else if (direction.x < 0 && origin > -1) { origin--; }
+            if (Mathf.Abs(direction.x) > relocationValue / 3)
+            {
+                if (direction.x > 0 && origin < 1) { origin++; }
+                else if (direction.x < 0 && origin > -1) { origin--; }
+            }
+            while (timer <= relocationDelay / (Mathf.Abs(direction.x) / relocationValue))
+            {
+                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationDelay / (Mathf.Abs(direction.x) / relocationValue))), 0f, 0f);
+                timer += Time.deltaTime;
+                yield return null;
+            }
         }
-
-        while (timer <= relocationDelay / (Mathf.Abs(direction.x) / relocationValue))
+        else
         {
-            panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationDelay / (Mathf.Abs(direction.x) / relocationValue))), 0f, 0f);
-            timer += Time.deltaTime;
-            yield return null;
+            while (timer <= relocationDelay * 3)
+            {
+                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationDelay * 3)), 0f, 0f);
+                timer += Time.deltaTime;
+                yield return null;
+            }
         }
 
         panel.position = new Vector3(relocationValue * origin, 0f, 0f);
+
+        direction = Vector2.zero;
     }
 }
