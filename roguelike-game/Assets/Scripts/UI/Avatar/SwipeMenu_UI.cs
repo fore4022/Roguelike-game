@@ -7,10 +7,10 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.IO;
 using UnityEditor.Experimental.GraphView;
-
 public class SwipeMenu_UI : UI_Scene
 {
-    public float relocationDelay = 0.15f;
+    public float relocationDelay = 0.25f;
+    public float pivot = 0f;
 
     private Vector2 enterPoint;
     private Vector2 direction;
@@ -60,11 +60,12 @@ public class SwipeMenu_UI : UI_Scene
         GameObject dragAndDropHandler = get<Image>((int)Images.DragAndDropHandler).gameObject;
 
         panel = get<Image>((int)Images.Panel).gameObject.GetComponent<RectTransform>();
-        panel.pivot = panel.position = new Vector2(0, 0);
+        panel.pivot = new Vector2(pivot, 0);
+        panel.position = Vector2.zero;
 
         AddUIEvent(storeButton, (PointerEventData data) =>
         {
-            origin = -1;
+            origin = 1;
             StartCoroutine(relocation());
         }, Define.UIEvent.Click);
 
@@ -76,7 +77,7 @@ public class SwipeMenu_UI : UI_Scene
 
         AddUIEvent(belongingsButton, (PointerEventData data) =>
         {
-            origin = 1;
+            origin = -1;
             StartCoroutine(relocation());
         }, Define.UIEvent.Click);
 
@@ -88,6 +89,7 @@ public class SwipeMenu_UI : UI_Scene
 #if UNITY_ANDROID
             enterPoint = Input.GetTouch(0).position;
 #endif
+            Debug.Log(enterPoint);
         }, Define.UIEvent.BeginDrag);
         AddUIEvent(dragAndDropHandler, (PointerEventData data) =>
         {
@@ -99,13 +101,13 @@ public class SwipeMenu_UI : UI_Scene
 #endif
             if(direction.x != 0) 
             {
-                switch(origin)
+                switch (origin)
                 {
-                    case -1:
-                        if(direction.x > 0) { panel.position = new Vector3(direction.x, 0, 0); }
-                        break;
                     case 1:
-                        if(direction.x < 0) { panel.position = new Vector3(direction.x, 0, 0); }
+                        if (direction.x < 0) { panel.position = new Vector3(direction.x, 0, 0); }
+                        break;
+                    case 2:
+                        if (direction.x > 0) { panel.position = new Vector3(direction.x, 0, 0); }
                         break;
                     default:
                         panel.position = new Vector3(direction.x, 0, 0);
@@ -113,23 +115,25 @@ public class SwipeMenu_UI : UI_Scene
                 }
             }
         }, Define.UIEvent.Drag);
-        AddUIEvent(dragAndDropHandler, (PointerEventData data) =>
-        {
-            if(direction.x > relocationValue / 3) { StartCoroutine(relocation()); }
-        }, Define.UIEvent.EndDrag);
+        AddUIEvent(dragAndDropHandler, (PointerEventData data) => { StartCoroutine(relocation()); }, Define.UIEvent.EndDrag);
     }
     private IEnumerator relocation()
     {
         float timer = 0;
 
-        if(direction.x > 0) { origin++; }
-        else { origin--; }
-
-        while (timer == relocationDelay / (Mathf.Abs(direction.x) / relocationValue))
+        if (direction.x > relocationValue / 3)
         {
-            panel.position += new Vector3((relocationValue - Mathf.Abs(direction.x)) * (relocationDelay / (Mathf.Abs(direction.x) / relocationValue)), 0, 0) * origin;
+            if (direction.x > 0 && origin < 1) { origin++; }
+            else if (direction.x < 0 && origin > -1) { origin--; }
+        }
+
+        while (timer <= relocationDelay / (Mathf.Abs(direction.x) / relocationValue))
+        {
+            panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationDelay / (Mathf.Abs(direction.x) / relocationValue))), 0f, 0f);
             timer += Time.deltaTime;
             yield return null;
         }
+
+        panel.position = new Vector3(relocationValue * origin, 0f, 0f);
     }
 }
