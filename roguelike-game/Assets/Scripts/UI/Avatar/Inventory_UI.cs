@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-public class Belongings_UI : UI_Scene
+public class Inventory_UI : UI_Scene
 {
     enum Buttons
     {

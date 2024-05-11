@@ -23,7 +23,7 @@ public class SwipeMenu_UI : UI_Scene
     {
         StoreButton,
         MainButton,
-        BelongingsButton
+        InventoryButton
     }
     enum Images
     {
@@ -45,7 +45,7 @@ public class SwipeMenu_UI : UI_Scene
 
         Managers.UI.showSceneUI<Store_UI>("Store");
         Managers.UI.showSceneUI<Main_UI>("Main");
-        Managers.UI.showSceneUI<Belongings_UI>("Belongings");
+        Managers.UI.showSceneUI<Inventory_UI>("Inventory");
     }
     protected override void init()
     {
@@ -56,7 +56,7 @@ public class SwipeMenu_UI : UI_Scene
 
         GameObject storeButton = get<Button>((int)Buttons.StoreButton).gameObject;
         GameObject mainButton = get<Button>((int)Buttons.MainButton).gameObject;
-        GameObject belongingsButton = get<Button>((int)Buttons.BelongingsButton).gameObject;
+        GameObject inventoryButton = get<Button>((int)Buttons.InventoryButton).gameObject;
         GameObject dragAndDropHandler = get<Image>((int)Images.DragAndDropHandler).gameObject;
 
         panel = get<Image>((int)Images.Panel).gameObject.GetComponent<RectTransform>();
@@ -75,7 +75,7 @@ public class SwipeMenu_UI : UI_Scene
             StartCoroutine(relocation());
         }, Define.UIEvent.Click);
 
-        AddUIEvent(belongingsButton, (PointerEventData data) =>
+        AddUIEvent(inventoryButton, (PointerEventData data) =>
         {
             origin = -1;
             StartCoroutine(relocation());
@@ -99,7 +99,7 @@ public class SwipeMenu_UI : UI_Scene
 #if UNITY_ANDROID
             direction = Input.GetTouch(0).position - enterPoint;
 #endif
-            if(direction.x != 0) 
+            if(direction.x != 0 && Mathf.Abs(direction.x) > Mathf.Abs(direction.y)) 
             {
                 switch (origin)
                 {

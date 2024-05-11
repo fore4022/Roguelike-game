@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 3648050915879869952}
   - component: {fileID: 5628208602864680013}
   m_Layer: 5
-  m_Name: BelongingsTxt
+  m_Name: InventoryTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -777,7 +777,7 @@ GameObject:
   - component: {fileID: 7721585242840256127}
   - component: {fileID: 8696009936021229912}
   m_Layer: 5
-  m_Name: BelongingsPage
+  m_Name: InventoryPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1066,7 +1066,7 @@ GameObject:
   - component: {fileID: 8829494098216618950}
   - component: {fileID: 7442113958923872674}
   m_Layer: 5
-  m_Name: BelongingsButton
+  m_Name: InventoryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
