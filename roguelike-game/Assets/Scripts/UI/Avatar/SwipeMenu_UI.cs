@@ -115,7 +115,7 @@ public class SwipeMenu_UI : UI_Scene
                 }
             }
         }, Define.UIEvent.Drag);
-        AddUIEvent(dragAndDropHandler, (PointerEventData data) => { StartCoroutine(relocation()); }, Define.UIEvent.EndDrag);
+        AddUIEvent(dragAndDropHandler, (PointerEventData data) => { StartCoroutine(relocation()); }, Define.UIEvent.EndDrag);//
     }
     private IEnumerator relocation()
     {
