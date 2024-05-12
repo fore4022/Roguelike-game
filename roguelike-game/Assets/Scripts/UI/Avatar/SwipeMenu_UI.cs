@@ -12,8 +12,8 @@ public class SwipeMenu_UI : UI_Scene
     public float relocationDelay = 0.25f;
     public float pivot = 0f;
 
-    private Vector2 enterPoint;
-    private Vector2 direction;
+    public Vector2 enterPoint;
+    public Vector2 direction;
 
     private float relocationValue;
     private int origin;
@@ -89,7 +89,6 @@ public class SwipeMenu_UI : UI_Scene
 #if UNITY_ANDROID
             enterPoint = Input.GetTouch(0).position;
 #endif
-            Debug.Log(enterPoint);
         }, Define.UIEvent.BeginDrag);
         AddUIEvent(dragAndDropHandler, (PointerEventData data) =>
         {
@@ -117,7 +116,7 @@ public class SwipeMenu_UI : UI_Scene
         }, Define.UIEvent.Drag);
         AddUIEvent(dragAndDropHandler, (PointerEventData data) => { StartCoroutine(relocation()); }, Define.UIEvent.EndDrag);//
     }
-    private IEnumerator relocation()
+    public IEnumerator relocation()
     {
         float timer = 0;
 
