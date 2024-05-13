@@ -125,7 +125,7 @@ public class SwipeMenu_UI : UI_Scene
     public IEnumerator relocation()
     {
         float timer = 0;
-
+        
         if(direction != Vector2.zero)
         {
             if (Mathf.Abs(direction.x) > relocationValue / 3)
@@ -134,10 +134,20 @@ public class SwipeMenu_UI : UI_Scene
                 else if (direction.x < 0 && origin > -1) { origin--; }
             }
 
-            while (timer <= relocationDelay / (Mathf.Abs(direction.x) / relocationValue))
+            while (timer <= (Mathf.Abs(direction.x) / relocationValue))
             {
-                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationDelay / (Mathf.Abs(direction.x) / relocationValue))), 0f, 0f);
-                Debug.Log(panel.position);
+                if(Mathf.Lerp(relocationValue * origin, panel.position.x, (Mathf.Abs(direction.x) / relocationValue)) > relocationValue * origin) { break; }
+
+                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (Mathf.Abs(direction.x) / relocationValue)), 0f, 0f);
+                timer += Mathf.Abs(direction.x) / relocationValue;
+                yield return null; 
+            }
+        }
+        else
+        {
+            while (timer <= relocationDelay * 3)
+            {
+                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, relocationDelay * 3), 0f, 0f);
                 timer += Time.deltaTime;
                 yield return null;
             }
