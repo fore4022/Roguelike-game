@@ -47,6 +47,27 @@ public class SwipeMenu_UI : UI_Scene
         Managers.UI.showSceneUI<Main_UI>("Main");
         Managers.UI.showSceneUI<Inventory_UI>("Inventory");
     }
+    private void Update()
+    {
+        if(direction != Vector2.zero)
+        {
+            if (direction.x != 0 && Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+            {
+                switch (origin)
+                {
+                    case 1:
+                        if (direction.x < 0) { panel.position = new Vector3(direction.x + relocationValue * origin, 0, 0); }
+                        break;
+                    case -1:
+                        if (direction.x > 0) { panel.position = new Vector3(direction.x + relocationValue * origin, 0, 0); }
+                        break;
+                    default:
+                        panel.position = new Vector3(direction.x + relocationValue * origin, 0, 0);
+                        break;
+                }
+            }
+        }
+    }
     protected override void init()
     {
         base.init();
@@ -98,23 +119,8 @@ public class SwipeMenu_UI : UI_Scene
 #if UNITY_ANDROID
             direction = Input.GetTouch(0).position - enterPoint;
 #endif
-            if(direction.x != 0 && Mathf.Abs(direction.x) > Mathf.Abs(direction.y)) 
-            {
-                switch (origin)
-                {
-                    case 1:
-                        if (direction.x < 0) { panel.position = new Vector3(direction.x + relocationValue * origin, 0, 0); }
-                        break;
-                    case 2:
-                        if (direction.x > 0) { panel.position = new Vector3(direction.x + relocationValue * origin, 0, 0); }
-                        break;
-                    default:
-                        panel.position = new Vector3(direction.x + relocationValue * origin, 0, 0);
-                        break;
-                }
-            }
         }, Define.UIEvent.Drag);
-        AddUIEvent(dragAndDropHandler, (PointerEventData data) => { StartCoroutine(relocation()); }, Define.UIEvent.EndDrag);//
+        AddUIEvent(dragAndDropHandler, (PointerEventData data) => { StartCoroutine(relocation()); }, Define.UIEvent.EndDrag);
     }
     public IEnumerator relocation()
     {
@@ -127,18 +133,11 @@ public class SwipeMenu_UI : UI_Scene
                 if (direction.x > 0 && origin < 1) { origin++; }
                 else if (direction.x < 0 && origin > -1) { origin--; }
             }
+
             while (timer <= relocationDelay / (Mathf.Abs(direction.x) / relocationValue))
             {
                 panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationDelay / (Mathf.Abs(direction.x) / relocationValue))), 0f, 0f);
-                timer += Time.deltaTime;
-                yield return null;
-            }
-        }
-        else
-        {
-            while (timer <= relocationDelay * 3)
-            {
-                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationDelay * 3)), 0f, 0f);
+                Debug.Log(panel.position);
                 timer += Time.deltaTime;
                 yield return null;
             }
