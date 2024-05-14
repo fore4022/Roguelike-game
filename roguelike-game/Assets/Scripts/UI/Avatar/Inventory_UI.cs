@@ -23,10 +23,6 @@ public class Inventory_UI : UI_Scene
     {
         InventorySlider
     }
-    enum TMPro
-    {
-        Gold
-    }
     private void Start() 
     {
         if (SceneManager.GetActiveScene().name == "Main")
@@ -51,7 +47,6 @@ public class Inventory_UI : UI_Scene
         bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
         bind<ScrollRect>(typeof(ScrollViews));
-        bind<TextMeshProUGUI>(typeof(TMPro));
 
         GameObject inventorySlider = get<ScrollRect>((int)ScrollViews.InventorySlider).gameObject;
 

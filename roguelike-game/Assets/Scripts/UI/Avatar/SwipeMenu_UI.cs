@@ -43,9 +43,9 @@ public class SwipeMenu_UI : UI_Scene
 
         relocationValue = this.gameObject.GetComponent<RectTransform>().sizeDelta.x;
 
-        Managers.UI.showSceneUI<Store_UI>();
-        Managers.UI.showSceneUI<Main_UI>();
-        Managers.UI.showSceneUI<Inventory_UI>();
+        Managers.UI.showSceneUI<Store_UI>("Store");
+        Managers.UI.showSceneUI<Main_UI>("Main");
+        Managers.UI.showSceneUI<Inventory_UI>("Inventory");
     }
     private void Update()
     {

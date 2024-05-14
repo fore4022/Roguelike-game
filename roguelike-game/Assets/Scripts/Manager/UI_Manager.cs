@@ -25,17 +25,19 @@ public class UI_Manager
         if (sort) { canvas.sortingOrder = (order++); }
         else { canvas.sortingOrder = 0; }
     }
-    public void showSceneUI<T>() where T : UI_Scene
+    public void showSceneUI<T>(string name = null) where T : UI_Scene
     {
-        GameObject go = Managers.Resource.instantiate($"UI/{typeof(T).GetType().Name.Replace("_UI", "")}");
+        if (string.IsNullOrEmpty(name)) { name = typeof(T).Name; }
+        GameObject go = Managers.Resource.instantiate($"UI/{name}");
         T scene = Util.getOrAddComponent<T>(go);
         SceneStack.Push(scene);
         go.transform.SetParent(UI.transform);
         go.GetComponent<CanvasScaler>().screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
     }
-    public void showPopupUI<T>() where T : UI_Popup
+    public void showPopupUI<T>(string name = null) where T : UI_Popup
     {
-        GameObject go = Managers.Resource.instantiate($"UI/{typeof(T).Name.Replace("_UI", "")}");
+        if (string.IsNullOrEmpty(name)) { name = typeof(T).Name; }
+        GameObject go = Managers.Resource.instantiate($"UI/{name}");
         T popup = Util.getOrAddComponent<T>(go);
         PopupStack.Push(popup);
         go.transform.SetParent(UI.transform);
