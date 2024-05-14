@@ -19,7 +19,7 @@ public class Pause_UI : UI_Scene
         AddUIEvent(pause, (PointerEventData data) => 
         {
             Managers.Game.stopWatch.Stop();
-            Managers.UI.showPopupUI<Menu_UI>("Menu");
+            Managers.UI.showPopupUI<Menu_UI>();
         }, Define.UIEvent.Click); 
     }
 }

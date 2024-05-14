@@ -38,11 +38,11 @@ public class Menu_UI : UI_Popup
         panel.color = new Color(255f, 255f, 255f, 0.3f);
 
         AddUIEvent(reStart, (PointerEventData data) => { StartCoroutine(rStart()); }, Define.UIEvent.Click); ;
-        AddUIEvent(belongings, (PointerEventData data) => { Managers.UI.showSceneUI<Inventory_UI>("Inventory"); }, Define.UIEvent.Click);
+        AddUIEvent(belongings, (PointerEventData data) => { Managers.UI.showSceneUI<Inventory_UI>(); }, Define.UIEvent.Click);
         AddUIEvent(quit, (PointerEventData data) => 
         {
             Managers.UI.closePopupUI();
-            //Managers.UI.showPopupUI<>();
+            Managers.UI.showSceneUI<Inventory_UI>();
         }, Define.UIEvent.Click);
         AddUIEvent(setting, (PointerEventData data) =>
         {

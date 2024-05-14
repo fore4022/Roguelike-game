@@ -43,9 +43,9 @@ public class SwipeMenu_UI : UI_Scene
 
         relocationValue = this.gameObject.GetComponent<RectTransform>().sizeDelta.x;
 
-        Managers.UI.showSceneUI<Store_UI>("Store");
-        Managers.UI.showSceneUI<Main_UI>("Main");
-        Managers.UI.showSceneUI<Inventory_UI>("Inventory");
+        Managers.UI.showSceneUI<Store_UI>();
+        Managers.UI.showSceneUI<Main_UI>();
+        Managers.UI.showSceneUI<Inventory_UI>();
     }
     private void Update()
     {
@@ -125,7 +125,7 @@ public class SwipeMenu_UI : UI_Scene
     public IEnumerator relocation()
     {
         float timer = 0;
-        
+
         if(direction != Vector2.zero)
         {
             if (Mathf.Abs(direction.x) > relocationValue / 3)
@@ -136,8 +136,14 @@ public class SwipeMenu_UI : UI_Scene
 
             while (timer <= (Mathf.Abs(direction.x) / relocationValue))
             {
-                if(Mathf.Lerp(relocationValue * origin, panel.position.x, (Mathf.Abs(direction.x) / relocationValue)) > relocationValue * origin) { break; }
-
+                if(direction.x > 0)
+                {
+                    if(Mathf.Lerp(relocationValue * origin, panel.position.x, (Mathf.Abs(direction.x) / relocationValue)) < relocationValue * origin) { break; }
+                }
+                else if(direction.x < 0)
+                {
+                    if(Mathf.Lerp(relocationValue * origin, panel.position.x, (Mathf.Abs(direction.x) / relocationValue)) > relocationValue * origin) { break; }
+                }
                 panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (Mathf.Abs(direction.x) / relocationValue)), 0f, 0f);
                 timer += Mathf.Abs(direction.x) / relocationValue;
                 yield return null; 

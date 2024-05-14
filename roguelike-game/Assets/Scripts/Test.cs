@@ -15,6 +15,6 @@ public class Test : MonoBehaviour
         //GameObject go = GameObject.Find("@Skill");
         //go.AddComponent<FireBall_Cast>();
 
-        Managers.UI.showSceneUI<SwipeMenu_UI>("SwipeMenu");
+        Managers.UI.showSceneUI<SwipeMenu_UI>();
     }
 }
