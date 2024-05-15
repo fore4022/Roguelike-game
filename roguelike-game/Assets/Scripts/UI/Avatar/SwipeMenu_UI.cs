@@ -133,34 +133,21 @@ public class SwipeMenu_UI : UI_Scene
                 else if (direction.x < 0 && origin > -1) { origin--; }
             }
 
-            int i = 0;
-            while (panel.position.x < relocationValue * origin)
+            while (true)
             {
-                Debug.Log(i);//
-                i++;
                 if (direction.x > 0)
                 {
-                    if (Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue) > relocationValue * origin)
-                    {
-                        Debug.Log("a");
-                        break;
-                    }
+                    if (Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue) > relocationValue * origin) { break; }
                 }
                 else if (direction.x < 0)
                 {
-                    if (Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue) > relocationValue * origin)
-                    {
-                        Debug.Log("b");
-                        Debug.Log(Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue));
-                        Debug.Log(relocationValue * origin);
-                        break;
-                    }
+                    if (Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue) < relocationValue * origin) { break; }
                 }
-                if (relocationValue - Mathf.Abs((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue)) < 10) { Debug.Log("c"); break; }
+                if (relocationValue - Mathf.Abs((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue)) < 10) { break; }
 
-                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, Mathf.Abs(direction.x) / relocationValue), 0f, 0f);
+                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue), 0f, 0f);
 
-                //if(direction != Vector2.zero) { direction = Vector2.zero; }
+                if (direction != Vector2.zero) { direction = Vector2.zero; }
                 yield return null;
             }
         }
@@ -169,6 +156,7 @@ public class SwipeMenu_UI : UI_Scene
             while (true)
             {
                 if(relocationValue - Mathf.Abs((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue)) < 10) { break; }
+
                 panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue), 0f, 0f);
                 yield return null;
             }
