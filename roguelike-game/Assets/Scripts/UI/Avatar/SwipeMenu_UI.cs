@@ -145,17 +145,17 @@ public class SwipeMenu_UI : UI_Scene
                 {
                     if(Mathf.Lerp(relocationValue * origin, panel.position.x, (Mathf.Abs(direction.x) / relocationValue)) > relocationValue * origin) { break; }
                 }
-                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (Mathf.Abs(direction.x) / relocationValue)), 0f, 0f);
+                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, Mathf.Abs(direction.x) / relocationValue), 0f, 0f);
                 timer += Mathf.Abs(direction.x) / relocationValue;
                 yield return null; 
             }
         }
         else
         {
-            while (timer <= 5)
+            while (true)
             {
-                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, 0.5f), 0f, 0f);
-                timer += Time.deltaTime;
+                if(relocationValue - Mathf.Abs((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue)) < 10) { break; }
+                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue), 0f, 0f);
                 yield return null;
             }
         }
