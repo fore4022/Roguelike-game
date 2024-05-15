@@ -15,15 +15,16 @@ public class SwipeMenu_UI : UI_Scene
     public Vector2 enterPoint;
     public Vector2 direction;
 
+    private RectTransform panel;
+
     private float relocationValue;
     private int origin;
-
-    private RectTransform panel;
     enum Buttons
     {
         StoreButton,
         MainButton,
-        InventoryButton
+        InventoryButton,
+        Etc
     }
     enum Images
     {
@@ -34,7 +35,13 @@ public class SwipeMenu_UI : UI_Scene
     {
         StoreTxt,
         MainTxt,
-        BelongingsTxt
+        BelongingsTxt,
+        Level,
+        Gold
+    }
+    enum Sliders
+    {
+        Exp
     }
     private void OnEnable() { origin = 0; }
     private void Start()
@@ -46,7 +53,6 @@ public class SwipeMenu_UI : UI_Scene
         Managers.UI.showSceneUI<Store_UI>("Store");
         Managers.UI.showSceneUI<Main_UI>("Main");
         Managers.UI.showSceneUI<Inventory_UI>("Inventory");
-        Managers.UI.showSceneUI<Information_UI>("Information");
     }
     private void Update()
     {
@@ -75,10 +81,12 @@ public class SwipeMenu_UI : UI_Scene
         bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));
+        bind<Slider>(typeof(Sliders));
 
         GameObject storeButton = get<Button>((int)Buttons.StoreButton).gameObject;
         GameObject mainButton = get<Button>((int)Buttons.MainButton).gameObject;
         GameObject inventoryButton = get<Button>((int)Buttons.InventoryButton).gameObject;
+        GameObject etc = get<Button>((int)Buttons.Etc).gameObject;
         GameObject dragAndDropHandler = get<Image>((int)Images.DragAndDropHandler).gameObject;
 
         panel = get<Image>((int)Images.Panel).gameObject.GetComponent<RectTransform>();

@@ -13,7 +13,6 @@ public class Main_UI : UI_Scene
     enum Buttons
     {
         Start,
-        Etc,
         Help
     }
     enum Images
@@ -47,7 +46,6 @@ public class Main_UI : UI_Scene
         bind<TextMeshProUGUI>(typeof(TMPro));
 
         GameObject start = get<Button>((int)Buttons.Start).gameObject;
-        GameObject etc = get<Button>((int)Buttons.Etc).gameObject;
         GameObject help = get<Button>((int)Buttons.Help).gameObject;
 
         stagePanel = get<Image>((int)Images.StagePanel).gameObject;
