@@ -6,6 +6,10 @@ using UnityEngine.EventSystems;
 using TMPro;
 public class Status_UI : UI_Scene
 {
+    private Slider exp;
+    private Slider hp;
+    private TextMeshProUGUI level;
+
     private Vector2 pos;
     enum Sliders
     {
@@ -16,9 +20,6 @@ public class Status_UI : UI_Scene
     {
         Level
     }
-    private Slider exp;
-    private Slider hp;
-    private TextMeshProUGUI level;
     private void Start()
     {
         init();

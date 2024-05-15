@@ -9,7 +9,7 @@ using System.IO;
 using UnityEditor.Experimental.GraphView;
 public class SwipeMenu_UI : UI_Scene
 {
-    public float relocationDelay = 0.25f;
+    public float relocationDelay = 0.9f;
     public float pivot = 0f;
 
     public Vector2 enterPoint;
@@ -46,6 +46,7 @@ public class SwipeMenu_UI : UI_Scene
         Managers.UI.showSceneUI<Store_UI>("Store");
         Managers.UI.showSceneUI<Main_UI>("Main");
         Managers.UI.showSceneUI<Inventory_UI>("Inventory");
+        Managers.UI.showSceneUI<Information_UI>("Information");
     }
     private void Update()
     {
@@ -151,9 +152,9 @@ public class SwipeMenu_UI : UI_Scene
         }
         else
         {
-            while (timer <= relocationDelay * 3)
+            while (timer <= 5)
             {
-                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, relocationDelay * 3), 0f, 0f);
+                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, 0.5f), 0f, 0f);
                 timer += Time.deltaTime;
                 yield return null;
             }
