@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Runtime.CompilerServices;
+using UnityEditor.Experimental.GraphView;
+
 public class Inventory_UI : UI_Scene
 {    
     public SwipeMenu_UI swipeMenu;
@@ -78,15 +80,17 @@ public class Inventory_UI : UI_Scene
         }, Define.UIEvent.BeginDrag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (SceneManager.GetActiveScene().name == "Main") 
+            if (SceneManager.GetActiveScene().name == "Main") //
             {
+
 #if UNITY_EDITOR
-                swipeMenu.direction = (Vector2)Input.mousePosition - swipeMenu.enterPoint;
+                swipeMenu.direction = (Vector2)Input.mousePosition - swipeMenu.enterPoint;// direction...
 #endif
 
-#if UNITY_ANDROID
+#if UNITY_ANDROID 
                 swipeMenu.direction = Input.GetTouch(0).position - swipeMenu.enterPoint;
 #endif
+                if (Mathf.Abs(swipeMenu.direction.y) > Mathf.Abs(swipeMenu.direction.x)) { Scroll(); }
             }
             else
             {
@@ -98,7 +102,6 @@ public class Inventory_UI : UI_Scene
             if (SceneManager.GetActiveScene().name == "Main")
             {
                 if (Mathf.Abs(swipeMenu.direction.x) > Mathf.Abs(swipeMenu.direction.y)) { swipeMenu.StartCoroutine(swipeMenu.relocation()); }
-                else if (Mathf.Abs(swipeMenu.direction.y) > Mathf.Abs(swipeMenu.direction.x)) { Scroll(); }
             }
             else 
             {
@@ -111,11 +114,17 @@ public class Inventory_UI : UI_Scene
             for(int w = 0; w < 4; w++)
             {
                 GameObject go = Managers.Resource.instantiate("UI/Slot", content.transform);
-                go.GetComponent<RectTransform>().sizeDelta = new Vector2(1, 1);
+                RectTransform rectTransform = go.GetComponent<RectTransform>();
+
+                rectTransform.localScale = new Vector2(1, 1);
+                rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+                rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+                rectTransform.anchoredPosition = new Vector2(0.5f, 0.5f);
+                rectTransform.localPosition = new Vector2(-360 + 240 * w, 480 - 240 * h);
 
                 AddUIEvent(go, (PointerEventData data) =>
                 {
-                    Debug.Log("asdf");
+                    
                 }, Define.UIEvent.Click);
             }
         }

@@ -30,7 +30,7 @@ public class Store_UI : UI_Scene
     private TextMeshProUGUI price6;
     enum Buttons
     {
-        Purchase1,
+        Purchase1,//
         Purchase2,
         Purchase3,
         Purchase4,
@@ -40,7 +40,7 @@ public class Store_UI : UI_Scene
     }
     enum Images
     {
-        Merchandise1,
+        Merchandise1,//
         Merchandise2,
         Merchandise3,
         Merchandise4,
@@ -49,13 +49,13 @@ public class Store_UI : UI_Scene
     }
     enum TMPro
     {
-        ProductName1,
+        ProductName1,//
         ProductName2,
         ProductName3,
         ProductName4,
         ProductName5,
         ProductName6,
-        price1,
+        price1,//
         price2,
         price3,
         price4,
