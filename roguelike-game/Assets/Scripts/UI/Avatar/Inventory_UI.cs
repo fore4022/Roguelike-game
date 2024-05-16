@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Runtime.CompilerServices;
 public class Inventory_UI : UI_Scene
-{
+{    
     public SwipeMenu_UI swipeMenu;
     enum Buttons
     {
@@ -83,15 +83,24 @@ public class Inventory_UI : UI_Scene
         }, Define.UIEvent.Drag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (SceneManager.GetActiveScene().name == "Main") 
+            if (SceneManager.GetActiveScene().name == "Main")
             {
                 if (swipeMenu.direction.x > swipeMenu.direction.y) { swipeMenu.StartCoroutine(swipeMenu.relocation()); }
-                else if (swipeMenu.direction.y > swipeMenu.direction.x) { /**/ }
+                else if (swipeMenu.direction.y > swipeMenu.direction.x) { StartCoroutine(Scroll()); }
             }
-            else
+            else 
             {
-
+                //
             }
         }, Define.UIEvent.EndDrag);
+
+        //
+    }
+    private IEnumerator Scroll()
+    {
+        while(true)
+        {
+            yield return null;
+        }
     }
 }
