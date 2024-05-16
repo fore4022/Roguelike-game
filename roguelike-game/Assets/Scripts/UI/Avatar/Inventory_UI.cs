@@ -17,17 +17,17 @@ public class Inventory_UI : UI_Scene
     {
         Panel,
         Panel1,
-        Panel2
-    }
-    enum ScrollViews
-    {
-        InventorySlider
+        Panel2,
+        ScrollView
     }
     private void Start() 
     {
+        init();
+
         if (SceneManager.GetActiveScene().name == "Main")
         {
             Transform pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform;
+
             this.gameObject.transform.SetParent(pos);
             RectTransform rectTransform = this.gameObject.GetComponent<RectTransform>();
 
@@ -38,37 +38,56 @@ public class Inventory_UI : UI_Scene
 
             swipeMenu = FindObjectOfType<SwipeMenu_UI>().GetComponent<SwipeMenu_UI>();
         }
-
-        init();
     }
     protected override void init()
     {
         base.init();
         bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
-        bind<ScrollRect>(typeof(ScrollViews));
 
-        GameObject inventorySlider = get<ScrollRect>((int)ScrollViews.InventorySlider).gameObject;
+        GameObject scrollView = get<Image>((int)Images.ScrollView).gameObject;
 
-        AddUIEvent(inventorySlider, (PointerEventData data) =>
+        AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (SceneManager.GetActiveScene().name == "Main") { swipeMenu.enterPoint = Input.mousePosition; }
+            if (SceneManager.GetActiveScene().name == "Main")
+            {
+#if UNITY_EDITOR
+                swipeMenu.enterPoint = Input.mousePosition;
+#endif
+
+#if UNITY_ANDROID
+                swipeMenu.enterPoint = Input.mousePosition; 
+#endif
+            }
             else
             {
 
             }
         }, Define.UIEvent.BeginDrag);
-        AddUIEvent(inventorySlider, (PointerEventData data) =>
+        AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (SceneManager.GetActiveScene().name == "Main") { swipeMenu.direction = Input.GetTouch(0).position - swipeMenu.enterPoint; }
+            if (SceneManager.GetActiveScene().name == "Main") 
+            {
+#if UNITY_EDITOR
+                swipeMenu.direction = (Vector2)Input.mousePosition - swipeMenu.enterPoint;
+#endif
+
+#if UNITY_ANDROID
+                swipeMenu.direction = Input.GetTouch(0).position - swipeMenu.enterPoint;
+#endif
+            }
             else
             {
 
             }
         }, Define.UIEvent.Drag);
-        AddUIEvent(inventorySlider, (PointerEventData data) =>
+        AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (SceneManager.GetActiveScene().name == "Main") { swipeMenu.StartCoroutine(swipeMenu.relocation()); }
+            if (SceneManager.GetActiveScene().name == "Main") 
+            {
+                if (swipeMenu.direction.x > swipeMenu.direction.y) { swipeMenu.StartCoroutine(swipeMenu.relocation()); }
+                else if (swipeMenu.direction.y > swipeMenu.direction.x) { /**/ }
+            }
             else
             {
 

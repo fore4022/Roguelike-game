@@ -16,6 +16,8 @@ public class SwipeMenu_UI : UI_Scene
     public Vector2 direction;
 
     private RectTransform panel;
+    private TextMeshProUGUI level;
+    private TextMeshProUGUI gold;
 
     private float relocationValue;
     private int origin;
@@ -93,6 +95,12 @@ public class SwipeMenu_UI : UI_Scene
         panel.pivot = new Vector2(pivot, 0);
         panel.position = Vector2.zero;
 
+        level = get<TextMeshProUGUI>((int)TMPro.Level);
+        //level.text = $"{}";
+
+        gold = get<TextMeshProUGUI>((int)TMPro.Gold);
+        //gold.text = $"{}";
+
         AddUIEvent(storeButton, (PointerEventData data) =>
         {
             origin = 1;
@@ -116,6 +124,7 @@ public class SwipeMenu_UI : UI_Scene
 #if UNITY_EDITOR
             enterPoint = Input.mousePosition;
 #endif
+
 #if UNITY_ANDROID
             enterPoint = Input.GetTouch(0).position;
 #endif
@@ -125,6 +134,7 @@ public class SwipeMenu_UI : UI_Scene
 #if UNITY_EDITOR
             direction = (Vector2)Input.mousePosition - enterPoint;
 #endif
+
 #if UNITY_ANDROID
             direction = Input.GetTouch(0).position - enterPoint;
 #endif
