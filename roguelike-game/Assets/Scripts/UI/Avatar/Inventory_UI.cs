@@ -9,9 +9,13 @@ using System.Runtime.CompilerServices;
 public class Inventory_UI : UI_Scene
 {    
     public SwipeMenu_UI swipeMenu;
+
+    private Scrollbar verticalScrollBar;
+    private RectTransform content;
+
     enum Buttons
     {
-
+        //
     }
     enum Images
     {
@@ -19,6 +23,10 @@ public class Inventory_UI : UI_Scene
         Panel1,
         Panel2,
         ScrollView
+    }
+    enum ScrollBars
+    {
+        ScrollBarVertical
     }
     private void Start() 
     {
@@ -44,8 +52,12 @@ public class Inventory_UI : UI_Scene
         base.init();
         bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
+        bind<Scrollbar>(typeof(ScrollBars));
 
         GameObject scrollView = get<Image>((int)Images.ScrollView).gameObject;
+
+        verticalScrollBar = get<Scrollbar>((int)ScrollBars.ScrollBarVertical);
+        content = FindChild<RectTransform>(this.gameObject, "Content", true);
 
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
@@ -61,7 +73,7 @@ public class Inventory_UI : UI_Scene
             }
             else
             {
-
+                //
             }
         }, Define.UIEvent.BeginDrag);
         AddUIEvent(scrollView, (PointerEventData data) =>
@@ -78,15 +90,15 @@ public class Inventory_UI : UI_Scene
             }
             else
             {
-
+                //
             }
         }, Define.UIEvent.Drag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
             if (SceneManager.GetActiveScene().name == "Main")
             {
-                if (swipeMenu.direction.x > swipeMenu.direction.y) { swipeMenu.StartCoroutine(swipeMenu.relocation()); }
-                else if (swipeMenu.direction.y > swipeMenu.direction.x) { StartCoroutine(Scroll()); }
+                if (Mathf.Abs(swipeMenu.direction.x) > Mathf.Abs(swipeMenu.direction.y)) { swipeMenu.StartCoroutine(swipeMenu.relocation()); }
+                else if (Mathf.Abs(swipeMenu.direction.y) > Mathf.Abs(swipeMenu.direction.x)) { Scroll(); }
             }
             else 
             {
@@ -94,13 +106,22 @@ public class Inventory_UI : UI_Scene
             }
         }, Define.UIEvent.EndDrag);
 
-        //
-    }
-    private IEnumerator Scroll()
-    {
-        while(true)
+        for(int h = 0; h < Mathf.Max(Managers.Game.c / 4 + (Managers.Game.c % 4 > 0 ? 1 : 0), 5); h++)//
         {
-            yield return null;
+            for(int w = 0; w < 4; w++)
+            {
+                GameObject go = Managers.Resource.instantiate("UI/Slot", content.transform);
+                go.GetComponent<RectTransform>().sizeDelta = new Vector2(1, 1);
+
+                AddUIEvent(go, (PointerEventData data) =>
+                {
+                    Debug.Log("asdf");
+                }, Define.UIEvent.Click);
+            }
         }
+    }
+    private void Scroll()
+    {
+        
     }
 }

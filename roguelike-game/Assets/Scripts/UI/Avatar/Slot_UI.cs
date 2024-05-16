@@ -4,24 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-public class Slot_UI : UI_Scene
+public class Slot_UI : MonoBehaviour
 {
-    enum Images
-    {
-        Panel,
-        Item
-    }
-    enum TMPro
-    {
-        Count
-    }
-    private void Start() { init(); }
-    protected override void init()
-    {
-        base.init();
-        bind<Image>(typeof(Images));
-        bind<TextMeshProUGUI>(typeof(TMPro));
-
-        GameObject pnael = get<Image>((int)Images.Panel).gameObject;
-    }
+    public Item item;
 }
