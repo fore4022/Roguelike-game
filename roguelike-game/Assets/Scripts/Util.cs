@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 public class Util : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class Util : MonoBehaviour
             for(int i = 0; i < go.transform.childCount; i++)
             {
                 Transform transform = go.transform.GetChild(i);
+
                 if(string.IsNullOrEmpty(name) || transform.name == name)
                 {
                     T component = transform.GetComponent<T>();
@@ -32,6 +34,22 @@ public class Util : MonoBehaviour
             }
         }
         return null;
+    }
+    public static T FindParent<T>(GameObject go, string name) where T : Object
+    {
+        for(; ; )
+        {
+            Object obj = go.transform.parent;
+            if(go.transform.parent != null)
+            {
+                if(obj.GetComponent<T>() != null)
+                {
+
+                }
+                else { return null; }
+            }
+            else { return null; }
+        }
     }
     public static T getOrAddComponent<T>(GameObject go) where T : UnityEngine.Component
     {

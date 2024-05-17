@@ -5,7 +5,6 @@ using System;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using Unity.VisualScripting;
-
 public abstract class UI_Base : Util
 {
     Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
@@ -13,8 +12,10 @@ public abstract class UI_Base : Util
     protected void bind<T>(Type type) where T : UnityEngine.Object
     {
         string[] names = Enum.GetNames(type);
+
         UnityEngine.Object[] objects = new UnityEngine.Object[names.Length];
         _objects.Add(typeof(T), objects);
+
         for(int i = 0; i< names.Length; i++)
         {
             if (typeof(T) == typeof(GameObject)) { objects[i] = FindChild(gameObject, names[i], true); }
@@ -24,12 +25,14 @@ public abstract class UI_Base : Util
     public T get<T>(int idx) where T : UnityEngine.Object
     {
         UnityEngine.Object[] objects = null;
+
         if (_objects.TryGetValue(typeof(T), out objects) == false) { return null; }
         return objects[idx] as T;
     }
     public static void AddUIEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
     {
         UI_EventHandler evt = getOrAddComponent<UI_EventHandler>(go);
+
         switch(type)
         {
             case Define.UIEvent.Click:

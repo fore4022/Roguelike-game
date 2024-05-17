@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 public class Managers : MonoBehaviour
 {
@@ -13,10 +14,7 @@ public class Managers : MonoBehaviour
     public static UI_Manager UI { get { return Instance._ui; } }
     public static Input_Manager Input { get { return Instance._input; } }
     public static Game_Manager Game { get { return Instance._game; } }
-    public void Update()
-    {
-        _input.OnUpdate();
-    }
+    public void Update() { _input.OnUpdate(); }
     public static void init()
     {
         if(s_instance == null)

@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using UnityEditor.Experimental.GraphView;
 
 public class Inventory_UI : UI_Scene
-{    
+{
     public SwipeMenu_UI swipeMenu;
 
     private Scrollbar verticalScrollBar;
@@ -70,7 +70,7 @@ public class Inventory_UI : UI_Scene
 #endif
 
 #if UNITY_ANDROID
-                swipeMenu.enterPoint = Input.mousePosition; 
+                swipeMenu.enterPoint = Input.GetTouch(0).position; 
 #endif
             }
             else
@@ -87,7 +87,7 @@ public class Inventory_UI : UI_Scene
                 swipeMenu.direction = (Vector2)Input.mousePosition - swipeMenu.enterPoint;// direction...
 #endif
 
-#if UNITY_ANDROID 
+#if UNITY_ANDROID
                 swipeMenu.direction = Input.GetTouch(0).position - swipeMenu.enterPoint;
 #endif
                 if (Mathf.Abs(swipeMenu.direction.y) > Mathf.Abs(swipeMenu.direction.x)) { Scroll(); }
@@ -105,7 +105,7 @@ public class Inventory_UI : UI_Scene
             }
             else 
             {
-                //
+                //if(Mathf.Abs())
             }
         }, Define.UIEvent.EndDrag);
 
@@ -126,6 +126,18 @@ public class Inventory_UI : UI_Scene
                 {
                     
                 }, Define.UIEvent.Click);
+                AddUIEvent(go, (PointerEventData data) =>
+                {
+
+                }, Define.UIEvent.BeginDrag);
+                AddUIEvent(go, (PointerEventData data) =>
+                {
+
+                }, Define.UIEvent.Drag);
+                AddUIEvent(go, (PointerEventData data) =>
+                {
+
+                }, Define.UIEvent.EndDrag);
             }
         }
     }
