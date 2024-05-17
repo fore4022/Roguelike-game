@@ -128,15 +128,15 @@ public class Inventory_UI : UI_Scene
                 }, Define.UIEvent.Click);
                 AddUIEvent(go, (PointerEventData data) =>
                 {
-
+                    FindParent<UI_EventHandler>(go).OnBeginDragHandler.Invoke(data);
                 }, Define.UIEvent.BeginDrag);
                 AddUIEvent(go, (PointerEventData data) =>
                 {
-
+                    FindParent<UI_EventHandler>(go).OnDragHandler.Invoke(data);
                 }, Define.UIEvent.Drag);
                 AddUIEvent(go, (PointerEventData data) =>
                 {
-
+                    FindParent<UI_EventHandler>(go).OnEndDragHandler.Invoke(data);
                 }, Define.UIEvent.EndDrag);
             }
         }

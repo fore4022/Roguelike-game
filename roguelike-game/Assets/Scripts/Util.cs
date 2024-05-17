@@ -35,18 +35,17 @@ public class Util : MonoBehaviour
         }
         return null;
     }
-    public static T FindParent<T>(GameObject go, string name) where T : Object
+    public static T FindParent<T>(GameObject go, string name = null) where T : Object
     {
         for(; ; )
         {
-            Object obj = go.transform.parent;
             if(go.transform.parent != null)
             {
-                if(obj.GetComponent<T>() != null)
+                go = go.transform.parent.gameObject;
+                if(string.IsNullOrEmpty(name) || go.name == name)
                 {
-
+                    if (go.GetComponent<T>() != null) { return go.GetComponent<T>(); }
                 }
-                else { return null; }
             }
             else { return null; }
         }
