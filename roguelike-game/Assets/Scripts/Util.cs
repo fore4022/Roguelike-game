@@ -37,6 +37,7 @@ public class Util : MonoBehaviour
     }
     public static T FindParent<T>(GameObject go, string name = null) where T : Object
     {
+        Debug.Log(go.transform.parent.gameObject == go.transform.root.gameObject);
         for(; ; )
         {
             if(go.transform.parent != null)
@@ -44,7 +45,7 @@ public class Util : MonoBehaviour
                 go = go.transform.parent.gameObject;
                 if(string.IsNullOrEmpty(name) || go.name == name)
                 {
-                    if (go.GetComponent<T>() != null) { return go.GetComponent<T>(); }
+                    if (go.GetComponent<T>() != null) { Debug.Log(go.name); return go.GetComponent<T>(); }
                 }
             }
             else { return null; }

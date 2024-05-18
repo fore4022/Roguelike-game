@@ -7,7 +7,6 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Runtime.CompilerServices;
 using UnityEditor.Experimental.GraphView;
-
 public class Inventory_UI : UI_Scene
 {
     public SwipeMenu_UI swipeMenu;
@@ -61,53 +60,22 @@ public class Inventory_UI : UI_Scene
         verticalScrollBar = get<Scrollbar>((int)ScrollBars.ScrollBarVertical);
         content = FindChild<RectTransform>(this.gameObject, "Content", true);
 
+        UI_EventHandler evtHandle = FindParent<UI_EventHandler>(this.gameObject);
+
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (SceneManager.GetActiveScene().name == "Main")
-            {
-#if UNITY_EDITOR
-                swipeMenu.enterPoint = Input.mousePosition;
-#endif
-
-#if UNITY_ANDROID
-                swipeMenu.enterPoint = Input.GetTouch(0).position; 
-#endif
-            }
-            else
-            {
-                //
-            }
+            evtHandle.OnBeginDragHandler.Invoke(data);
         }, Define.UIEvent.BeginDrag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (SceneManager.GetActiveScene().name == "Main") //
-            {
-
-#if UNITY_EDITOR
-                swipeMenu.direction = (Vector2)Input.mousePosition - swipeMenu.enterPoint;// direction...
-#endif
-
-#if UNITY_ANDROID
-                swipeMenu.direction = Input.GetTouch(0).position - swipeMenu.enterPoint;
-#endif
-                if (Mathf.Abs(swipeMenu.direction.y) > Mathf.Abs(swipeMenu.direction.x)) { Scroll(); }
-            }
-            else
-            {
-                //
-            }
+            evtHandle.OnDragHandler.Invoke(data);
         }, Define.UIEvent.Drag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (SceneManager.GetActiveScene().name == "Main")
-            {
-                if (Mathf.Abs(swipeMenu.direction.x) > Mathf.Abs(swipeMenu.direction.y)) { swipeMenu.StartCoroutine(swipeMenu.relocation()); }
-            }
-            else 
-            {
-                //if(Mathf.Abs())
-            }
+            evtHandle.OnEndDragHandler.Invoke(data);
         }, Define.UIEvent.EndDrag);
+
+        evtHandle = FindParent<UI_EventHandler>(content.gameObject);
 
         for(int h = 0; h < Mathf.Max(Managers.Game.c / 4 + (Managers.Game.c % 4 > 0 ? 1 : 0), 5); h++)//
         {
@@ -128,15 +96,15 @@ public class Inventory_UI : UI_Scene
                 }, Define.UIEvent.Click);
                 AddUIEvent(go, (PointerEventData data) =>
                 {
-                    FindParent<UI_EventHandler>(go).OnBeginDragHandler.Invoke(data);
+                    evtHandle.OnBeginDragHandler.Invoke(data);
                 }, Define.UIEvent.BeginDrag);
                 AddUIEvent(go, (PointerEventData data) =>
                 {
-                    FindParent<UI_EventHandler>(go).OnDragHandler.Invoke(data);
+                    evtHandle.OnDragHandler.Invoke(data);
                 }, Define.UIEvent.Drag);
                 AddUIEvent(go, (PointerEventData data) =>
                 {
-                    FindParent<UI_EventHandler>(go).OnEndDragHandler.Invoke(data);
+                    evtHandle.OnEndDragHandler.Invoke(data);
                 }, Define.UIEvent.EndDrag);
             }
         }

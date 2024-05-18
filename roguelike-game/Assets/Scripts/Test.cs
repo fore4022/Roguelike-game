@@ -9,7 +9,7 @@ using System.Linq;
 using Debug = UnityEngine.Debug;
 using UnityEngine.EventSystems;
 
-public class Test : MonoBehaviour, IPointerClickHandler
+public class Test : MonoBehaviour
 {
     private void Start()
     {
@@ -17,11 +17,6 @@ public class Test : MonoBehaviour, IPointerClickHandler
         //GameObject go = GameObject.Find("@Skill");
         //go.AddComponent<FireBall_Cast>();
 
-        //Managers.UI.showSceneUI<SwipeMenu_UI>("SwipeMenu");
-    }
-
-    public void OnPointerClick(PointerEventData data)
-    {
-        Debug.Log("asdf");
+        Managers.UI.showSceneUI<SwipeMenu_UI>("SwipeMenu");
     }
 }
