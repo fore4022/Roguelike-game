@@ -9,8 +9,8 @@ public class Inventory_UI : UI_Scene
 {
     public SwipeMenu_UI swipeMenu;
 
-    private Scrollbar verticalScrollBar;
     private RectTransform content;
+    private ScrollRect inventoryScrollView;
     private Transform pos;
 
     private Vector2 enterPoint;
@@ -29,7 +29,7 @@ public class Inventory_UI : UI_Scene
     }
     enum ScrollRects
     {
-        ScrollRect
+        InventoryScrollView
     }
     private void Start() 
     {
@@ -56,9 +56,9 @@ public class Inventory_UI : UI_Scene
         bind<ScrollRect>(typeof(ScrollRects));
 
         GameObject scrollView = get<Image>((int)Images.ScrollView).gameObject;
-        //get<ScrollRect>()
 
-        content = FindChild<RectTransform>(this.gameObject, "Content", true);
+        inventoryScrollView = get<ScrollRect>((int)ScrollRects.InventoryScrollView);
+        content = inventoryScrollView.content.gameObject.GetComponent<RectTransform>();
 
         UI_EventHandler evtHandle1 = FindParent<UI_EventHandler>(pos.gameObject);
 
@@ -95,18 +95,20 @@ public class Inventory_UI : UI_Scene
 
         UI_EventHandler evtHandle2 = FindParent<UI_EventHandler>(content.gameObject);
 
-        for(int h = 0; h < Mathf.Max(Managers.Game.c / 4 + (Managers.Game.c % 4 > 0 ? 1 : 0), 5); h++)//
+        int height = 6;//Managers.Game.c / 4 + (Managers.Game.c % 4 > 0 ? 1 : 0);
+
+        for(int h = 0; h < Mathf.Max(height, 5); h++)//5
         {
             for(int w = 0; w < 4; w++)
             {
                 GameObject go = Managers.Resource.instantiate("UI/Slot", content.transform);
                 RectTransform rectTransform = go.GetComponent<RectTransform>();
 
-                rectTransform.localScale = new Vector2(1, 1);
-                rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-                rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-                rectTransform.anchoredPosition = new Vector2(0.5f, 0.5f);
-                rectTransform.localPosition = new Vector2(-360 + 240 * w, 480 - 240 * h);
+                rectTransform.localScale = new Vector2(1, 1);//
+                rectTransform.anchorMax = new Vector2(0.5f, 1f);//
+                rectTransform.anchorMin = new Vector2(0.5f, 1f);//
+                rectTransform.anchoredPosition = new Vector2(0.5f, 1f);//
+                rectTransform.localPosition = new Vector2(-360 + 240 * w, -130 - 245 * h);//
 
                 AddUIEvent(go, (PointerEventData data) =>
                 {
@@ -127,13 +129,11 @@ public class Inventory_UI : UI_Scene
             }
         }
 
-        if(Managers.Game.c / 4 + (Managers.Game.c % 4 > 0 ? 1 : 0) > 5)
-        { 
-            
-        }
+        if(height > 5) { content.offsetMin = new Vector2(content.offsetMin.x, -245 * (height - 5)); }
     }
     private void Scroll()
     {
         
     }
+    //
 }
