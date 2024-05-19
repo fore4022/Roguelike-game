@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Unity.Android.Types;
+
 public class Inventory_UI : UI_Scene
 {
     public SwipeMenu_UI swipeMenu;
@@ -15,6 +17,8 @@ public class Inventory_UI : UI_Scene
 
     private Vector2 enterPoint;
     private Vector2 direction;
+
+    private int height;
 
     enum Buttons
     {
@@ -60,6 +64,8 @@ public class Inventory_UI : UI_Scene
         inventoryScrollView = get<ScrollRect>((int)ScrollRects.InventoryScrollView);
         content = inventoryScrollView.content.gameObject.GetComponent<RectTransform>();
 
+        inventoryScrollView.movementType = ScrollRect.MovementType.Clamped;
+
         UI_EventHandler evtHandle1 = FindParent<UI_EventHandler>(pos.gameObject);
 
         AddUIEvent(scrollView, (PointerEventData data) =>
@@ -83,10 +89,7 @@ public class Inventory_UI : UI_Scene
 #if UNITY_ANDROID
             direction = Input.GetTouch(0).position - enterPoint;
 #endif
-            if(Managers.Game.c / 4 + (Managers.Game.c % 4 > 0 ? 1 : 0) > 5)
-            {
-                if (Mathf.Abs(direction.y) > Mathf.Abs(direction.x)) { Scroll(); }
-            }
+            if (Mathf.Abs(direction.y) / Mathf.Abs(direction.x) > 0.5f) { Scroll(); }
         }, Define.UIEvent.Drag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
@@ -95,7 +98,7 @@ public class Inventory_UI : UI_Scene
 
         UI_EventHandler evtHandle2 = FindParent<UI_EventHandler>(content.gameObject);
 
-        int height = 6;//Managers.Game.c / 4 + (Managers.Game.c % 4 > 0 ? 1 : 0);
+        height = 6;//Managers.Game.c / 4 + (Managers.Game.c % 4 > 0 ? 1 : 0);
 
         for(int h = 0; h < Mathf.Max(height, 5); h++)//5
         {
@@ -104,11 +107,11 @@ public class Inventory_UI : UI_Scene
                 GameObject go = Managers.Resource.instantiate("UI/Slot", content.transform);
                 RectTransform rectTransform = go.GetComponent<RectTransform>();
 
-                rectTransform.localScale = new Vector2(1, 1);//
-                rectTransform.anchorMax = new Vector2(0.5f, 1f);//
-                rectTransform.anchorMin = new Vector2(0.5f, 1f);//
-                rectTransform.anchoredPosition = new Vector2(0.5f, 1f);//
-                rectTransform.localPosition = new Vector2(-360 + 240 * w, -130 - 245 * h);//
+                rectTransform.localScale = new Vector2(1, 1);
+                rectTransform.anchorMax = new Vector2(0.5f, 1f);
+                rectTransform.anchorMin = new Vector2(0.5f, 1f);
+                rectTransform.anchoredPosition = new Vector2(0.5f, 1f);
+                rectTransform.localPosition = new Vector2(-360 + 240 * w, -130 - 245 * h);
 
                 AddUIEvent(go, (PointerEventData data) =>
                 {
@@ -133,7 +136,8 @@ public class Inventory_UI : UI_Scene
     }
     private void Scroll()
     {
-        
+        //if (Managers.Game.c / 4 + (Managers.Game.c % 4 > 0 ? 1 : 0) < 5) { return; }
+        inventoryScrollView.verticalScrollbar.value = Mathf.Clamp(inventoryScrollView.verticalScrollbar.value + direction.y / (content.rect.height + 245 * (height / 5)), 0, 1);
     }
     //
 }
