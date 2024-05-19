@@ -51,5 +51,10 @@ public class Main_UI : UI_Scene
         stagePanel = get<Image>((int)Images.StagePanel).gameObject;
         timer = get<TextMeshProUGUI>((int)TMPro.Timer);
         stageName = get<TextMeshProUGUI>((int)TMPro.StageName).gameObject;
+
+        AddUIEvent(start, (PointerEventData data) =>
+        {
+            Managers.UI.showSceneUI<StageSelection_UI>("StageSelection");
+        }, Define.UIEvent.Click);
     }
 }
