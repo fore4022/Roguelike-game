@@ -14,7 +14,7 @@ public class Store_UI : UI_Scene
     }
     enum Images
     {
-        //
+        StorePanel
     }
     enum TMPro
     {
@@ -41,11 +41,31 @@ public class Store_UI : UI_Scene
         bind<TextMeshProUGUI>(typeof(TMPro));
 
         GameObject refresh = get<Button>((int)Buttons.Refresh).gameObject;
+        GameObject storePanel = get<Image>((int)Images.StorePanel).gameObject;
 
         AddUIEvent(refresh, (PointerEventData data) =>
         {
             //
         },Define.UIEvent.Click);
 
+        for(int h = 0; h < 2; h++)
+        {
+            for(int w = 0; w < 3; w++)
+            {
+                GameObject go = Managers.Resource.instantiate("UI/Merchandise", storePanel.transform);
+                RectTransform rectTrnasform = go.GetComponent<RectTransform>();
+
+                rectTrnasform.localScale = new Vector2(1, 1);
+                rectTrnasform.anchorMax = new Vector2(0.5f, 0.5f);
+                rectTrnasform.anchorMin = new Vector2(0.5f, 0.5f);
+                rectTrnasform.anchoredPosition = new Vector2(0.5f, 0.5f);
+                rectTrnasform.localPosition = new Vector2(-350 + 350 * w, 250 - 450 * h);
+
+                AddUIEvent(go, (PointerEventData data) =>
+                {
+                    //showPopupUI
+                }, Define.UIEvent.Click);
+            }
+        }
     }
 }

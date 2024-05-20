@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 public abstract class Base_SkillCast : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public abstract class Base_SkillCast : MonoBehaviour
         prefabName = this.GetType().Name.Replace("_Cast","");
         skill = (Skill)Resources.Load($"Data/Skill/{prefabName}");
         script = System.Type.GetType(prefabName);
-        animeController = (RuntimeAnimatorController)Resources.Load($"Animation/Skill/{prefabName}/{prefabName}");
+        animeController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/Skill/{prefabName}/{prefabName}");
     }
     protected abstract IEnumerator skillCast();
 }
