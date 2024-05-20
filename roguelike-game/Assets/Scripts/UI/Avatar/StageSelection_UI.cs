@@ -9,9 +9,14 @@ public class StageSelection_UI : UI_Scene
     private Vector2 enterPoint;
     private Vector2 direction;
 
+    private bool visibleStageInformation = false;
+
     enum Buttons
     {
-        Exit
+        Exit,
+        Select,
+        LeftArrow,
+        RightArrow
     }
     enum Images
     {
@@ -21,11 +26,7 @@ public class StageSelection_UI : UI_Scene
     enum TMPro
     {
         StageName,
-        Information
-    }
-    enum ScrollRects
-    {
-        //
+        StageInformation
     }
     private void Start() { init(); }
     protected override void init()
@@ -34,13 +35,30 @@ public class StageSelection_UI : UI_Scene
         bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));
-        bind<ScrollRect>(typeof(ScrollRects));
 
         GameObject exit = get<Button>((int)Buttons.Exit).gameObject;
+        GameObject select = get<Button>((int)Buttons.Select).gameObject;
+        GameObject leftArrow = get<Button>((int)Buttons.LeftArrow).gameObject;
+        GameObject rightArrow = get<Button>((int)Buttons.RightArrow).gameObject;
         GameObject backgroundImage = get<Image>((int)Images.BackgroundImage).gameObject;
         GameObject stageImage = get<Image>((int)Images.StageImage).gameObject;
 
         AddUIEvent(exit, (PointerEventData data) => { Managers.UI.closeSceneUI(); }, Define.UIEvent.Click);
+
+        AddUIEvent(select, (PointerEventData data) =>
+        {
+            //
+        }, Define.UIEvent.Click);
+
+        AddUIEvent(leftArrow, (PointerEventData data) =>
+        {
+            //
+        }, Define.UIEvent.Click);
+
+        AddUIEvent(rightArrow, (PointerEventData data) =>
+        {
+            //
+        }, Define.UIEvent.Click);
 
         AddUIEvent(backgroundImage, (PointerEventData data) =>
         {
@@ -73,7 +91,14 @@ public class StageSelection_UI : UI_Scene
 
         AddUIEvent(stageImage, (PointerEventData data) =>
         {
-            //
+            if(visibleStageInformation)
+            {
+                //
+            }
+            else
+            {
+                //
+            }
         }, Define.UIEvent.Click);
     }
 }

@@ -37,7 +37,7 @@ public class Main_UI : UI_Scene
         rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         rectTransform.anchoredPosition = Vector2.zero;
     }
-    private void Update() { timer.text = ""; }
+    private void Update() { /*timer.text = $"{}";*/ }
     protected override void init()
     {
         base.init();
@@ -54,7 +54,7 @@ public class Main_UI : UI_Scene
 
         AddUIEvent(start, (PointerEventData data) =>
         {
-            Managers.UI.showSceneUI<StageSelection_UI>("StageSelection");
+            //Managers.UI.showSceneUI<StageSelection_UI>("StageSelection");
         }, Define.UIEvent.Click);
     }
 }
