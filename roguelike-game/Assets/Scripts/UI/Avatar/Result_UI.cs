@@ -59,6 +59,6 @@ public class Result_UI : UI_Popup
             yield return null;
         }
 
-        resultPanel.SetActive(true);
+        //resultPanel.SetActive(true);
     }
 }
