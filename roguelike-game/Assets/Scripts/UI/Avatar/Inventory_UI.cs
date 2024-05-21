@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.SceneManagement;
 using Unity.Android.Types;
-
 public class Inventory_UI : UI_Scene
 {
     public SwipeMenu_UI swipeMenu;
@@ -29,7 +28,7 @@ public class Inventory_UI : UI_Scene
         Panel,
         Panel1,
         Panel2,
-        ScrollView//scroll rect child
+        ScrollView
     }
     enum ScrollRects
     {
@@ -42,15 +41,18 @@ public class Inventory_UI : UI_Scene
 
         init();
 
-        this.gameObject.transform.SetParent(pos);
-        RectTransform rectTransform = this.gameObject.GetComponent<RectTransform>();
+        if(pos != null)
+        {
+            this.gameObject.transform.SetParent(pos);
+            RectTransform rectTransform = this.gameObject.GetComponent<RectTransform>();
 
-        rectTransform.sizeDelta = pos.GetComponentInParent<RectTransform>().rect.size;
-        rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-        rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-        rectTransform.anchoredPosition = Vector2.zero;
+            rectTransform.sizeDelta = pos.GetComponentInParent<RectTransform>().rect.size;
+            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            rectTransform.anchoredPosition = Vector2.zero;
 
-        swipeMenu = FindObjectOfType<SwipeMenu_UI>().GetComponent<SwipeMenu_UI>();
+            swipeMenu = FindObjectOfType<SwipeMenu_UI>().GetComponent<SwipeMenu_UI>();
+        }
     }
     protected override void init()
     {
@@ -66,11 +68,12 @@ public class Inventory_UI : UI_Scene
 
         inventoryScrollView.movementType = ScrollRect.MovementType.Clamped;
 
-        UI_EventHandler evtHandle1 = FindParent<UI_EventHandler>(pos.gameObject);
+        UI_EventHandler evtHandle1 = null;
+        if (pos != null) { evtHandle1 = FindParent<UI_EventHandler>(pos.gameObject); }
 
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (SceneManager.GetActiveScene().name == "Main") { evtHandle1.OnBeginDragHandler.Invoke(data); }
+            if (pos != null) { evtHandle1.OnBeginDragHandler.Invoke(data); }
 #if UNITY_EDITOR
             enterPoint = Input.mousePosition;
 #endif
@@ -81,7 +84,7 @@ public class Inventory_UI : UI_Scene
         }, Define.UIEvent.BeginDrag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (SceneManager.GetActiveScene().name == "Main") { evtHandle1.OnDragHandler.Invoke(data); }
+            if (pos != null) { evtHandle1.OnDragHandler.Invoke(data); }
 #if UNITY_EDITOR
             direction = (Vector2)Input.mousePosition - enterPoint;
 #endif
@@ -93,7 +96,7 @@ public class Inventory_UI : UI_Scene
         }, Define.UIEvent.Drag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (SceneManager.GetActiveScene().name == "Main") { evtHandle1.OnEndDragHandler.Invoke(data); }
+            if (pos != null) { evtHandle1.OnEndDragHandler.Invoke(data); }
         }, Define.UIEvent.EndDrag);
 
         UI_EventHandler evtHandle2 = FindParent<UI_EventHandler>(content.gameObject);

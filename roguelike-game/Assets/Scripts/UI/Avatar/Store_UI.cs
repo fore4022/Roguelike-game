@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-public class Store_UI : UI_Scene
+public class Store_UI : UI_Scene//
 {
     public List<Item> itemDatas = new List<Item>();
 
@@ -23,6 +23,7 @@ public class Store_UI : UI_Scene
     private void Start()
     {
         init();
+
         Transform pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform;
 
         this.gameObject.transform.SetParent(pos);

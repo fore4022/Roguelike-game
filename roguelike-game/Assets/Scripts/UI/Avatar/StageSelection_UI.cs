@@ -28,7 +28,24 @@ public class StageSelection_UI : UI_Scene
         StageName,
         StageInformation
     }
-    private void Start() { init(); }
+    private void Onenble()
+    {
+        GameObject.Find("Synthesis").SetActive(false);
+    }
+    private void Start()
+    {
+        init();
+
+        Transform pos = GameObject.Find("MainPage").transform;
+
+        this.gameObject.transform.SetParent(pos);
+        RectTransform rectTransform = this.gameObject.GetComponent<RectTransform>();
+
+        rectTransform.sizeDelta = pos.GetComponentInParent<RectTransform>().rect.size;
+        rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+        rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+        rectTransform.anchoredPosition = Vector2.zero;
+    }
     protected override void init()
     {
         base.init();
@@ -64,30 +81,6 @@ public class StageSelection_UI : UI_Scene
         {
             //
         }, Define.UIEvent.Click);
-        AddUIEvent(backgroundImage, (PointerEventData data) =>
-        {
-#if UNITY_EDITOR
-            enterPoint = Input.mousePosition;
-#endif
-
-#if UNITY_ANDROID
-            enterPoint = Input.GetTouch(0).position;
-#endif
-        }, Define.UIEvent.BeginDrag);
-        AddUIEvent(backgroundImage, (PointerEventData data) =>
-        {
-#if UNITY_EDITOR
-            direction = (Vector2)Input.mousePosition - enterPoint;
-#endif
-
-#if UNITY_ANDROID
-            direction = Input.GetTouch(0).position - enterPoint;
-#endif
-        }, Define.UIEvent.Drag);
-        AddUIEvent(backgroundImage, (PointerEventData data) =>
-        {
-            //
-        }, Define.UIEvent.EndDrag);
 
         AddUIEvent(stageImage, (PointerEventData data) =>
         {

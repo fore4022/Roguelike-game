@@ -15,7 +15,7 @@ public class SwipeMenu_UI : UI_Scene
     public Vector2 enterPoint;
     public Vector2 direction;
 
-    private RectTransform panel;
+    private RectTransform swipePanel;
     private TextMeshProUGUI level;
     private TextMeshProUGUI gold;
 
@@ -31,7 +31,8 @@ public class SwipeMenu_UI : UI_Scene
     enum Images
     {
         DragAndDropHandler,
-        Panel
+        SwipePanel,
+        Synthesis
     }
     enum TMPro
     {
@@ -65,13 +66,13 @@ public class SwipeMenu_UI : UI_Scene
                 switch (origin)
                 {
                     case 1:
-                        if (direction.x < 0) { panel.position = new Vector3(direction.x + relocationValue * origin, 0, 0); }
+                        if (direction.x < 0) { swipePanel.position = new Vector3(direction.x + relocationValue * origin, 0, 0); }
                         break;
                     case -1:
-                        if (direction.x > 0) { panel.position = new Vector3(direction.x + relocationValue * origin, 0, 0); }
+                        if (direction.x > 0) { swipePanel.position = new Vector3(direction.x + relocationValue * origin, 0, 0); }
                         break;
                     default:
-                        panel.position = new Vector3(direction.x + relocationValue * origin, 0, 0);
+                        swipePanel.position = new Vector3(direction.x + relocationValue * origin, 0, 0);
                         break;
                 }
             }
@@ -91,9 +92,10 @@ public class SwipeMenu_UI : UI_Scene
         GameObject etc = get<Button>((int)Buttons.Etc).gameObject;
         GameObject dragAndDropHandler = get<Image>((int)Images.DragAndDropHandler).gameObject;
 
-        panel = get<Image>((int)Images.Panel).gameObject.GetComponent<RectTransform>();
-        panel.pivot = new Vector2(pivot, 0);
-        panel.position = Vector2.zero;
+        swipePanel = get<Image>((int)Images.SwipePanel).gameObject.GetComponent<RectTransform>();
+
+        swipePanel.pivot = new Vector2(pivot, 0);
+        swipePanel.position = Vector2.zero;
 
         level = get<TextMeshProUGUI>((int)TMPro.Level);
         //level.text = $"{}";
@@ -155,15 +157,15 @@ public class SwipeMenu_UI : UI_Scene
             {
                 if (direction.x > 0)
                 {
-                    if (Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue) > relocationValue * origin) { break; }
+                    if (Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue) > relocationValue * origin) { break; }
                 }
                 else if (direction.x < 0)
                 {
-                    if (Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue) < relocationValue * origin) { break; }
+                    if (Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue) < relocationValue * origin) { break; }
                 }
-                else if (relocationValue - Mathf.Abs((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue)) < 10) { break; }
+                else if (relocationValue - Mathf.Abs((int)Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue)) < 10) { break; }
 
-                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue), 0f, 0f);
+                swipePanel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue), 0f, 0f);
 
                 if (direction != Vector2.zero) { direction = Vector2.zero; }
                 yield return null;
@@ -173,14 +175,14 @@ public class SwipeMenu_UI : UI_Scene
         {
             while (true)
             {
-                if(relocationValue - Mathf.Abs((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue)) < 10) { break; }
+                if(relocationValue - Mathf.Abs((int)Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue)) < 10) { break; }
 
-                panel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, panel.position.x, (relocationValue * relocationDelay) / relocationValue), 0f, 0f);
+                swipePanel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue), 0f, 0f);
                 yield return null;
             }
         }
 
-        panel.position = new Vector3(relocationValue * origin, 0f, 0f);
+        swipePanel.position = new Vector3(relocationValue * origin, 0f, 0f);
 
         direction = Vector2.zero;
     }

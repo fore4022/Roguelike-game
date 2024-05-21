@@ -332,7 +332,7 @@ GameObject:
   - component: {fileID: 7306181799212868691}
   - component: {fileID: 3754223758396438132}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: SwipePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -410,7 +410,7 @@ GameObject:
   - component: {fileID: 6477306852343605552}
   - component: {fileID: 3843919229065581095}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Synthesis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

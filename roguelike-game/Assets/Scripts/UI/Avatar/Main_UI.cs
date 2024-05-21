@@ -8,8 +8,7 @@ using TMPro;
 public class Main_UI : UI_Scene
 {
     private TextMeshProUGUI timer;
-    private GameObject stageName;
-    private GameObject stagePanel;
+    private TextMeshProUGUI stageName;
     enum Buttons
     {
         Start,
@@ -27,6 +26,7 @@ public class Main_UI : UI_Scene
     private void Start() 
     {
         init();
+
         Transform pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform;
 
         this.gameObject.transform.SetParent(pos);
@@ -47,14 +47,39 @@ public class Main_UI : UI_Scene
 
         GameObject start = get<Button>((int)Buttons.Start).gameObject;
         GameObject help = get<Button>((int)Buttons.Help).gameObject;
+        GameObject stagePanel = get<Image>((int)Images.StagePanel).gameObject;
 
-        stagePanel = get<Image>((int)Images.StagePanel).gameObject;
         timer = get<TextMeshProUGUI>((int)TMPro.Timer);
-        stageName = get<TextMeshProUGUI>((int)TMPro.StageName).gameObject;
+        stageName = get<TextMeshProUGUI>((int)TMPro.StageName);
 
         AddUIEvent(start, (PointerEventData data) =>
         {
-            //Managers.UI.showSceneUI<StageSelection_UI>("StageSelection");
+            //
         }, Define.UIEvent.Click);
+
+        Debug.Log(this.gameObject.transform.parent);
+        Debug.Log(this.gameObject.transform.root);
+        UI_EventHandler evtHandle = FindParent<UI_EventHandler>(this.gameObject);
+        Debug.Log(evtHandle);
+
+        AddUIEvent(stagePanel, (PointerEventData data) => { Managers.UI.showSceneUI<StageSelection_UI>("StageSelection"); }, Define.UIEvent.Click);
+        AddUIEvent(stagePanel, (PointerEventData data) =>
+        {
+#if UNITY_ANDROID
+            evtHandle.OnBeginDragHandler.Invoke(data);
+#endif
+        }, Define.UIEvent.BeginDrag);
+        AddUIEvent(stagePanel, (PointerEventData data) =>
+        {
+#if UNITY_ANDROID
+            evtHandle.OnDragHandler.Invoke(data);
+#endif
+        }, Define.UIEvent.Drag);
+        AddUIEvent(stagePanel, (PointerEventData data) =>
+        {
+#if UNITY_ANDROID
+            evtHandle.OnEndDragHandler.Invoke(data);
+#endif
+        }, Define.UIEvent.EndDrag);
     }
 }
