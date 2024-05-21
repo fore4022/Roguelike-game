@@ -28,10 +28,7 @@ public class StageSelection_UI : UI_Scene
         StageName,
         StageInformation
     }
-    private void Onenble()
-    {
-        GameObject.Find("Synthesis").SetActive(false);
-    }
+    private void Onenble() { GameObject.Find("Synthesis").SetActive(false); }
     private void Start()
     {
         init();

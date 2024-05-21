@@ -20,13 +20,10 @@ public class Main_UI : UI_Scene
     }
     enum TMPro
     {
-        Timer,
         StageName
     }
     private void Start() 
     {
-        init();
-
         Transform pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform;
 
         this.gameObject.transform.SetParent(pos);
@@ -36,6 +33,8 @@ public class Main_UI : UI_Scene
         rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
         rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         rectTransform.anchoredPosition = Vector2.zero;
+
+        init();
     }
     private void Update() { /*timer.text = $"{}";*/ }
     protected override void init()
@@ -49,7 +48,6 @@ public class Main_UI : UI_Scene
         GameObject help = get<Button>((int)Buttons.Help).gameObject;
         GameObject stagePanel = get<Image>((int)Images.StagePanel).gameObject;
 
-        timer = get<TextMeshProUGUI>((int)TMPro.Timer);
         stageName = get<TextMeshProUGUI>((int)TMPro.StageName);
 
         AddUIEvent(start, (PointerEventData data) =>
@@ -57,10 +55,7 @@ public class Main_UI : UI_Scene
             //
         }, Define.UIEvent.Click);
 
-        Debug.Log(this.gameObject.transform.parent);
-        Debug.Log(this.gameObject.transform.root);
         UI_EventHandler evtHandle = FindParent<UI_EventHandler>(this.gameObject);
-        Debug.Log(evtHandle);
 
         AddUIEvent(stagePanel, (PointerEventData data) => { Managers.UI.showSceneUI<StageSelection_UI>("StageSelection"); }, Define.UIEvent.Click);
         AddUIEvent(stagePanel, (PointerEventData data) =>
