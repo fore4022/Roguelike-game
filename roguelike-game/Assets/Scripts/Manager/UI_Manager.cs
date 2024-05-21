@@ -8,7 +8,7 @@ public class UI_Manager
     public Stack<UI_Popup> PopupStack = new Stack<UI_Popup>();
     public Stack<UI_Scene> SceneStack = new Stack<UI_Scene>();
 
-    int order = 0;
+    private int order = 0;
 
     public GameObject UI
     {

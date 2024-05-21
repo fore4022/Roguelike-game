@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2498
     height: 1557
   m_ShowMode: 4
-  m_Title: Console
+  m_Title: Inspector
   m_RootView: {fileID: 4}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -43,8 +43,8 @@ MonoBehaviour:
     y: 1243
     width: 499
     height: 264
-  m_MinSize: {x: 261, y: 241}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 260, y: 220}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -241,8 +241,8 @@ MonoBehaviour:
     y: 0
     width: 856
     height: 920
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 19}
@@ -294,8 +294,8 @@ MonoBehaviour:
     y: 0
     width: 511
     height: 920
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 22}
   m_Panes:
   - {fileID: 22}
@@ -345,8 +345,8 @@ MonoBehaviour:
     y: 0
     width: 858
     height: 587
-  m_MinSize: {x: 101, y: 121}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 23}
   m_Panes:
   - {fileID: 23}
@@ -398,8 +398,8 @@ MonoBehaviour:
     y: 0
     width: 499
     height: 1243
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 25}
   m_Panes:
   - {fileID: 25}
@@ -1350,7 +1350,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 9ab1fdffe8d9fdff60defdffa6f3fdff2c03feff3603feff3e03feff4e03feff5803feffb404feff3c05feff5405feff5c05feff6605feff2e5dfeff385dfeff3c5dfeff465dfeff505dfeff585dfeff685dfeff725dfeffce5efeff565ffeff6e5ffeff765ffeff805ffeffde63feffe863feffec63fefff663feff0064feff0864feff1864feff2264feff7e65feff0666feff1e66feff2666feff3066feffbc6afeffc66afeff226cfeffaa6cfeffc26cfeffca6cfeffd46cfeff2694feff3094feff3894feff4894feff5294feffae95feff3696feff4e96feff5696feff6096feffc89cfeffd29cfeffe09cfeffea9cfefff29cfeff029dfeff0c9dfeff689efefff09efeff089ffeff109ffeff1a9ffeffe0ccfeffeaccfefff2ccfeff02cdfeff0ccdfeff68cefefff0cefeff08cffeff10cffeff1acffeff4cd5feff56d5feff60d5feff68d5feff78d5feff82d5feffded6feff66d7feff7ed7feff86d7feff90d7feff3edefeff48defeff52defeff5adefeff6adefeff74defeffd0dffeff58e0feff70e0feff78e0feff82e0feff3e27ffff4827ffff5227ffff5a27ffff6a27ffff7427ffffd028ffff5829ffff7029ffff7829ffff8229ffff9c2fffffaa2fffffb42fffffbc2fffffcc2fffffd62fffff3231ffffba31ffffd231ffffda31ffffe431ffffec37fffff637ffff0038ffff0838ffff1838ffff2238ffff7e39ffff063affff1e3affff263affff303affff4648ffff4e48ffff5e48ffff6848ffffc449ffff4c4affff644affff6c4affff764affffd458ffffdc58ffffec58fffff658ffff525affffda5afffff25afffffa5affff045bffff4a61ffff5261ffff6261ffff6c61ffffc862ffff5063ffff6863ffff7063ffff7a63ffff2873ffff3873ffff4273ffff9e74ffffb686ffffd287ffff2a8affff348affff388affff428affff4c8affff548affff648affff6e8affffca8bffffa891ffffba97ffffc497ffffdc97ffffe497fffff497fffffe97ffff5a99ffffe299fffffa99ffff029affff0c9affff44aaffff4eaaffff58aaffff60aaffff70aaffff7aaaffffd6abffff5eacffff76acffff7eacffff88acffffa0b1ffffaab1ffffb4b1ffffbcb1ffffccb1ffffd6b1ffff32b3ffffbab3ffffd2b3ffffdab3ffffe4b3ffff30baffffe2baffff62d4ffff6cd4ffff76d4ffff7ed4ffff8ed4ffff98d4fffff4d5ffff7cd6ffff94d6ffff9cd6ffffa6d6ffffece7fffff6e7ffff00e8ffff08e8ffff18e8ffff22e8ffff7ee9ffffc8e9ffff06eaffff1eeaffff26eaffff30eaffff16fbffff
+      m_ExpandedIDs: 16fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1453,7 +1453,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources/Animation/Skill/FireBall
+    - Assets/Resources/sprites/Monster
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1461,16 +1461,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Resources/Animation/Skill/FireBall
+  - Assets/Resources/sprites/Monster
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\User\UnityProjects\Roguelike-game\roguelike-game
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 66}
-    m_SelectedIDs: 62970000
-    m_LastClickedID: 38754
-    m_ExpandedIDs: 000000004a620000f8620000fc6200002c63000098660000a06600005e97000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 32}
+    m_SelectedIDs: da630000
+    m_LastClickedID: 25562
+    m_ExpandedIDs: 00000000ee620000a6630000dc63000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1498,7 +1498,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000004a620000
+    m_ExpandedIDs: 00000000ee620000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1525,7 +1525,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c62300001a4c0000c0590000c45900001a5b0000e06e000070570000be570000626b0000fa6b0000346c000028690000d81b0000001c0000d4640000f06300004064000084ad0000c4fa000074ad0000565a0000c0610000f26100000c63000020630000806300008c630000b8740000b4760000967700000e6300007a62000004690000266300007e620000906800009e6200004469000056640000766200000c85000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
