@@ -6,4 +6,5 @@ using MySql.Data.MySqlClient;
 public class User_DB : MonoBehaviour
 {
     public static MySqlConnection SqlConn;
+
 }
