@@ -5,14 +5,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class Main_UI : UI_Scene
 {
     private TextMeshProUGUI timer;
     private TextMeshProUGUI stageName;
     enum Buttons
     {
-        Start,
-        Help
+        Start
     }
     enum Images
     {
@@ -45,14 +45,13 @@ public class Main_UI : UI_Scene
         bind<TextMeshProUGUI>(typeof(TMPro));
 
         GameObject start = get<Button>((int)Buttons.Start).gameObject;
-        GameObject help = get<Button>((int)Buttons.Help).gameObject;
         GameObject stagePanel = get<Image>((int)Images.StagePanel).gameObject;
 
         stageName = get<TextMeshProUGUI>((int)TMPro.StageName);
 
         AddUIEvent(start, (PointerEventData data) =>
         {
-            //
+            SceneManager.LoadScene(1);
         }, Define.UIEvent.Click);
 
         UI_EventHandler evtHandle = FindParent<UI_EventHandler>(this.gameObject);

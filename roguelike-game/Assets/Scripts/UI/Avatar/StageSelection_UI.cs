@@ -6,8 +6,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 public class StageSelection_UI : UI_Scene
 {
-    private Vector2 enterPoint;
-    private Vector2 direction;
+    private GameObject panel;
 
     private bool visibleStageInformation = false;
 
@@ -21,7 +20,8 @@ public class StageSelection_UI : UI_Scene
     enum Images
     {
         BackgroundImage,
-        StageImage
+        StageImage,
+        Panel
     }
     enum TMPro
     {
@@ -57,6 +57,8 @@ public class StageSelection_UI : UI_Scene
         GameObject backgroundImage = get<Image>((int)Images.BackgroundImage).gameObject;
         GameObject stageImage = get<Image>((int)Images.StageImage).gameObject;
 
+        panel = get<Image>((int)Images.Panel).gameObject;
+
         AddUIEvent(exit, (PointerEventData data) => { Managers.UI.closeSceneUI(); }, Define.UIEvent.Click);
 
         AddUIEvent(select, (PointerEventData data) =>
@@ -83,12 +85,23 @@ public class StageSelection_UI : UI_Scene
         {
             if(visibleStageInformation)
             {
+                visibleStageInformation = !visibleStageInformation;
                 //
             }
             else
             {
+                visibleStageInformation = !visibleStageInformation;
+                set();
                 //
             }
+            panel.SetActive(visibleStageInformation);
+
         }, Define.UIEvent.Click);
+
+        set();
+    }
+    private void set()
+    {
+        //
     }
 }
