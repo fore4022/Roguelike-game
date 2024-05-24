@@ -118,6 +118,10 @@ public class Inventory_UI : UI_Scene
 
                 AddUIEvent(go, (PointerEventData data) =>
                 {
+                    //item data
+                }, Define.UIEvent.Enter);
+                AddUIEvent(go, (PointerEventData data) =>
+                {
                     
                 }, Define.UIEvent.Click);
                 AddUIEvent(go, (PointerEventData data) =>
@@ -137,10 +141,5 @@ public class Inventory_UI : UI_Scene
 
         if(height > 5) { content.offsetMin = new Vector2(content.offsetMin.x, -245 * (height - 5)); }
     }
-    private void Scroll()
-    {
-        //if (Managers.Game.c / 4 + (Managers.Game.c % 4 > 0 ? 1 : 0) < 5) { return; }
-        inventoryScrollView.verticalScrollbar.value = Mathf.Clamp(inventoryScrollView.verticalScrollbar.value + direction.y / (content.rect.height + 245 * (height / 5)), 0, 1);
-    }
-    //
+    private void Scroll() { inventoryScrollView.verticalScrollbar.value = Mathf.Clamp(inventoryScrollView.verticalScrollbar.value + direction.y / (content.rect.height + 245 * (height / 5)), 0, 1); }
 }

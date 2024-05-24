@@ -47,5 +47,12 @@ public class FireBall : Base_Skill
             Destroy(gameObject.GetComponent<BoxCollider2D>());
         }
     }
-    private void OnBecameInvisible() { if (projectileSpeed != 0) { Managers.Game.objectPool.disableObject(this.GetType().Name, this.gameObject); } }
+    private void OnBecameInvisible()
+    {
+        if (projectileSpeed != 0) 
+        {
+            if(!this.gameObject.activeSelf) { return; }
+            Managers.Game.objectPool.disableObject(this.GetType().Name, this.gameObject); 
+        } 
+    }
 }
