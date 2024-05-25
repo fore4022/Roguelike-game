@@ -4,7 +4,9 @@ using UnityEngine;
 using System.Data;
 using Mono.Data.Sqlite;
 using System;
-public class User_DB : MonoBehaviour
+using JetBrains.Annotations;
+
+public class Database
 {
     [SerializeField]
     private string inventoryDBName = "/inventory.db";
@@ -14,14 +16,19 @@ public class User_DB : MonoBehaviour
     [SerializeField]
     private string userDBName = "/user.db";
     [SerializeField]
-    private string userTableName = "inventory";
+    private string userTableName = "user";
 
-    public IDataReader inventoryReader;
-    public IDataReader userReader;
+    public Action insert;
+
+    public IDataReader InventoryReader { get { setInventory(); return inventoryReader; } }
+    public IDataReader UserReader { get { setUser(); return userReader; } }
+
+    private IDataReader inventoryReader;
+    private IDataReader userReader;
 
     private string pathString = "URI=file" + Application.streamingAssetsPath;
 
-    private void Start()
+    private void setInventory()
     {
         IDbConnection Connection = new SqliteConnection(pathString);
 
@@ -32,16 +39,26 @@ public class User_DB : MonoBehaviour
         inventoryReader = Command.ExecuteReader();
 
         inventoryReader.Close();//
-
-        Connection = new SqliteConnection(pathString);
+    }
+    private void setUser()
+    {
+        IDbConnection Connection = new SqliteConnection(pathString);
 
         Connection.Open();
 
-        Command = Connection.CreateCommand();
+        IDbCommand Command = Connection.CreateCommand();
         Command.CommandText = "SELECT * FROM " + userTableName;
         userReader = Command.ExecuteReader();
 
         userReader.Close();
+    }
+    public void inventory_insert()
+    {
+        insert.Invoke();
+    }
+    public void user_insert()
+    {
+        insert.Invoke();
     }
 }
 /*

@@ -10,10 +10,12 @@ public class Managers : MonoBehaviour
     UI_Manager _ui = new();
     Input_Manager _input = new();
     Game_Manager _game = new();
+    Database _data = new();
     public static Resource_Manager Resource { get { return Instance._resource; } }
     public static UI_Manager UI { get { return Instance._ui; } }
     public static Input_Manager Input { get { return Instance._input; } }
     public static Game_Manager Game { get { return Instance._game; } }
+    public static Database Data { get { return Instance._data; } }
     public void Update() { _input.OnUpdate(); }
     public static void init()
     {
