@@ -4,60 +4,66 @@ using UnityEngine;
 using System.Data;
 using Mono.Data.Sqlite;
 using System;
-using JetBrains.Annotations;
+using System.Xml.Linq;
 
 public class Database
 {
     [SerializeField]
-    private string inventoryDBName = "/inventory.db";
+    private string DBName1 = "/inventory.db";
     [SerializeField]
-    private string inventoryTableName = "inventory";
+    private string TableName1 = "inventory";
 
     [SerializeField]
-    private string userDBName = "/user.db";
+    private string DBName2 = "/user.db";
     [SerializeField]
-    private string userTableName = "user";
+    private string TableName2 = "user";
 
     public Action insert;
 
-    public IDataReader InventoryReader { get { setInventory(); return inventoryReader; } }
-    public IDataReader UserReader { get { setUser(); return userReader; } }
+    //List<Item>
 
-    private IDataReader inventoryReader;
-    private IDataReader userReader;
+    public IDataReader inventoryReader { get { setInventory(); return _inventoryReader; } }
+    public IDataReader userReader { get { setUser(); return _userReader; } }
+
+    private IDataReader _inventoryReader;
+    private IDataReader _userReader;
 
     private string pathString = "URI=file" + Application.streamingAssetsPath;
 
     private void setInventory()
     {
-        IDbConnection Connection = new SqliteConnection(pathString);
+        string path = "URI=file:" + Application.streamingAssetsPath + DBName1;
+
+        IDbConnection Connection = new SqliteConnection(path);
 
         Connection.Open();
 
         IDbCommand Command = Connection.CreateCommand();
-        Command.CommandText = "SELECT * FROM " + inventoryTableName;
-        inventoryReader = Command.ExecuteReader();
+        Command.CommandText = "SELECT * FROM " + TableName1;
+        _inventoryReader = Command.ExecuteReader();
 
-        inventoryReader.Close();//
+        _inventoryReader.Close();//
     }
     private void setUser()
     {
-        IDbConnection Connection = new SqliteConnection(pathString);
+        IDbConnection Connection = new SqliteConnection(pathString + DBName2);
 
         Connection.Open();
 
         IDbCommand Command = Connection.CreateCommand();
-        Command.CommandText = "SELECT * FROM " + userTableName;
-        userReader = Command.ExecuteReader();
+        Command.CommandText = "SELECT * FROM " + TableName2;
+        _userReader = Command.ExecuteReader();
 
-        userReader.Close();
+        _userReader.Close();
     }
     public void inventory_insert()
     {
+        if(insert != null) { return; }
         insert.Invoke();
     }
     public void user_insert()
     {
+        if(insert != null) { return; }
         insert.Invoke();
     }
 }
