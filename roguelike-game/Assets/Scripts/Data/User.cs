@@ -7,9 +7,11 @@ using JetBrains.Annotations;
 [Serializable]
 public class User
 {
+    public int level;
+    public int exp;
     public int gold;
-    public int userLevel;
-    public int maxStage;
+    public int topStage;
+    public int stage;
 
-    public float exp;
+    public string equippedItem;
 }

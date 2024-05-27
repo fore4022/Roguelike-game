@@ -4,8 +4,6 @@ using UnityEngine;
 using System.Data;
 using Mono.Data.Sqlite;
 using System;
-using System.Xml.Linq;
-
 public class Database
 {
     [SerializeField]
@@ -20,18 +18,19 @@ public class Database
 
     public Action insert;
 
-    //List<Item>
+    public List<Item> inventoryData;
 
-    public IDataReader inventoryReader { get { setInventory(); return _inventoryReader; } }
-    public IDataReader userReader { get { setUser(); return _userReader; } }
+    public User userData;
+
+    public List<Item> inventory { get { setInventory(); return inventoryData; } }
+    public User user { get { setUser(); return userData; } }
 
     private IDataReader _inventoryReader;
     private IDataReader _userReader;
-
-    private string pathString = "URI=file" + Application.streamingAssetsPath;
-
     private void setInventory()
     {
+        if (inventoryData != null) { return; }
+
         string path = "URI=file:" + Application.streamingAssetsPath + DBName1;
 
         IDbConnection Connection = new SqliteConnection(path);
@@ -42,11 +41,17 @@ public class Database
         Command.CommandText = "SELECT * FROM " + TableName1;
         _inventoryReader = Command.ExecuteReader();
 
+
+
         _inventoryReader.Close();//
     }
     private void setUser()
     {
-        IDbConnection Connection = new SqliteConnection(pathString + DBName2);
+        if(userData != null) { return; }
+
+        string path = "URI=file:" + Application.streamingAssetsPath + DBName2;
+
+        IDbConnection Connection = new SqliteConnection(path);
 
         Connection.Open();
 
@@ -59,34 +64,13 @@ public class Database
     public void inventory_insert()
     {
         if(insert != null) { return; }
+        setInventory();
         insert.Invoke();
     }
     public void user_insert()
     {
         if(insert != null) { return; }
+        setUser();
         insert.Invoke();
     }
 }
-/*
- string dbname = "/inventory.db";
-        string connectionString = "URI=file:" + Application.streamingAssetsPath + dbname;
-        string tableName = "inventory";
-
-        IDbConnection dbConnection = new SqliteConnection(connectionString);
-        dbConnection.Open();
-
-        IDbCommand dbCommand = dbConnection.CreateCommand();
-        dbCommand.CommandText = "SELECT * FROM " + tableName;
-        IDataReader dataReader = dbCommand.ExecuteReader();
-
-        //FieldCount
-        while(dataReader.Read())
-        {
-            string id = dataReader.GetString(1);
-            long count = dataReader.GetInt64(2);
-
-            Debug.Log(id + " : " + count);
-        }
-
-        dataReader.Close();
- */

@@ -14,7 +14,7 @@ public class Test : MonoBehaviour
 
         Managers.UI.showSceneUI<SwipeMenu_UI>("SwipeMenu");
 
-        Debug.Log(Managers.Data.inventoryReader);
-        Debug.Log(Managers.Data.userReader);
+        Debug.Log(Managers.Data.inventory);
+        Debug.Log(Managers.Data.user);
     }
 }
