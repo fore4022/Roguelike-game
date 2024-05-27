@@ -7,15 +7,14 @@ public class Test : MonoBehaviour
 {
     private void Start()
     {
+        Managers.Data.inventory_edit("adsf", 120);
+
+        Managers.Data.inventory_edit("asdf", 60);
+
         //Managers.Game.stageStart("Ground");
         //GameObject go = GameObject.Find("@Skill");
         //go.AddComponent<FireBall_Cast>();
 
         Managers.UI.showSceneUI<SwipeMenu_UI>("SwipeMenu");
-
-        Managers.Data.inventory_edit("ItemID", 0);
-
-        Debug.Log(Managers.Data.inventory);
-        Debug.Log(Managers.Data.user);
     }
 }
