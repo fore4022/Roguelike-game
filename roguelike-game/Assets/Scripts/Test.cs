@@ -10,9 +10,10 @@ public class Test : MonoBehaviour
         //Managers.Game.stageStart("Ground");
         //GameObject go = GameObject.Find("@Skill");
         //go.AddComponent<FireBall_Cast>();
-        Debug.Log("asdf");
 
         Managers.UI.showSceneUI<SwipeMenu_UI>("SwipeMenu");
+
+        Managers.Data.inventory_edit("ItemID", 0);
 
         Debug.Log(Managers.Data.inventory);
         Debug.Log(Managers.Data.user);
