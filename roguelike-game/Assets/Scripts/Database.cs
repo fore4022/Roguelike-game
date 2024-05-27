@@ -5,7 +5,6 @@ using System.Data;
 using Mono.Data.Sqlite;
 using System;
 using System.Linq;
-
 public class Database
 {
     [SerializeField]
@@ -71,29 +70,35 @@ public class Database
     {
         //if(insert == null) { return; }
 
-        if (inventoryData.Any(item => item.itemName == name))
+        IDbConnection connection = connect(DBName1);
+
+        connection.Open();
+
+        IDbCommand command = connection.CreateCommand();
+
+        command.CommandType = CommandType.Text;
+
+        //Slot slot = inventoryData.Any(item => item.itemName != name);
+
+        if (inventoryData.Any(item => item.itemName != name) || inventoryData.Count == 0)
         {
-            IDbConnection connection = connect(DBName1);
-
-            connection.Open();
-
-            IDbCommand command = connection.CreateCommand();
-
-            command.CommandType = CommandType.Text;
             command.CommandText = "INSERT INTO inventory (ItemID, Count) VALUES (@ItemID, @Count)";
 
             command.Parameters.Add(new SqliteParameter("@ItemID", name));
             command.Parameters.Add(new SqliteParameter("@Count", count));
-
-            command.ExecuteNonQuery();
-
-            command.Dispose();
-            connection.Close();
         }
-        else
+        else if(inventoryData.Any(item => item.itemName))//
         {
+            command.CommandText = "UPDATE inventory SET Count = @Count WHERE ItemID = @ItemID";
 
+            command.Parameters.Add(new SqliteParameter("@Count", count));
+            command.Parameters.Add(new SqliteParameter("@ItemID", name));
         }
+
+        command.ExecuteNonQuery();
+
+        command.Dispose();
+        connection.Close();
 
         setInventory();
         //insert.Invoke();

@@ -7,7 +7,7 @@ public class Test : MonoBehaviour
 {
     private void Start()
     {
-        Managers.Data.inventory_edit("adsf", 120);
+        Managers.Data.inventory_edit("asdf", 120);
 
         Managers.Data.inventory_edit("asdf", 60);
 
