@@ -12,8 +12,6 @@ using UnityEditor.Compilation;
 using Debug = UnityEngine.Debug;
 public class Game_Manager
 {
-    public int c;//
-
     public List<Skill> skills;
 
     public Player_Controller player;

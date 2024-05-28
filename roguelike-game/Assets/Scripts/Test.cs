@@ -7,10 +7,6 @@ public class Test : MonoBehaviour
 {
     private void Start()
     {
-        Managers.Data.inventory_edit("asdf", 120);
-
-        Managers.Data.inventory_edit("asdf", 60);
-
         //Managers.Game.stageStart("Ground");
         //GameObject go = GameObject.Find("@Skill");
         //go.AddComponent<FireBall_Cast>();

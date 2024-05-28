@@ -46,6 +46,7 @@ public class Database
 
             slot.itemName = inventoryReader.GetString(0);
             slot.count = inventoryReader.GetInt32(1);
+            slot.equipped = inventoryReader.GetInt32(2);
 
             inventoryData.Add(slot);
         }
@@ -66,9 +67,9 @@ public class Database
 
         userReader.Close();
     }
-    public void inventory_edit(string name, int count)//inventoryData.GetInt(0) - count == 0
+    public void inventory_edit(string name, int count, int equipped = 0, bool isInsert = false)
     {
-        //if(insert == null) { return; }
+        //if (insert == null) { return; }
 
         IDbConnection connection = connect(DBName1);
 
@@ -78,20 +79,26 @@ public class Database
 
         command.CommandType = CommandType.Text;
 
-        //Slot slot = inventoryData.Any(item => item.itemName != name);
-
-        if (inventoryData.Any(item => item.itemName != name) || inventoryData.Count == 0)
+        if(isInsert && inventoryData.Any(item => item.itemName == name))
         {
-            command.CommandText = "INSERT INTO inventory (ItemID, Count) VALUES (@ItemID, @Count)";
+            command.CommandText = "DELETE FROM inventory WHERE ItemID = @ItemID";
+
+            command.Parameters.Add(new SqliteParameter("@ItemID", name));
+        }
+        else if (inventoryData.Any(item => item.itemName != name) || inventoryData.Count == 0)
+        {
+            command.CommandText = "INSERT INTO inventory (ItemID, Count, Equipped) VALUES (@ItemID, @Count, @Equipped)";
 
             command.Parameters.Add(new SqliteParameter("@ItemID", name));
             command.Parameters.Add(new SqliteParameter("@Count", count));
+            command.Parameters.Add(new SqliteParameter("@Equipped", equipped));
         }
-        else if(inventoryData.Any(item => item.itemName))//
+        else if(inventoryData.Any(item => item.itemName == name))
         {
-            command.CommandText = "UPDATE inventory SET Count = @Count WHERE ItemID = @ItemID";
+            command.CommandText = "UPDATE inventory SET Count = @Count, Equipped = @Equipped WHERE ItemID = @ItemID";
 
             command.Parameters.Add(new SqliteParameter("@Count", count));
+            command.Parameters.Add(new SqliteParameter("@Equipped", equipped));
             command.Parameters.Add(new SqliteParameter("@ItemID", name));
         }
 

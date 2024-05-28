@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.SceneManagement;
 using Unity.Android.Types;
+using System.Linq;
+
 public class Inventory_UI : UI_Scene
 {
     public SwipeMenu_UI swipeMenu;
@@ -13,6 +15,8 @@ public class Inventory_UI : UI_Scene
     private RectTransform content;
     private ScrollRect inventoryScrollView;
     private Transform pos;
+
+    private List<Item> itemList;
 
     private Vector2 enterPoint;
     private Vector2 direction;
@@ -37,7 +41,7 @@ public class Inventory_UI : UI_Scene
     private void Start() 
     {
         if (SceneManager.GetActiveScene().name == "Main") { pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform; }
-        else { }
+        else { }//another Scene
 
         init();
 
@@ -68,12 +72,13 @@ public class Inventory_UI : UI_Scene
 
         inventoryScrollView.movementType = ScrollRect.MovementType.Clamped;
 
-        UI_EventHandler evtHandle1 = null;
-        if (pos != null) { evtHandle1 = FindParent<UI_EventHandler>(pos.gameObject); }
+        UI_EventHandler evtHandle = null;
+
+        if (pos != null) { evtHandle = FindParent<UI_EventHandler>(pos.gameObject); }
 
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (pos != null) { evtHandle1.OnBeginDragHandler.Invoke(data); }
+            if (pos != null) { evtHandle.OnBeginDragHandler.Invoke(data); }
 #if UNITY_EDITOR
             enterPoint = Input.mousePosition;
 #endif
@@ -84,7 +89,7 @@ public class Inventory_UI : UI_Scene
         }, Define.UIEvent.BeginDrag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (pos != null) { evtHandle1.OnDragHandler.Invoke(data); }
+            if (pos != null) { evtHandle.OnDragHandler.Invoke(data); }
 #if UNITY_EDITOR
             direction = (Vector2)Input.mousePosition - enterPoint;
 #endif
@@ -96,19 +101,29 @@ public class Inventory_UI : UI_Scene
         }, Define.UIEvent.Drag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (pos != null) { evtHandle1.OnEndDragHandler.Invoke(data); }
+            if (pos != null) { evtHandle.OnEndDragHandler.Invoke(data); }
         }, Define.UIEvent.EndDrag);
 
-        UI_EventHandler evtHandle2 = FindParent<UI_EventHandler>(content.gameObject);
+        setSlot();
+    }
+    private void Scroll() { inventoryScrollView.verticalScrollbar.value = Mathf.Clamp(inventoryScrollView.verticalScrollbar.value + direction.y / (content.rect.height + 245 * (height / 5)), 0, 1); }
+    private void setSlot()
+    {
+        if(itemList == null) { itemList = Managers.Resource.LoadAll<Item>("Data/Item/").ToList<Item>(); }
 
-        height = 6;//Managers.Game.c / 4 + (Managers.Game.c % 4 > 0 ? 1 : 0);
+        UI_EventHandler evtHandle = FindParent<UI_EventHandler>(content.gameObject);
 
-        for(int h = 0; h < Mathf.Max(height, 5); h++)//5
+        height = Managers.Data.inventory.Count / 4 + (Managers.Data.inventory.Count % 4 > 0 ? 1 : 0);
+
+        for (int h = 0; h < Mathf.Max(height, 5); h++)
         {
-            for(int w = 0; w < 4; w++)
+            for (int w = 0; w < 4; w++)
             {
                 GameObject go = Managers.Resource.instantiate("UI/Slot", content.transform);
                 RectTransform rectTransform = go.GetComponent<RectTransform>();
+                Slot_UI slot = go.AddComponent<Slot_UI>();
+
+                //slot.item = itemList.Any(item => item.itemName == "")
 
                 rectTransform.localScale = new Vector2(1, 1);
                 rectTransform.anchorMax = new Vector2(0.5f, 1f);
@@ -118,28 +133,27 @@ public class Inventory_UI : UI_Scene
 
                 AddUIEvent(go, (PointerEventData data) =>
                 {
-                    //item data
+                    
                 }, Define.UIEvent.Enter);
                 AddUIEvent(go, (PointerEventData data) =>
                 {
-                    
+
                 }, Define.UIEvent.Click);
                 AddUIEvent(go, (PointerEventData data) =>
                 {
-                    evtHandle2.OnBeginDragHandler.Invoke(data);
+                    evtHandle.OnBeginDragHandler.Invoke(data);
                 }, Define.UIEvent.BeginDrag);
                 AddUIEvent(go, (PointerEventData data) =>
                 {
-                    evtHandle2.OnDragHandler.Invoke(data);
+                    evtHandle.OnDragHandler.Invoke(data);
                 }, Define.UIEvent.Drag);
                 AddUIEvent(go, (PointerEventData data) =>
                 {
-                    evtHandle2.OnEndDragHandler.Invoke(data);
+                    evtHandle.OnEndDragHandler.Invoke(data);
                 }, Define.UIEvent.EndDrag);
             }
         }
 
-        if(height > 5) { content.offsetMin = new Vector2(content.offsetMin.x, -245 * (height - 5)); }
+        if (height > 5) { content.offsetMin = new Vector2(content.offsetMin.x, -245 * (height - 5)); }
     }
-    private void Scroll() { inventoryScrollView.verticalScrollbar.value = Mathf.Clamp(inventoryScrollView.verticalScrollbar.value + direction.y / (content.rect.height + 245 * (height / 5)), 0, 1); }
 }
