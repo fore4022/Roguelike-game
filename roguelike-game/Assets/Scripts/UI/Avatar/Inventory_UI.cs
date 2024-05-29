@@ -119,11 +119,11 @@ public class Inventory_UI : UI_Scene
         {
             for (int w = 0; w < 4; w++)
             {
-                GameObject go = Managers.Resource.instantiate("UI/Slot", content.transform);
+                GameObject go = Managers.Resource.instantiate("UI/Slot", content.transform);//array, + Action edit
                 RectTransform rectTransform = go.GetComponent<RectTransform>();
                 Slot_UI slot = go.AddComponent<Slot_UI>();
 
-                //slot.item = itemList.Any(item => item.itemName == "")
+                slot.setSlot((Item)(itemList.Select(item => item.itemName == Managers.Data.inventory[h + w].itemName)), Managers.Data.inventory[h + w].count);
 
                 rectTransform.localScale = new Vector2(1, 1);
                 rectTransform.anchorMax = new Vector2(0.5f, 1f);

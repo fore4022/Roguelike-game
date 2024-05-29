@@ -17,7 +17,7 @@ public class Database
     [SerializeField]
     private string TableName2 = "user";
 
-    public Action insert;
+    public Action edit;
 
     public List<Slot> inventoryData = new List<Slot>();
     public User userData;
