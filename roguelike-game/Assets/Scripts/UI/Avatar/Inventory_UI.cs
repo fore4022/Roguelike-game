@@ -5,9 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.SceneManagement;
-using Unity.Android.Types;
 using System.Linq;
-
 public class Inventory_UI : UI_Scene
 {
     public SwipeMenu_UI swipeMenu;
