@@ -69,7 +69,7 @@ public class Database
     }
     public void inventory_edit(string name, int count, int equipped = 0, bool isInsert = false)
     {
-        //if (insert == null) { return; }
+        if (edit == null) { return; }
 
         IDbConnection connection = connect(DBName1);
 
@@ -108,11 +108,11 @@ public class Database
         connection.Close();
 
         setInventory();
-        //insert.Invoke();
+        edit.Invoke();
     }
     public void user_edit(int level, int exp, int gold, int topStage, int stage, string equippedItem)
     {
-        //if(insert == null) { return; }
+        if (edit == null) { return; }
 
         IDbConnection connection = connect(DBName2);
 
@@ -135,6 +135,6 @@ public class Database
         connection.Close();
 
         setUser();
-        //insert.Invoke();
+        edit.Invoke();
     }
 }

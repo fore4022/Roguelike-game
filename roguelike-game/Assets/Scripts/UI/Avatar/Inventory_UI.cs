@@ -37,7 +37,7 @@ public class Inventory_UI : UI_Scene
     {
         InventoryScrollView
     }
-    private void Start() //action -= ???
+    private void Start()
     {
         if (SceneManager.GetActiveScene().name == "Main") { pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform; }
         else { }//another Scene
@@ -56,6 +56,9 @@ public class Inventory_UI : UI_Scene
 
             swipeMenu = FindObjectOfType<SwipeMenu_UI>().GetComponent<SwipeMenu_UI>();
         }
+
+        Managers.Data.edit -= updateSlot;
+        Managers.Data.edit += updateSlot;
     }
     protected override void init()
     {
@@ -157,4 +160,5 @@ public class Inventory_UI : UI_Scene
         if (height > 5) { content.offsetMin = new Vector2(content.offsetMin.x, -245 * (height - 5)); }
     }
     private void updateSlot() { for (int i = 0; i < slotList.Count; i++) { slotList[i].setSlot((Item)(itemList.Select(item => item.itemName == Managers.Data.inventory[i].itemName)), Managers.Data.inventory[i].count); } }
+    private void OnDisable() { Managers.Data.edit -= updateSlot; }
 }
