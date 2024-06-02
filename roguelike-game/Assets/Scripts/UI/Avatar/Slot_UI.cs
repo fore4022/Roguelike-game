@@ -23,7 +23,7 @@ public class Slot_UI : Util
         item = _item;
         count = _count;
 
-        //itemImage = 
+        //itemImage = load Image
         itemCount.text = $"{_count}";
     }
 }
