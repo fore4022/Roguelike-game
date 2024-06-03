@@ -16,6 +16,8 @@ public class Managers : MonoBehaviour
     public static Input_Manager Input { get { return Instance._input; } }
     public static Game_Manager Game { get { return Instance._game; } }
     public static Database Data { get { return Instance._data; } }
+
+    private void Awake() { _data.init(); }
     public void Update() { _input.OnUpdate(); }
     public static void init()
     {

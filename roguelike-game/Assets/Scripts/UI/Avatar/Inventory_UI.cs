@@ -128,11 +128,11 @@ public class Inventory_UI : UI_Scene
                 Slot_UI slot = go.AddComponent<Slot_UI>();
                 slotList.Add(slot);
 
-                List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventory[(h * 4) + w].itemName ? item : null).ToList();
+                List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventory[Mathf.Min((h * 4) + w, Managers.Data.inventory.Count - 1)].itemName ? item : null).ToList();
 
                 if (item[0] == null) { continue; }
 
-                slot.setSlot(item[0], Managers.Data.inventory[(h * 4) + w].count);
+                slot.setSlot(item[0], Managers.Data.inventory[Mathf.Min((h * 4) + w, Managers.Data.inventory.Count - 1)].count);
 
                 rectTransform.localScale = new Vector2(1, 1);
                 rectTransform.anchorMax = new Vector2(0.5f, 1f);

@@ -19,12 +19,17 @@ public class Database
 
     public Action edit;
 
-    public List<Slot> inventoryData { get { setInventory(); return inventory; } }
-    public User userData { get { setUser(); return user; } }
+    private List<Slot> inventoryData = new List<Slot>();
+    private User userData;
 
-    public List<Slot> inventory = new List<Slot>();
-    public User user;
+    public List<Slot> inventory { get { setInventory(); return inventoryData; } }
+    public User user { get { setUser(); return userData; } }
 
+    public void init()
+    {
+        setInventory();
+        //setUser();
+    }
     private IDbConnection connect(string dbName)
     {
         string path = "URI=file:" + Application.streamingAssetsPath + dbName;
@@ -40,6 +45,8 @@ public class Database
         command.CommandText = "SELECT * FROM " + TableName1;
         IDataReader inventoryReader = command.ExecuteReader();
 
+        inventoryData.Clear();
+
         while (inventoryReader.Read())
         {
             Slot slot = new();
@@ -48,7 +55,7 @@ public class Database
             slot.count = inventoryReader.GetInt32(1);
             slot.equipped = inventoryReader.GetInt32(2);
 
-            inventory.Add(slot);
+            inventoryData.Add(slot);
         }
 
         inventoryReader.Close();
@@ -65,7 +72,7 @@ public class Database
         Command.CommandText = "SELECT * FROM " + TableName2;
         IDataReader userReader = Command.ExecuteReader();
 
-        //
+        //update
 
         userReader.Close();
     }
@@ -77,17 +84,17 @@ public class Database
 
         IDbCommand command = connection.CreateCommand();
 
-        Debug.Log(inventoryData.Count);
-
         command.CommandType = CommandType.Text;
 
-        if(isDelete && inventoryData.Any(item => item.itemName == name))
+        int index = inventoryData.FindIndex(item => item.itemName == name);
+
+        if(isDelete && index != -1)
         {
             command.CommandText = "DELETE FROM inventory WHERE ItemID = @ItemID";
 
             command.Parameters.Add(new SqliteParameter("@ItemID", name));
         }
-        else if ((inventoryData.Any(item => item.itemName != name) && count != 0) || inventoryData.Count == 0)
+        else if ((index != -1 && count != 0) || inventoryData.Count == 0)
         {
             command.CommandText = "INSERT INTO inventory (ItemID, Count, Equipped) VALUES (@ItemID, @Count, @Equipped)";
 
@@ -95,11 +102,11 @@ public class Database
             command.Parameters.Add(new SqliteParameter("@Count", count));
             command.Parameters.Add(new SqliteParameter("@Equipped", equipped));
         }
-        else if(inventoryData.Any(item => item.itemName == name))
+        else if(inventoryData.Any(item => item.itemName == name))//
         {
             command.CommandText = "UPDATE inventory SET Count = @Count, Equipped = @Equipped WHERE ItemID = @ItemID";
 
-            command.Parameters.Add(new SqliteParameter("@Count", count));
+            //command.Parameters.Add(new SqliteParameter("@Count", count + );
             command.Parameters.Add(new SqliteParameter("@Equipped", equipped));
             command.Parameters.Add(new SqliteParameter("@ItemID", name));
         }

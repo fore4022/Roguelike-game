@@ -10,6 +10,7 @@ public class Test : MonoBehaviour
         //Managers.Game.stageStart("Ground");
         //GameObject go = GameObject.Find("@Skill");
         //go.AddComponent<FireBall_Cast>();
+
         Managers.Data.inventory_edit("weapon1", 1);
         Managers.Data.inventory_edit("weapon2", 1);
         Managers.Data.inventory_edit("weapon3", 1);
