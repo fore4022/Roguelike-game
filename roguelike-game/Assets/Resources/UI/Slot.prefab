@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5533753219602128901}
   - component: {fileID: 5387558020411707403}
   m_Layer: 5
-  m_Name: Count
+  m_Name: slotCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -248,7 +248,7 @@ GameObject:
   - component: {fileID: 8071776331730605981}
   - component: {fileID: 3399801851907130534}
   m_Layer: 5
-  m_Name: Item
+  m_Name: slotImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

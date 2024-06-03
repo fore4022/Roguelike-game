@@ -19,11 +19,11 @@ public class Database
 
     public Action edit;
 
-    public List<Slot> inventoryData = new List<Slot>();
-    public User userData;
+    public List<Slot> inventoryData { get { setInventory(); return inventory; } }
+    public User userData { get { setUser(); return user; } }
 
-    public List<Slot> inventory { get { setInventory(); return inventoryData; } }
-    public User user { get { setUser(); return userData; } }
+    public List<Slot> inventory = new List<Slot>();
+    public User user;
 
     private IDbConnection connect(string dbName)
     {
@@ -48,7 +48,7 @@ public class Database
             slot.count = inventoryReader.GetInt32(1);
             slot.equipped = inventoryReader.GetInt32(2);
 
-            inventoryData.Add(slot);
+            inventory.Add(slot);
         }
 
         inventoryReader.Close();
@@ -65,27 +65,29 @@ public class Database
         Command.CommandText = "SELECT * FROM " + TableName2;
         IDataReader userReader = Command.ExecuteReader();
 
+        //
+
         userReader.Close();
     }
-    public void inventory_edit(string name, int count, int equipped = 0, bool isInsert = false)
+    public void inventory_edit(string name, int count, int equipped = 0, bool isDelete = false)
     {
-        if (edit == null) { return; }
-
         IDbConnection connection = connect(DBName1);
 
         connection.Open();
 
         IDbCommand command = connection.CreateCommand();
 
+        Debug.Log(inventoryData.Count);
+
         command.CommandType = CommandType.Text;
 
-        if(isInsert && inventoryData.Any(item => item.itemName == name))
+        if(isDelete && inventoryData.Any(item => item.itemName == name))
         {
             command.CommandText = "DELETE FROM inventory WHERE ItemID = @ItemID";
 
             command.Parameters.Add(new SqliteParameter("@ItemID", name));
         }
-        else if (inventoryData.Any(item => item.itemName != name) || inventoryData.Count == 0)
+        else if ((inventoryData.Any(item => item.itemName != name) && count != 0) || inventoryData.Count == 0)
         {
             command.CommandText = "INSERT INTO inventory (ItemID, Count, Equipped) VALUES (@ItemID, @Count, @Equipped)";
 
@@ -108,11 +110,10 @@ public class Database
         connection.Close();
 
         setInventory();
-        edit.Invoke();
+        if(edit != null) { edit.Invoke(); }
     }
     public void user_edit(int level, int exp, int gold, int topStage, int stage, string equippedItem)
     {
-        if (edit == null) { return; }
 
         IDbConnection connection = connect(DBName2);
 
@@ -135,6 +136,6 @@ public class Database
         connection.Close();
 
         setUser();
-        edit.Invoke();
+        if (edit != null) { edit.Invoke(); }
     }
 }

@@ -38,6 +38,7 @@ public class Game_Manager
 
     public bool isSpawn;
     public bool inBattle;
+
     private void init(string Theme)
     {
         creationCycle = 1f;

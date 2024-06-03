@@ -14,7 +14,7 @@ public class Slot_UI : Util
 
     public void setSlot(Item _item, int _count)
     {
-        if(itemImage == null || itemCount == null)
+        if (itemImage == null || itemCount == null)
         {
             itemImage = FindChild<Image>(this.gameObject, "slotImage", true).gameObject;
             itemCount = FindChild<TextMeshProUGUI>(this.gameObject, "slotCount", true);
@@ -23,7 +23,7 @@ public class Slot_UI : Util
         item = _item;
         count = _count;
 
-        //itemImage = load Image
+        ////itemImage = load Image
         itemCount.text = $"{_count}";
     }
 }

@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using Unity.VisualScripting;
+
 public class Inventory_UI : UI_Scene
 {
     public SwipeMenu_UI swipeMenu;
@@ -14,8 +16,8 @@ public class Inventory_UI : UI_Scene
     private ScrollRect inventoryScrollView;
     private Transform pos;
 
+    private List<Slot_UI> slotList = new List<Slot_UI>();
     private List<Item> itemList;
-    private List<Slot_UI> slotList;
 
     private Vector2 enterPoint;
     private Vector2 direction;
@@ -41,6 +43,8 @@ public class Inventory_UI : UI_Scene
     {
         if (SceneManager.GetActiveScene().name == "Main") { pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform; }
         else { }//another Scene
+
+        if (itemList == null) { itemList = Managers.Resource.LoadAll<Item>("Data/Item/").ToList<Item>(); }
 
         init();
 
@@ -111,8 +115,6 @@ public class Inventory_UI : UI_Scene
     private void Scroll() { inventoryScrollView.verticalScrollbar.value = Mathf.Clamp(inventoryScrollView.verticalScrollbar.value + direction.y / (content.rect.height + 245 * (height / 5)), 0, 1); }
     private void setSlot()
     {
-        if(itemList == null) { itemList = Managers.Resource.LoadAll<Item>("Data/Item/").ToList<Item>(); }
-
         UI_EventHandler evtHandle = FindParent<UI_EventHandler>(content.gameObject);
 
         height = Managers.Data.inventory.Count / 4 + (Managers.Data.inventory.Count % 4 > 0 ? 1 : 0);
@@ -126,7 +128,11 @@ public class Inventory_UI : UI_Scene
                 Slot_UI slot = go.AddComponent<Slot_UI>();
                 slotList.Add(slot);
 
-                slot.setSlot((Item)(itemList.Select(item => item.itemName == Managers.Data.inventory[(h * 4) + w].itemName)), Managers.Data.inventory[(h * 4) + w].count);
+                List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventory[(h * 4) + w].itemName ? item : null).ToList();
+
+                if (item[0] == null) { continue; }
+
+                slot.setSlot(item[0], Managers.Data.inventory[(h * 4) + w].count);
 
                 rectTransform.localScale = new Vector2(1, 1);
                 rectTransform.anchorMax = new Vector2(0.5f, 1f);
