@@ -94,7 +94,7 @@ public class Database
 
             command.Parameters.Add(new SqliteParameter("@ItemID", name));
         }
-        else if ((index != -1 && count != 0) || inventoryData.Count == 0)
+        else if ((index == -1 && count != 0) || inventoryData.Count == 0)
         {
             command.CommandText = "INSERT INTO inventory (ItemID, Count, Equipped) VALUES (@ItemID, @Count, @Equipped)";
 
@@ -102,11 +102,11 @@ public class Database
             command.Parameters.Add(new SqliteParameter("@Count", count));
             command.Parameters.Add(new SqliteParameter("@Equipped", equipped));
         }
-        else if(inventoryData.Any(item => item.itemName == name))//
+        else if(index >= 0)
         {
             command.CommandText = "UPDATE inventory SET Count = @Count, Equipped = @Equipped WHERE ItemID = @ItemID";
 
-            //command.Parameters.Add(new SqliteParameter("@Count", count + );
+            command.Parameters.Add(new SqliteParameter("@Count", count + inventoryData[index].count));
             command.Parameters.Add(new SqliteParameter("@Equipped", equipped));
             command.Parameters.Add(new SqliteParameter("@ItemID", name));
         }

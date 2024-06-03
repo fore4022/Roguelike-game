@@ -21,6 +21,7 @@ public class Test : MonoBehaviour
         Managers.Data.inventory_edit("weapon8", 1);
         Managers.Data.inventory_edit("weapon9", 1);
         Managers.Data.inventory_edit("weapon10", 1);
+        Managers.Data.inventory_edit("weapon2", 0, 0, true);
 
         Managers.UI.showSceneUI<SwipeMenu_UI>("SwipeMenu");
     }

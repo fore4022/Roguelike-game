@@ -6,8 +6,6 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Linq;
-using Unity.VisualScripting;
-
 public class Inventory_UI : UI_Scene
 {
     public SwipeMenu_UI swipeMenu;
@@ -18,6 +16,8 @@ public class Inventory_UI : UI_Scene
 
     private List<Slot_UI> slotList = new List<Slot_UI>();
     private List<Item> itemList;
+
+    public Sprite[] sprites;
 
     private Vector2 enterPoint;
     private Vector2 direction;
@@ -125,20 +125,15 @@ public class Inventory_UI : UI_Scene
             {
                 GameObject go = Managers.Resource.instantiate("UI/Slot", content.transform);
                 RectTransform rectTransform = go.GetComponent<RectTransform>();
-                Slot_UI slot = go.AddComponent<Slot_UI>();
-                slotList.Add(slot);
-
-                List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventory[Mathf.Min((h * 4) + w, Managers.Data.inventory.Count - 1)].itemName ? item : null).ToList();
-
-                if (item[0] == null) { continue; }
-
-                slot.setSlot(item[0], Managers.Data.inventory[Mathf.Min((h * 4) + w, Managers.Data.inventory.Count - 1)].count);
 
                 rectTransform.localScale = new Vector2(1, 1);
                 rectTransform.anchorMax = new Vector2(0.5f, 1f);
                 rectTransform.anchorMin = new Vector2(0.5f, 1f);
                 rectTransform.anchoredPosition = new Vector2(0.5f, 1f);
                 rectTransform.localPosition = new Vector2(-360 + 240 * w, -130 - 245 * h);
+
+                Slot_UI slot = go.AddComponent<Slot_UI>();
+                slotList.Add(slot);
 
                 AddUIEvent(go, (PointerEventData data) =>
                 {
@@ -160,6 +155,11 @@ public class Inventory_UI : UI_Scene
                 {
                     evtHandle.OnEndDragHandler.Invoke(data);
                 }, Define.UIEvent.EndDrag);
+
+                List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventory[Mathf.Min((h * 4) + w, Managers.Data.inventory.Count - 1)].itemName ? item : null).ToList();
+
+                if (Managers.Data.inventory[Mathf.Min((h * 4) + w, Managers.Data.inventory.Count - 1)].count == 0) { /*continue;*/ }
+                else { slot.setSlot(item[0], Managers.Data.inventory[Mathf.Min((h * 4) + w, Managers.Data.inventory.Count - 1)].count);/*Image*/ }
             }
         }
 
