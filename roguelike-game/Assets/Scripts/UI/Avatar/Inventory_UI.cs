@@ -24,6 +24,7 @@ public class Inventory_UI : UI_Scene
     private Vector2 direction;
 
     private int height;
+    private int index;
     enum Images
     {
         Panel,
@@ -39,9 +40,6 @@ public class Inventory_UI : UI_Scene
     private void Start()
     {
         sprites = Managers.Resource.LoadAll<Sprite>("sprites/Icon/item");
-        Debug.Log(sprites.Count());
-        Debug.Log(sprites[0]);
-        Debug.Log(sprites[0].name);
 
         if (SceneManager.GetActiveScene().name == "Main") { pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform; }
         else { }//another Scene
@@ -136,22 +134,17 @@ public class Inventory_UI : UI_Scene
                 Slot_UI slot = go.AddComponent<Slot_UI>();
                 slotList.Add(slot);
 
-                AddUIEvent(go, (PointerEventData data) =>
-                {
-                    
-                }, Define.UIEvent.Enter);
-                AddUIEvent(go, (PointerEventData data) =>
-                {
+                AddUIEvent(go, (PointerEventData data) => { Managers.UI.showPopupUI<ItemInformation_UI>("ItemInformation"); }, Define.UIEvent.Click);
+                AddUIEvent(go, (PointerEventData data) => { evtHandle.OnBeginDragHandler.Invoke(data); }, Define.UIEvent.BeginDrag);
+                AddUIEvent(go, (PointerEventData data) => { evtHandle.OnDragHandler.Invoke(data); }, Define.UIEvent.Drag);
+                AddUIEvent(go, (PointerEventData data) => { evtHandle.OnEndDragHandler.Invoke(data); }, Define.UIEvent.EndDrag);
 
-                }, Define.UIEvent.Click);
-                AddUIEvent(go, (PointerEventData data) => { if (Managers.Data.inventory.Count > 20) { evtHandle.OnBeginDragHandler.Invoke(data); } }, Define.UIEvent.BeginDrag);
-                AddUIEvent(go, (PointerEventData data) => { if (Managers.Data.inventory.Count > 20) { evtHandle.OnDragHandler.Invoke(data); } }, Define.UIEvent.Drag);
-                AddUIEvent(go, (PointerEventData data) => { if (Managers.Data.inventory.Count > 20) { evtHandle.OnEndDragHandler.Invoke(data); } }, Define.UIEvent.EndDrag);
+                index = Mathf.Min(h * 4 + w, Managers.Data.inventory.Count - 1);
 
-                List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventory[Mathf.Min(h * 4 + w, Managers.Data.inventory.Count - 1)].itemName ? item : null).ToList();
+                List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventory[index].itemName ? item : null).ToList();
 
-                if (h * 4 + w >= Managers.Data.inventory.Count) { continue; }
-                else { slot.setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventory[Mathf.Min(h * 4 + w, Managers.Data.inventory.Count - 1)].itemName), Managers.Data.inventory[Mathf.Min(h * 4 + w, Managers.Data.inventory.Count - 1)].count); }
+                if (h * 4 + w >= Managers.Data.inventory.Count) { slot.setSlot(null, null, -1); }
+                else { slot.setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventory[index].itemName), Managers.Data.inventory[index].count); }
             }
         }
 
