@@ -134,17 +134,23 @@ public class Inventory_UI : UI_Scene
                 Slot_UI slot = go.AddComponent<Slot_UI>();
                 slotList.Add(slot);
 
-                AddUIEvent(go, (PointerEventData data) => { Managers.UI.showPopupUI<ItemInformation_UI>("ItemInformation"); }, Define.UIEvent.Click);
-                AddUIEvent(go, (PointerEventData data) => { evtHandle.OnBeginDragHandler.Invoke(data); }, Define.UIEvent.BeginDrag);
-                AddUIEvent(go, (PointerEventData data) => { evtHandle.OnDragHandler.Invoke(data); }, Define.UIEvent.Drag);
-                AddUIEvent(go, (PointerEventData data) => { evtHandle.OnEndDragHandler.Invoke(data); }, Define.UIEvent.EndDrag);
-
                 index = Mathf.Min(h * 4 + w, Managers.Data.inventory.Count - 1);
 
                 List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventory[index].itemName ? item : null).ToList();
 
                 if (h * 4 + w >= Managers.Data.inventory.Count) { slot.setSlot(null, null, -1); }
                 else { slot.setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventory[index].itemName), Managers.Data.inventory[index].count); }
+
+                AddUIEvent(go, (PointerEventData data) =>
+                {
+                    Slot_UI slot = go.GetComponent<Slot_UI>();
+
+                    Managers.UI.showPopupUI<ItemInformation_UI>("ItemInformation");
+                    Managers.UI.PopupStack.Peek().gameObject.GetComponent<ItemInformation_UI>().set(slot.item, slot.sprite, slot.count, slot.isEquipped);
+                }, Define.UIEvent.Click);
+                AddUIEvent(go, (PointerEventData data) => { evtHandle.OnBeginDragHandler.Invoke(data); }, Define.UIEvent.BeginDrag);
+                AddUIEvent(go, (PointerEventData data) => { evtHandle.OnDragHandler.Invoke(data); }, Define.UIEvent.Drag);
+                AddUIEvent(go, (PointerEventData data) => { evtHandle.OnEndDragHandler.Invoke(data); }, Define.UIEvent.EndDrag);
             }
         }
 

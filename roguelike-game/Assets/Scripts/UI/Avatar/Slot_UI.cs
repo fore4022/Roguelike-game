@@ -7,12 +7,15 @@ using TMPro;
 public class Slot_UI : Util
 {
     public Item item;
+    public Sprite sprite;
+
     public int count;
+    public bool isEquipped;
 
     private Image itemImage;
     private TextMeshProUGUI itemCount;
 
-    public void setSlot(Item _item, Sprite sprite, int _count, bool isEquipped = false)
+    public void setSlot(Item _item, Sprite _sprite, int _count, bool _isEquipped = false)
     {
         if (itemImage == null || itemCount == null)
         {
@@ -20,14 +23,16 @@ public class Slot_UI : Util
             itemCount = FindChild<TextMeshProUGUI>(this.gameObject, "slotCount", true);
         }
         
-        if(sprite == null) { itemImage.gameObject.SetActive(false); }
+        if(_sprite == null) { itemImage.gameObject.SetActive(false); }
         else { itemImage.gameObject.SetActive(true); }
 
         item = _item;
         count = (int)_count;
+        sprite = _sprite;
+        isEquipped = _isEquipped;
 
-        itemImage.sprite = sprite;
-        if (isEquipped) { itemCount.text = "Equipped"; }
+        itemImage.sprite = _sprite;
+        if (_isEquipped) { itemCount.text = "Equipped"; }
         else 
         {
             if (_count == -1) { itemCount.text = ""; }

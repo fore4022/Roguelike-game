@@ -46,10 +46,14 @@ public class Player_Controller : Base_Controller
         else { item = Managers.Game.item; }
 
         level = 1;
-        maxHp = hp = (int)(100 * item.hp);
-        damage = 10 * item.damage;
-        skillCooldownReduction = item.skillCooldownReduction;
-        MoveSpeed = 2 * item.moveSpeed;
+        //maxHp = hp = (int)(100 * item.hp);
+        //damage = 10 * item.damage;
+        //skillCooldownReduction = item.skillCooldownReduction;
+        //MoveSpeed = 2 * item.moveSpeed;
+        maxHp = hp = (int)(100);
+        damage = 10;
+        skillCooldownReduction = 0;
+        moveSpeed = 2;
 
         string name = transform.gameObject.name;
         name = name.Replace("(Clone)", "");
@@ -78,8 +82,10 @@ public class Player_Controller : Base_Controller
     }
     public void getLoot(int gold, int exp)
     {
-        Gold += (int)(gold * item.goldMagnification);
-        Exp += (int)(exp * item.expMagnification);
+        //Gold += (int)(gold * item.goldMagnification);
+        //Exp += (int)(exp * item.expMagnification);
+        Gold += (int)(gold);
+        Exp += (int)(exp);
         checkExp();
 
         //updateStat.Invoke();

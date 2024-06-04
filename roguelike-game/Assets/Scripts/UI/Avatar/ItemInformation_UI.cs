@@ -6,6 +6,11 @@ using UnityEngine.EventSystems;
 using TMPro;
 public class ItemInformation_UI : UI_Popup
 {
+    public Item item;
+    public Sprite sprite;
+
+    public int count;
+    public bool isEquipped;
     enum Buttons
     {
 
@@ -19,6 +24,13 @@ public class ItemInformation_UI : UI_Popup
 
     }
     private void Start() { init(); }
+    public void set(Item _item, Sprite _sprite, int _count, bool _isEquipped)
+    {
+        item = _item;
+        sprite = _sprite;
+        count = _count;
+        isEquipped = _isEquipped;
+    }
     protected override void init()
     {
         base.init();
