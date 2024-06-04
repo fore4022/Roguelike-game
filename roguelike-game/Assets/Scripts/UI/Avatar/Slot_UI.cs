@@ -12,7 +12,7 @@ public class Slot_UI : Util
     private Image itemImage;
     private TextMeshProUGUI itemCount;
 
-    public void setSlot(Item _item, int _count)//
+    public void setSlot(Item _item, Sprite sprite, int _count)//
     {
         if (itemImage == null || itemCount == null)
         {
@@ -23,7 +23,7 @@ public class Slot_UI : Util
         item = _item;
         count = _count;
 
-        //array[?];
+        itemImage.sprite = sprite;
         itemCount.text = $"{_count}";
     }
 }

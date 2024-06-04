@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System;
 public class Inventory_UI : UI_Scene
 {
     public SwipeMenu_UI swipeMenu;
@@ -23,11 +24,6 @@ public class Inventory_UI : UI_Scene
     private Vector2 direction;
 
     private int height;
-
-    enum Buttons
-    {
-        //
-    }
     enum Images
     {
         Panel,
@@ -39,8 +35,14 @@ public class Inventory_UI : UI_Scene
     {
         InventoryScrollView
     }
+
     private void Start()
     {
+        sprites = Managers.Resource.LoadAll<Sprite>("sprites/Icon/item");
+        Debug.Log(sprites.Count());
+        Debug.Log(sprites[0]);
+        Debug.Log(sprites[0].name);
+
         if (SceneManager.GetActiveScene().name == "Main") { pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform; }
         else { }//another Scene
 
@@ -67,7 +69,6 @@ public class Inventory_UI : UI_Scene
     protected override void init()
     {
         base.init();
-        bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
         bind<ScrollRect>(typeof(ScrollRects));
 
@@ -143,28 +144,19 @@ public class Inventory_UI : UI_Scene
                 {
 
                 }, Define.UIEvent.Click);
-                AddUIEvent(go, (PointerEventData data) =>
-                {
-                    evtHandle.OnBeginDragHandler.Invoke(data);
-                }, Define.UIEvent.BeginDrag);
-                AddUIEvent(go, (PointerEventData data) =>
-                {
-                    evtHandle.OnDragHandler.Invoke(data);
-                }, Define.UIEvent.Drag);
-                AddUIEvent(go, (PointerEventData data) =>
-                {
-                    evtHandle.OnEndDragHandler.Invoke(data);
-                }, Define.UIEvent.EndDrag);
+                AddUIEvent(go, (PointerEventData data) => { if (Managers.Data.inventory.Count > 20) { evtHandle.OnBeginDragHandler.Invoke(data); } }, Define.UIEvent.BeginDrag);
+                AddUIEvent(go, (PointerEventData data) => { if (Managers.Data.inventory.Count > 20) { evtHandle.OnDragHandler.Invoke(data); } }, Define.UIEvent.Drag);
+                AddUIEvent(go, (PointerEventData data) => { if (Managers.Data.inventory.Count > 20) { evtHandle.OnEndDragHandler.Invoke(data); } }, Define.UIEvent.EndDrag);
 
-                List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventory[Mathf.Min((h * 4) + w, Managers.Data.inventory.Count - 1)].itemName ? item : null).ToList();
+                List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventory[Mathf.Min(h * 4 + w, Managers.Data.inventory.Count - 1)].itemName ? item : null).ToList();
 
-                if (Managers.Data.inventory[Mathf.Min((h * 4) + w, Managers.Data.inventory.Count - 1)].count == 0) { /*continue;*/ }
-                else { slot.setSlot(item[0], Managers.Data.inventory[Mathf.Min((h * 4) + w, Managers.Data.inventory.Count - 1)].count);/*Image*/ }
+                if (h * 4 + w >= Managers.Data.inventory.Count) { continue; }
+                else { slot.setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventory[Mathf.Min(h * 4 + w, Managers.Data.inventory.Count - 1)].itemName), Managers.Data.inventory[Mathf.Min(h * 4 + w, Managers.Data.inventory.Count - 1)].count); }
             }
         }
 
         if (height > 5) { content.offsetMin = new Vector2(content.offsetMin.x, -245 * (height - 5)); }
     }
-    private void updateSlot() { for (int i = 0; i < slotList.Count; i++) { slotList[i].setSlot((Item)(itemList.Select(item => item.itemName == Managers.Data.inventory[i].itemName)), Managers.Data.inventory[i].count); } }
+    private void updateSlot() { for (int i = 0; i < slotList.Count; i++) { slotList[i].setSlot((Item)(itemList.Select(item => item.itemName == Managers.Data.inventory[i].itemName)), Array.Find(sprites, sprite => sprite.name == Managers.Data.inventory[Mathf.Min(i, Managers.Data.inventory.Count - 1)].itemName), Managers.Data.inventory[i].count); } }
     private void OnDisable() { Managers.Data.edit -= updateSlot; }
 }
