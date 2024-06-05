@@ -21,7 +21,8 @@ public class ItemInformation_UI : UI_Popup
     }
     enum TMPro
     {
-
+        itemName,
+        itemInformation
     }
     private void Start() { init(); }
     public void set(Item _item, Sprite _sprite, int _count, bool _isEquipped)
