@@ -83,7 +83,7 @@ public class Inventory_UI : UI_Scene
 
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (pos != null) { evtHandle.OnBeginDragHandler.Invoke(data); }
+            if (pos != null) { evtHandle.OnBeginDragHandler.Invoke(data); }//
 #if UNITY_EDITOR
             enterPoint = Input.mousePosition;
 #endif
@@ -94,7 +94,7 @@ public class Inventory_UI : UI_Scene
         }, Define.UIEvent.BeginDrag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (pos != null) { evtHandle.OnDragHandler.Invoke(data); }
+            if (pos != null) { evtHandle.OnDragHandler.Invoke(data); }//
 #if UNITY_EDITOR
             direction = (Vector2)Input.mousePosition - enterPoint;
 #endif
@@ -106,7 +106,7 @@ public class Inventory_UI : UI_Scene
         }, Define.UIEvent.Drag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (pos != null) { evtHandle.OnEndDragHandler.Invoke(data); }
+            if (pos != null) { evtHandle.OnEndDragHandler.Invoke(data); }//
         }, Define.UIEvent.EndDrag);
 
         setSlot();

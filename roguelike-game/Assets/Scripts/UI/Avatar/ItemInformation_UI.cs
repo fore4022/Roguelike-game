@@ -13,16 +13,18 @@ public class ItemInformation_UI : UI_Popup
     public bool isEquipped;
     enum Buttons
     {
-
+        Exit,
+        Button1,
+        Button2
     }
     enum Images
     {
-
+        ItemImage
     }
     enum TMPro
     {
-        itemName,
-        itemInformation
+        ItemName,
+        ItemInformation
     }
     private void Start() { init(); }
     public void set(Item _item, Sprite _sprite, int _count, bool _isEquipped)
@@ -39,6 +41,22 @@ public class ItemInformation_UI : UI_Popup
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));
 
+        GameObject exit = get<Button>((int)Buttons.Exit).gameObject;
+        GameObject button1 = get<Button>((int)Buttons.Button1).gameObject;
+        GameObject button2 = get<Button>((int)Buttons.Button2).gameObject;
+
+        Image itemImage = get<Image>((int)Images.ItemImage);
+
+        TextMeshProUGUI itemName = get<TextMeshProUGUI>((int)TMPro.ItemName);
+        TextMeshProUGUI itemInformation = get<TextMeshProUGUI>((int)TMPro.ItemInformation);
+
 
     }
 }
+//mounting
+//clear
+//sell
+//Expendables
+//equipment
+//use
+//Unequipped
