@@ -132,12 +132,18 @@ public class Inventory_UI : UI_Scene
                 rectTransform.localPosition = new Vector2(-360 + 240 * w, -130 - 245 * h);
 
                 Slot_UI slot = go.AddComponent<Slot_UI>();
-                slotList.Add(slot);
+
+                //if (SceneManager.GetActiveScene().name == "InGame")
+                //{
+                //    if(!(slot.item.GetType() == System.Type.GetType("Equipment"))) { slotList.Add(slot); }
+                //    else { continue; }
+                //}
+                //else if(SceneManager.GetActiveScene().name == "Main") { slotList.Add(slot); }
 
                 index = Mathf.Min(h * 4 + w, Managers.Data.inventory.Count - 1);
 
                 List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventory[index].itemName ? item : null).ToList();
-
+                
                 if (h * 4 + w >= Managers.Data.inventory.Count) { slot.setSlot(null, null, -1); }
                 else { slot.setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventory[index].itemName), Managers.Data.inventory[index].count); }
 

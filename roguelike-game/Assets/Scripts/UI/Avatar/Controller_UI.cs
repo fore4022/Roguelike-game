@@ -28,7 +28,7 @@ public class Controller_UI : UI_Popup
                 if (controllerUnit.activeSelf) { controllerBar.transform.position = Managers.Game.player.enterPoint + Vector2.ClampMagnitude(Input.GetTouch(0).position - Managers.Game.player.enterPoint, 100); }
             }
         }
-        else { Managers.UI.closePopupUI(); }
+        else { closePopup(); }
     }
     protected override void init()
     {

@@ -30,7 +30,7 @@ public class Slot_UI : Util
         count = (int)_count;
         sprite = _sprite;
         isEquipped = _isEquipped;
-
+        Debug.Log(item.itemName);
         itemImage.sprite = _sprite;
         if (_isEquipped) { itemCount.text = "Equipped"; }
         else 

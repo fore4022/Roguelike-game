@@ -60,7 +60,8 @@ public class SelectSkill_UI : UI_Popup
                     Base_SkillCast cast = Managers.Game.skill.GetComponent(scriptType) as Base_SkillCast;
                     cast.skill.skillLevel++;
                 }
-                Managers.UI.closePopupUI();
+
+                closePopup();
             });
         }
     }

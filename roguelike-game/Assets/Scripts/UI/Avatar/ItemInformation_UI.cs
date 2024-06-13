@@ -24,15 +24,19 @@ public class ItemInformation_UI : UI_Popup
     enum TMPro
     {
         ItemName,
-        ItemInformation
+        ItemInformation,
+        Stat1,
+        Stat2,
+        Stat3
     }
-    private void Start() { init(); }
     public void set(Item _item, Sprite _sprite, int _count, bool _isEquipped)
     {
         item = _item;
         sprite = _sprite;
         count = _count;
         isEquipped = _isEquipped;
+
+        init();
     }
     protected override void init()
     {
@@ -49,7 +53,25 @@ public class ItemInformation_UI : UI_Popup
 
         TextMeshProUGUI itemName = get<TextMeshProUGUI>((int)TMPro.ItemName);
         TextMeshProUGUI itemInformation = get<TextMeshProUGUI>((int)TMPro.ItemInformation);
+        TextMeshProUGUI stat1 = get<TextMeshProUGUI>((int)TMPro.Stat1);
+        TextMeshProUGUI stat2 = get<TextMeshProUGUI>((int)TMPro.Stat2);
+        TextMeshProUGUI stat3 = get<TextMeshProUGUI>((int)TMPro.Stat3);
 
+        itemImage.sprite = sprite;
+        itemName.text = $"{item.itemName}";
+
+        AddUIEvent(exit, (PointerEventData data) => { closePopup(); }, Define.UIEvent.Click);
+
+        if (item.GetType() == System.Type.GetType("Equipment")) { set_Equipment(); }
+        else if (item.GetType() == System.Type.GetType("Expendables")) { set_Expendables(); }
+        else { closePopup(); }
+    }
+    private void set_Equipment()
+    {
+        
+    }
+    private void set_Expendables()
+    {
 
     }
 }

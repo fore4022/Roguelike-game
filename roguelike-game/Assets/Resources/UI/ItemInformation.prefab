@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 4942178358537771240}
   - component: {fileID: 5686836855926405815}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Stat1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1030,7 +1030,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 235, y: 100}
@@ -1072,7 +1072,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 655, y: 330}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2687206803891966809
 CanvasRenderer:
@@ -1111,8 +1111,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1258,7 +1258,7 @@ GameObject:
   - component: {fileID: 5800265618710768263}
   - component: {fileID: 8404214513366884170}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Stat2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1768,7 +1768,7 @@ GameObject:
   - component: {fileID: 2186608197304282274}
   - component: {fileID: 460185772707724666}
   m_Layer: 5
-  m_Name: Text (TMP) (2)
+  m_Name: Stat3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

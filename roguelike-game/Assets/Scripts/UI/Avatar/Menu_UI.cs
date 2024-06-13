@@ -41,7 +41,7 @@ public class Menu_UI : UI_Popup
         AddUIEvent(belongings, (PointerEventData data) => { Managers.UI.showSceneUI<Inventory_UI>("Inventory"); }, Define.UIEvent.Click);
         AddUIEvent(quit, (PointerEventData data) => 
         {
-            Managers.UI.closePopupUI();
+            closePopup();
             Managers.UI.showSceneUI<Inventory_UI>("Inventory");
         }, Define.UIEvent.Click);
         AddUIEvent(setting, (PointerEventData data) =>
@@ -68,6 +68,6 @@ public class Menu_UI : UI_Popup
 
         Managers.Game.stopWatch.Start();
         Time.timeScale = 1f;
-        Managers.UI.closePopupUI();
+        closePopup();
     }
 }
