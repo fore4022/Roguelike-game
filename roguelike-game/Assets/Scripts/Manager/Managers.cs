@@ -18,6 +18,11 @@ public class Managers : MonoBehaviour
     public static Database Data { get { return Instance._data; } }
 
     private void Awake() { _data.init(); }
+    private void Start()
+    {
+        Data.setInventory();
+        //Data.setUser();
+    }
     public void Update() { _input.OnUpdate(); }
     public static void init()
     {

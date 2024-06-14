@@ -19,11 +19,8 @@ public class Database
 
     public Action edit;
 
-    private List<Slot> inventoryData = new List<Slot>();
-    private User userData;
-
-    public List<Slot> inventory { get { setInventory(); return inventoryData; } }
-    public User user { get { setUser(); return userData; } }
+    public List<Slot> inventoryData = new List<Slot>();
+    public User userData;
 
     public void init()
     {
@@ -35,7 +32,7 @@ public class Database
         string path = "URI=file:" + Application.streamingAssetsPath + dbName;
         return new SqliteConnection(path);
     }
-    private void setInventory()
+    public void setInventory()
     {
         IDbConnection connection = connect(DBName1);
 
@@ -60,7 +57,7 @@ public class Database
 
         inventoryReader.Close();
     }
-    private void setUser()
+    public void setUser()
     {
         if (userData != null) { return; }
 
