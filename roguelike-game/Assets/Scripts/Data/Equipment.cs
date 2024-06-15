@@ -1,15 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Search;
 using UnityEngine;
 [CreateAssetMenu(fileName = "Equipment", menuName = "Create New Item/New Equipment")]
 public class Equipment : Item
 {
-    public int hp;
-    public int damage;
-    public int skillCooldownReduction;
+    public int range;
+    public int attackDelay;
+    public int attackDamage;
+    public int collDown;
+    public int speed;
+    public int health;
 
-    public float moveSpeed;
-    public float expMagnification;
-    public float goldMagnification;
+    public bool penetrate;
 
+    public object this [int index]
+    {
+        get
+        {
+            if(index == 0) { return range; }
+            else if(index == 1) { return attackDelay; }
+            else if(index == 2) { return attackDamage; }
+            else if(index == 3) { return collDown; }
+            else if(index == 4) { return speed; }
+            else if(index == 5) { return health; }
+            else if(index == 6) { return penetrate; }
+            else { return null; }
+        }
+    }
 }

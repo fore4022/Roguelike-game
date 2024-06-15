@@ -15,13 +15,16 @@ public class UI_Manager
         get
         {
             GameObject UI = GameObject.Find("UI");
+
             if (UI == null) { UI = new GameObject { name = "UI" }; }
+
             return UI;
         }
     }
     public void setCanvase(GameObject go, bool sort = true)
     {
         Canvas canvas = Util.getOrAddComponent<Canvas>(go);
+
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.overrideSorting = true;
 
@@ -33,7 +36,9 @@ public class UI_Manager
         if (string.IsNullOrEmpty(name)) { name = typeof(T).Name; }
 
         GameObject go = Managers.Resource.instantiate($"UI/{name}");
+
         T scene = Util.getOrAddComponent<T>(go);
+
         SceneStack.Push(scene);
         go.transform.SetParent(UI.transform);
         go.GetComponent<CanvasScaler>().screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
@@ -43,7 +48,9 @@ public class UI_Manager
         if (string.IsNullOrEmpty(name)) { name = typeof(T).Name; }
 
         GameObject go = Managers.Resource.instantiate($"UI/{name}");
+
         T popup = Util.getOrAddComponent<T>(go);
+
         PopupStack.Push(popup);
         go.transform.SetParent(UI.transform);
         go.GetComponent<CanvasScaler>().screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
@@ -53,7 +60,9 @@ public class UI_Manager
         if (SceneStack.Count == 0) { return; }
 
         UI_Scene go = SceneStack.Pop();
+
         Managers.Resource.destroy(go.gameObject);
+
         if (SceneStack.Count != 0) { SceneStack.Peek().gameObject.SetActive(true); }
     }
     public void closePopupUI()
@@ -61,6 +70,7 @@ public class UI_Manager
         if (PopupStack.Count == 0) { return; }
 
         UI_Popup go = PopupStack.Pop();
+
         Managers.Resource.destroy(go.gameObject);
     }
 }

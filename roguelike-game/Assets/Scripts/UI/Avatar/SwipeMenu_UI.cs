@@ -51,6 +51,8 @@ public class SwipeMenu_UI : UI_Scene
     {
         init();
 
+        //this.gameObject.GetComponent<Canvas>().sortingOrder = 10;
+
         relocationValue = this.gameObject.GetComponent<RectTransform>().sizeDelta.x;
 
         Managers.UI.showSceneUI<Store_UI>("Store");
@@ -168,6 +170,7 @@ public class SwipeMenu_UI : UI_Scene
                 swipePanel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue), 0f, 0f);
 
                 if (direction != Vector2.zero) { direction = Vector2.zero; }
+
                 yield return null;
             }
         }
@@ -178,6 +181,7 @@ public class SwipeMenu_UI : UI_Scene
                 if(relocationValue - Mathf.Abs((int)Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue)) < 10) { break; }
 
                 swipePanel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue), 0f, 0f);
+                
                 yield return null;
             }
         }

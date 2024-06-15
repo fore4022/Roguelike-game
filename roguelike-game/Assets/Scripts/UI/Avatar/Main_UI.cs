@@ -25,6 +25,7 @@ public class Main_UI : UI_Scene
     private void Start() 
     {
         Transform pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform;
+        Canvas can = this.gameObject.GetComponent<Canvas>();
 
         this.gameObject.transform.SetParent(pos);
         RectTransform rectTransform = this.gameObject.GetComponent<RectTransform>();
@@ -35,6 +36,10 @@ public class Main_UI : UI_Scene
         rectTransform.anchoredPosition = Vector2.zero;
 
         init();
+
+        can.renderMode = RenderMode.ScreenSpaceOverlay;
+        can.overrideSorting = false;
+        can.sortingOrder = FindObjectOfType<SwipeMenu_UI>().GetComponent<Canvas>().sortingOrder + 1;
     }
     private void Update() { /*timer.text = $"{}";*/ }
     protected override void init()

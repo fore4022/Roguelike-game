@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-public class Store_UI : UI_Scene//
+public class Store_UI : UI_Scene
 {
     public List<Item> itemDatas = new List<Item>();
 
@@ -22,7 +22,13 @@ public class Store_UI : UI_Scene//
     }
     private void Start()
     {
+        Canvas can = this.gameObject.GetComponent<Canvas>();
+
         init();
+
+        can.renderMode = RenderMode.ScreenSpaceOverlay;
+        can.overrideSorting = false;
+        can.sortingOrder = FindObjectOfType<SwipeMenu_UI>().GetComponent<Canvas>().sortingOrder + 1;
 
         Transform pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform;
 

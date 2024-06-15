@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: weapon10
   explanation: 
-  hp: 0
-  damage: 0
-  skillCooldownReduction: 0
-  moveSpeed: 0
-  expMagnification: 0
-  goldMagnification: 0
+  range: 0
+  attackDelay: 0
+  attackDamage: 5
+  collDown: 0
+  speed: 5
+  health: 0
+  penetrate: 0

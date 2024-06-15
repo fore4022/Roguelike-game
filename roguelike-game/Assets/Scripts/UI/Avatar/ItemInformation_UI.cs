@@ -4,9 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
+using static UnityEditor.Progress;
+
 public class ItemInformation_UI : UI_Popup
 {
-    public Item item;
+    public object item;
     public Sprite sprite;
 
     public int count;
@@ -29,7 +33,7 @@ public class ItemInformation_UI : UI_Popup
         Stat2,
         Stat3
     }
-    public void set(Item _item, Sprite _sprite, int _count, bool _isEquipped)
+    public void set(object _item, Sprite _sprite, int _count, bool _isEquipped)
     {
         item = _item;
         sprite = _sprite;
@@ -57,28 +61,30 @@ public class ItemInformation_UI : UI_Popup
         TextMeshProUGUI stat2 = get<TextMeshProUGUI>((int)TMPro.Stat2);
         TextMeshProUGUI stat3 = get<TextMeshProUGUI>((int)TMPro.Stat3);
 
-        itemImage.sprite = sprite;
-        itemName.text = $"{item.itemName}";
-
         AddUIEvent(exit, (PointerEventData data) => { closePopup(); }, Define.UIEvent.Click);
 
-        if (item.GetType() == System.Type.GetType("Equipment")) { set_Equipment(); }
-        else if (item.GetType() == System.Type.GetType("Expendables")) { set_Expendables(); }
+        var type = item.ConvertTo(item.GetType());
+
+        if (type.GetType() == System.Type.GetType("Equipment")) { set_Equipment(); }
+        else if (type.GetType() == System.Type.GetType("Expendables")) { set_Expendables(); }
         else { closePopup(); }
+
+        itemImage.sprite = sprite;
     }
     private void set_Equipment()
     {
-        
+        var equipment = item.ConvertTo(System.Type.GetType("Equipment"));
+
+        for(int i = 0; i < 7; i++)
+        {
+            //if (item[i] == 0)
+        }
     }
     private void set_Expendables()
     {
+        var expendable = item.ConvertTo(System.Type.GetType("Expendable"));
+
 
     }
 }
-//mounting
-//clear
-//sell
-//Expendables
-//equipment
-//use
-//Unequipped
+//itemName.text = $"{item.itemName}";

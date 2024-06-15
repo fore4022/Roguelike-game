@@ -39,6 +39,8 @@ public class Inventory_UI : UI_Scene
 
     private void Start()
     {
+        Canvas can = this.gameObject.GetComponent<Canvas>();
+
         sprites = Managers.Resource.LoadAll<Sprite>("sprites/Icon/item");
 
         if (SceneManager.GetActiveScene().name == "Main") { pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform; }
@@ -48,7 +50,11 @@ public class Inventory_UI : UI_Scene
 
         init();
 
-        if(pos != null)
+        can.renderMode = RenderMode.ScreenSpaceOverlay;
+        can.overrideSorting = false;
+        can.sortingOrder = FindObjectOfType<SwipeMenu_UI>().GetComponent<Canvas>().sortingOrder + 1;
+
+        if (pos != null)
         {
             this.gameObject.transform.SetParent(pos);
             RectTransform rectTransform = this.gameObject.GetComponent<RectTransform>();
@@ -155,7 +161,7 @@ public class Inventory_UI : UI_Scene
                     if(slot.item == null) { return; }
 
                     Managers.UI.showPopupUI<ItemInformation_UI>("ItemInformation");
-                    Managers.UI.PopupStack.Peek().gameObject.GetComponent<ItemInformation_UI>().set(slot.item, slot.sprite, slot.count, slot.isEquipped);
+                    Managers.UI.PopupStack.Peek().gameObject.GetComponent<ItemInformation_UI>().set(item[0], slot.sprite, slot.count, slot.isEquipped);
                 }, Define.UIEvent.Click);
                 AddUIEvent(go, (PointerEventData data) => { evtHandle.OnBeginDragHandler.Invoke(data); }, Define.UIEvent.BeginDrag);
                 AddUIEvent(go, (PointerEventData data) => { evtHandle.OnDragHandler.Invoke(data); }, Define.UIEvent.Drag);
