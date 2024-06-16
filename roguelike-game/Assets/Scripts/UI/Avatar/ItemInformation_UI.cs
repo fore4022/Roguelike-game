@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using static UnityEditor.Progress;
+using System.Linq.Expressions;
 
 public class ItemInformation_UI : UI_Popup
 {
@@ -15,6 +16,8 @@ public class ItemInformation_UI : UI_Popup
 
     public int count;
     public bool isEquipped;
+
+    private List<TextMeshProUGUI> stats = new List<TextMeshProUGUI>();
     enum Buttons
     {
         Exit,
@@ -57,34 +60,71 @@ public class ItemInformation_UI : UI_Popup
 
         TextMeshProUGUI itemName = get<TextMeshProUGUI>((int)TMPro.ItemName);
         TextMeshProUGUI itemInformation = get<TextMeshProUGUI>((int)TMPro.ItemInformation);
-        TextMeshProUGUI stat1 = get<TextMeshProUGUI>((int)TMPro.Stat1);
-        TextMeshProUGUI stat2 = get<TextMeshProUGUI>((int)TMPro.Stat2);
-        TextMeshProUGUI stat3 = get<TextMeshProUGUI>((int)TMPro.Stat3);
+
+        stats.Add(get<TextMeshProUGUI>((int)TMPro.Stat1)); 
+        stats.Add(get<TextMeshProUGUI>((int)TMPro.Stat2));
+        stats.Add(get<TextMeshProUGUI>((int)TMPro.Stat3));
 
         AddUIEvent(exit, (PointerEventData data) => { closePopup(); }, Define.UIEvent.Click);
 
-        var type = item.ConvertTo(item.GetType());
-
-        if (type.GetType() == System.Type.GetType("Equipment")) { set_Equipment(); }
-        else if (type.GetType() == System.Type.GetType("Expendables")) { set_Expendables(); }
+        //var _item;
+        
+        if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Equipment")) { set_Equipment(); }
+        else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables")) { set_Expendables(); }
         else { closePopup(); }
 
         itemImage.sprite = sprite;
     }
     private void set_Equipment()
     {
-        var equipment = item.ConvertTo(System.Type.GetType("Equipment"));
+        Equipment equipment = (Equipment)item.ConvertTo(System.Type.GetType("Equipment"));
+        int index = 0;
 
-        for(int i = 0; i < 7; i++)
+        for (int i = 0; i < 7; i++)
         {
-            //if (item[i] == 0)
+            if (equipment[i] != null)
+            {
+                string stat = "";
+
+                switch(i)
+                {
+                    case 0:
+                        stat = "Range";
+                        break;
+                    case 1:
+                        stat = "Attack Delay";
+                        break;
+                    case 2:
+                        stat = "Attack Damage";
+                        break;
+                    case 3:
+                        stat = "CollDown";
+                        break;
+                    case 4:
+                        stat = "Speed";
+                        break;
+                    case 5:
+                        stat = "health";
+                        break;
+                    case 6:
+                        stat = "penetrate";
+                        break;
+                }
+
+                stats[index].text = $"{stat} {equipment[i]}";
+                index++;
+            }
         }
     }
     private void set_Expendables()
     {
-        var expendable = item.ConvertTo(System.Type.GetType("Expendable"));
+        Expendables expendables = (Expendables)item.ConvertTo(System.Type.GetType("Expendables"));
+        int index = 0;
 
+        for(int i = 0; i < 9; i++)
+        {
 
+        }
     }
 }
 //itemName.text = $"{item.itemName}";

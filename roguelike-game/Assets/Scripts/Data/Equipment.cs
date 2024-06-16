@@ -18,12 +18,12 @@ public class Equipment : Item
     {
         get
         {
-            if(index == 0) { return range; }
-            else if(index == 1) { return attackDelay; }
-            else if(index == 2) { return attackDamage; }
-            else if(index == 3) { return collDown; }
-            else if(index == 4) { return speed; }
-            else if(index == 5) { return health; }
+            if(index == 0) { return (range == 0) ? null : range; }
+            else if(index == 1) { return (attackDelay == 0) ? null : attackDelay; }
+            else if(index == 2) { return (attackDamage == 0) ? null : attackDamage; }
+            else if(index == 3) { return (collDown == 0) ? null : collDown; }
+            else if(index == 4) { return (speed == 0) ? null : speed; }
+            else if(index == 5) { return (health == 0) ? null : health; }
             else if(index == 6) { return penetrate; }
             else { return null; }
         }
