@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using static UnityEditor.Progress;
 using System.Linq.Expressions;
+using System;
 
 public class ItemInformation_UI : UI_Popup
 {
@@ -17,7 +18,12 @@ public class ItemInformation_UI : UI_Popup
     public int count;
     public bool isEquipped;
 
-    private List<TextMeshProUGUI> stats = new List<TextMeshProUGUI>();
+    private List<TextMeshProUGUI> statTexts = new List<TextMeshProUGUI>();
+    private List<Image> statImages = new List<Image>();
+    private Sprite[] sprites;
+
+    private GameObject button1;
+    private GameObject button2;
     enum Buttons
     {
         Exit,
@@ -26,15 +32,18 @@ public class ItemInformation_UI : UI_Popup
     }
     enum Images
     {
-        ItemImage
+        ItemImage,
+        StatImage1,
+        StatImage2,
+        StatImage3
     }
     enum TMPro
     {
         ItemName,
         ItemInformation,
-        Stat1,
-        Stat2,
-        Stat3
+        StatText1,
+        StatText2,
+        StatText3
     }
     public void set(object _item, Sprite _sprite, int _count, bool _isEquipped)
     {
@@ -61,70 +70,124 @@ public class ItemInformation_UI : UI_Popup
         TextMeshProUGUI itemName = get<TextMeshProUGUI>((int)TMPro.ItemName);
         TextMeshProUGUI itemInformation = get<TextMeshProUGUI>((int)TMPro.ItemInformation);
 
-        stats.Add(get<TextMeshProUGUI>((int)TMPro.Stat1)); 
-        stats.Add(get<TextMeshProUGUI>((int)TMPro.Stat2));
-        stats.Add(get<TextMeshProUGUI>((int)TMPro.Stat3));
+        statTexts.Add(get<TextMeshProUGUI>((int)TMPro.StatText1)); 
+        statTexts.Add(get<TextMeshProUGUI>((int)TMPro.StatText2));
+        statTexts.Add(get<TextMeshProUGUI>((int)TMPro.StatText3));
+
+        statImages.Add(get<Image>((int)Images.StatImage1));
+        statImages.Add(get<Image>((int)Images.StatImage2));
+        statImages.Add(get<Image>((int)Images.StatImage3));
 
         AddUIEvent(exit, (PointerEventData data) => { closePopup(); }, Define.UIEvent.Click);
 
-        //var _item;
+        sprites = Managers.Resource.LoadAll<Sprite>("sprites/Icon/Stat");
+
+        Item _item = null;
         
-        if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Equipment")) { set_Equipment(); }
-        else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables")) { set_Expendables(); }
+        if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Equipment")) { _item = set_Equipment(); }
+        else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables")) { _item = set_Expendables(); }
         else { closePopup(); }
 
         itemImage.sprite = sprite;
+        itemName.text = $"{_item.itemName}";
+        itemInformation.text = $"{_item.explanation}";
     }
-    private void set_Equipment()
+    private Item set_Equipment()
     {
         Equipment equipment = (Equipment)item.ConvertTo(System.Type.GetType("Equipment"));
         int index = 0;
+        string statType = "";
 
         for (int i = 0; i < 7; i++)
         {
             if (equipment[i] != null)
             {
-                string stat = "";
-
                 switch(i)
                 {
                     case 0:
-                        stat = "Range";
+                        statType = "Range";
                         break;
                     case 1:
-                        stat = "Attack Delay";
+                        statType = "Attack Delay";
                         break;
                     case 2:
-                        stat = "Attack Damage";
+                        statType = "Attack Damage";
                         break;
                     case 3:
-                        stat = "CollDown";
+                        statType = "CollDown";
                         break;
                     case 4:
-                        stat = "Speed";
+                        statType = "Speed";
                         break;
                     case 5:
-                        stat = "health";
+                        statType = "Health";
                         break;
                     case 6:
-                        stat = "penetrate";
+                        statType = "Penetrate";
                         break;
                 }
 
-                stats[index].text = $"{stat} {equipment[i]}";
+                statTexts[index].text = $"{statType} {equipment[i]}";
+                statImages[index].sprite = Array.Find(sprites, sprite => sprite.name == statType);
                 index++;
             }
         }
+        
+        while(index < 3)
+        {
+            statTexts[index].gameObject.transform.parent.gameObject.SetActive(false);
+            index++;
+        }
+
+        return equipment;
     }
-    private void set_Expendables()
+    private Item set_Expendables()
     {
         Expendables expendables = (Expendables)item.ConvertTo(System.Type.GetType("Expendables"));
         int index = 0;
+        string statType = "";
 
-        for(int i = 0; i < 9; i++)
+        for (int i = 0; i < 9; i++)
         {
+            if (expendables[i] != 0)
+            {
+                switch(i)
+                {
+                    case 0:
+                        statType = "Attack Damage";
+                        break;
+                    case 1:
+                        statType = "CollDown";
+                        break;
+                    case 2:
+                        statType = "Health";
+                        break;
+                    case 3:
+                        statType = "Speed";
+                        break;
+                    case 4:
+                        statType = "Eyesight";
+                        break;
+                    case 5:
+                        statType = "Gold Magnification";
+                        break;
+                    case 6:
+                        statType = "Level";
+                        break;
+                    case 7:
+                        statType = "Health Regeneration Per Second";
+                        break;
+                    case 8:
+                        statType = "Exp Magnification";
+                        break;
+                }
 
+                statTexts[index].text = $"{statType} {expendables}";
+                index++;
+            }
         }
+
+        return expendables;
     }
 }
 //itemName.text = $"{item.itemName}";

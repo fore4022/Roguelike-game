@@ -7,16 +7,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Expendables", menuName = "Create New Item/New Expendables")]
 public class Expendables : Item
 {
-    public int? attackDamage = null;
-    public int? collDown = null;
-    public int? health = null;
-    public int? speed = null;
-    public int? eyesight=  null;
+    public int attackDamage;
+    public int collDown;
+    public int health;
+    public int speed;
+    public int eyesight;
 
-    public int? goldMagnification = null;
-    public int? level = null;
-    public int? healthRegenerationPerSecond = null;
-    public int? ExpMagnification = null;
+    public int goldMagnification;
+    public int level;
+    public int healthRegenerationPerSecond;
+    public int ExpMagnification;
 
     public int this [int index]
     {
@@ -31,7 +31,7 @@ public class Expendables : Item
             else if(index == 6) { return level; }
             else if(index == 7) { return healthRegenerationPerSecond; }
             else if(index == 8) { return ExpMagnification; }
-            else { return null; }
+            else { return 0; }
         }
     }
 }

@@ -24,7 +24,7 @@ public class Equipment : Item
             else if(index == 3) { return (collDown == 0) ? null : collDown; }
             else if(index == 4) { return (speed == 0) ? null : speed; }
             else if(index == 5) { return (health == 0) ? null : health; }
-            else if(index == 6) { return penetrate; }
+            else if(index == 6) { return (penetrate == false) ? null : penetrate; }
             else { return null; }
         }
     }
