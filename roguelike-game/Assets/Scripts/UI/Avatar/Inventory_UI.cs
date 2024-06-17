@@ -15,6 +15,7 @@ public class Inventory_UI : UI_Scene
     private ScrollRect inventoryScrollView;
     private Transform pos;
 
+    private List<(Item item, Sprite sprite, int count, bool isEquipped)> slotDatas = new List<(Item item, Sprite sprite, int count, bool isEquipped)>();
     private List<Slot_UI> slotList = new List<Slot_UI>();
     private List<Item> itemList;
 
@@ -147,6 +148,8 @@ public class Inventory_UI : UI_Scene
                 if (h * 4 + w >= Managers.Data.inventoryData.Count) { slot.setSlot(null, null, -1); }
                 else { slot.setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count); }
 
+                slotDatas.Add((item[0], slot.sprite, slot.count, slot.isEquipped));
+
                 AddUIEvent(go, (PointerEventData data) =>
                 {
                     Slot_UI slot = go.GetComponent<Slot_UI>();
@@ -154,7 +157,7 @@ public class Inventory_UI : UI_Scene
                     if(slot.item == null) { return; }
 
                     Managers.UI.showPopupUI<ItemInformation_UI>("ItemInformation");
-                    Managers.UI.PopupStack.Peek().gameObject.GetComponent<ItemInformation_UI>().set(item[0], slot.sprite, slot.count, slot.isEquipped);
+                    Managers.UI.PopupStack.Peek().gameObject.GetComponent<ItemInformation_UI>().set(slotDatas[h * 4 + w].item, slotDatas[h * 4 + w].sprite, slotDatas[h * 4 + w].count, slotDatas[h * 4 + w].isEquipped);
                 }, Define.UIEvent.Click);
                 AddUIEvent(go, (PointerEventData data) => { evtHandle.OnBeginDragHandler.Invoke(data); }, Define.UIEvent.BeginDrag);
                 AddUIEvent(go, (PointerEventData data) => { evtHandle.OnDragHandler.Invoke(data); }, Define.UIEvent.Drag);
@@ -164,6 +167,24 @@ public class Inventory_UI : UI_Scene
 
         content.offsetMin = new Vector2(content.offsetMin.x, content.offsetMin.y + 245 * Mathf.Abs(height - 4));
     }
-    private void updateSlot() { for (int i = 0; i < slotList.Count; i++) { slotList[i].setSlot((Item)(itemList.Select(item => item.itemName == Managers.Data.inventoryData[i].itemName)), Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[Mathf.Min(i, Managers.Data.inventoryData.Count - 1)].itemName), Managers.Data.inventoryData[i].count); } }
+    private void updateSlot() 
+    {
+        for (int i = 0; i < slotList.Count; i++)
+        {
+            List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventoryData[Mathf.Min(i, slotList.Count() - 1)].itemName ? item : null).ToList();
+            item.RemoveAll(item => item == null);
+
+            if (item[0] == null) 
+            {
+                slotList[i].setSlot(null, null, -1);
+
+                continue;
+            }
+
+            slotDatas[i] = ((item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[Mathf.Min(i, Managers.Data.inventoryData.Count - 1)].itemName), Managers.Data.inventoryData[i].count, Managers.Data.inventoryData[i].equipped == 0 ? false : true));
+
+            slotList[i].setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[Mathf.Min(i, Managers.Data.inventoryData.Count - 1)].itemName), Managers.Data.inventoryData[i].count);
+        }
+    }
     private void OnDisable() { Managers.Data.edit -= updateSlot; }
 }

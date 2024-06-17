@@ -101,8 +101,8 @@ public class ItemInformation_UI : UI_Popup
 
         Item _item = null;
         
-        if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Equipment")) { item = set_Equipment(); }
-        else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables")) { item = set_Expendables(); }
+        if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Equipment")) { _item = set_Equipment(); }
+        else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables")) { _item = set_Expendables(); }
         else { closePopup(); }
 
         //if (_item.GetType() == System.Type.GetType("Expendables"))
@@ -192,11 +192,15 @@ public class ItemInformation_UI : UI_Popup
         {
             text1.text = "해제";
             text2.text = "판매";
+
+            Managers.Data.inventory_edit(equipment.itemName, 0, 0);
         }
         else
         {
             text1.text = "장착";
             text2.text = "판매";
+
+            Managers.Data.inventory_edit(equipment.itemName, 0, 0);
         }
 
         return equipment;
