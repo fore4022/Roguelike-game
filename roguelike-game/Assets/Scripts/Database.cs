@@ -114,6 +114,7 @@ public class Database
         connection.Close();
 
         setInventory();
+
         if(edit != null) { edit.Invoke(); }
     }
     public void user_edit(int level, int exp, int gold, int topStage, int stage, string equippedItem)
@@ -140,6 +141,7 @@ public class Database
         connection.Close();
 
         setUser();
+
         if (edit != null) { edit.Invoke(); }
     }
 }

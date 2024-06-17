@@ -26,6 +26,8 @@ public class ItemInformation_UI : UI_Popup
     private TextMeshProUGUI text1;
     private TextMeshProUGUI text2;
 
+    private string sceneName;
+
     enum Buttons
     {
         Exit,
@@ -50,8 +52,9 @@ public class ItemInformation_UI : UI_Popup
         Text1,
         Text2
     }
-    public void set(object _item, Sprite _sprite, int _count, bool _isEquipped)
+    public void set(object _item, Sprite _sprite, int _count, bool _isEquipped = false)
     {
+        sceneName = SceneManager.GetActiveScene().name;
         item = _item;
         sprite = _sprite;
         count = _count;
@@ -98,38 +101,39 @@ public class ItemInformation_UI : UI_Popup
 
         Item _item = null;
         
-        if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Equipment")) { _item = set_Equipment(); }
-        else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables")) { _item = set_Expendables(); }
+        if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Equipment")) { item = set_Equipment(); }
+        else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables")) { item = set_Expendables(); }
         else { closePopup(); }
 
-        if (_item.GetType() == System.Type.GetType("Equipment"))
-        {
-            if (isEquipped)
-            {
-                text1.text = "";
-                text2.text = "";
-            }
-            else
-            {
-                text1.text = "";
-                text2.text = "";
-            }
-        }
-        else if (_item.GetType() == System.Type.GetType("Expendables"))
-        {
-            text1.text = "";
-            text2.text = "";
-        }
+        //if (_item.GetType() == System.Type.GetType("Expendables"))
+        //{
+        //    text2.gameObject.transform.parent.gameObject.SetActive(false);
 
-        AddUIEvent(button1, (PointerEventData data) =>
-        {
+        //    text1.text = "사용";
+        //}
+        //else if (_item.GetType() == System.Type.GetType("Equipment"))
+        //{
+        //    if (isEquipped)
+        //    {
+        //        text1.text = "해제";
+        //        text2.text = "판매";
+        //    }
+        //    else
+        //    {
+        //        text1.text = "장착";
+        //        text2.text = "판매";
+        //    }
+        //}
 
-        }, Define.UIEvent.Click);
+        //AddUIEvent(button1, (PointerEventData data) =>
+        //{
 
-        AddUIEvent(button2, (PointerEventData data) =>
-        {
+        //}, Define.UIEvent.Click);
 
-        }, Define.UIEvent.Click);
+        //AddUIEvent(button2, (PointerEventData data) =>
+        //{
+
+        //}, Define.UIEvent.Click);
 
         itemImage.sprite = sprite;
         itemName.text = $"{_item.itemName}";
@@ -170,7 +174,9 @@ public class ItemInformation_UI : UI_Popup
                         break;
                 }
 
-                statTexts[index].text = $"{equipment[i]}";
+                if(statType != "Penetrate") { statTexts[index].text = $"{equipment[i]}"; }
+                else { statTexts[index].text = ""; }
+
                 statImages[index].sprite = Array.Find(sprites, sprite => sprite.name == statType);
                 index++;
             }
@@ -180,6 +186,17 @@ public class ItemInformation_UI : UI_Popup
         {
             statTexts[index].gameObject.transform.parent.gameObject.SetActive(false);
             index++;
+        }
+
+        if (isEquipped)
+        {
+            text1.text = "해제";
+            text2.text = "판매";
+        }
+        else
+        {
+            text1.text = "장착";
+            text2.text = "판매";
         }
 
         return equipment;
@@ -226,8 +243,15 @@ public class ItemInformation_UI : UI_Popup
                 }
 
                 statTexts[index].text = $"{expendables}";
+                statImages[index].sprite = Array.Find(sprites, sprite => sprite.name == statType);
                 index++;
             }
+        }
+
+        while (index < 3)
+        {
+            statTexts[index].gameObject.transform.parent.gameObject.SetActive(false);
+            index++;
         }
 
         return expendables;

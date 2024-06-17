@@ -124,18 +124,11 @@ public class Inventory_UI : UI_Scene
 
         height = Managers.Data.inventoryData.Count / 4 + (Managers.Data.inventoryData.Count % 4 > 0 ? 1 : 0);
 
-        for (int h = 0; h < Mathf.Max(height, 5); h++)
+        for (int h = 0; h < (height < 4 ? 4 : height); h++)
         {
             for (int w = 0; w < 4; w++)
             {
                 GameObject go = Managers.Resource.instantiate("UI/Slot", content.transform);
-                RectTransform rectTransform = go.GetComponent<RectTransform>();
-
-                rectTransform.localScale = new Vector2(1, 1);
-                rectTransform.anchorMax = new Vector2(0.5f, 1f);
-                rectTransform.anchorMin = new Vector2(0.5f, 1f);
-                rectTransform.anchoredPosition = new Vector2(0.5f, 1f);
-                rectTransform.localPosition = new Vector2(-360 + 240 * w, -130 - 245 * h);
 
                 Slot_UI slot = go.AddComponent<Slot_UI>();
 
@@ -169,7 +162,7 @@ public class Inventory_UI : UI_Scene
             }
         }
 
-        if (height > 5) { content.offsetMin = new Vector2(content.offsetMin.x, -245 * (height - 5)); }
+        content.offsetMin = new Vector2(content.offsetMin.x, content.offsetMin.y + 245 * Mathf.Abs(height - 4));
     }
     private void updateSlot() { for (int i = 0; i < slotList.Count; i++) { slotList[i].setSlot((Item)(itemList.Select(item => item.itemName == Managers.Data.inventoryData[i].itemName)), Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[Mathf.Min(i, Managers.Data.inventoryData.Count - 1)].itemName), Managers.Data.inventoryData[i].count); } }
     private void OnDisable() { Managers.Data.edit -= updateSlot; }
