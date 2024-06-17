@@ -9,7 +9,6 @@ using Unity.VisualScripting;
 using static UnityEditor.Progress;
 using System.Linq.Expressions;
 using System;
-
 public class ItemInformation_UI : UI_Popup
 {
     public object item;
@@ -24,6 +23,9 @@ public class ItemInformation_UI : UI_Popup
 
     private GameObject button1;
     private GameObject button2;
+    private TextMeshProUGUI text1;
+    private TextMeshProUGUI text2;
+
     enum Buttons
     {
         Exit,
@@ -32,6 +34,7 @@ public class ItemInformation_UI : UI_Popup
     }
     enum Images
     {
+        Background,
         ItemImage,
         StatImage1,
         StatImage2,
@@ -43,7 +46,9 @@ public class ItemInformation_UI : UI_Popup
         ItemInformation,
         StatText1,
         StatText2,
-        StatText3
+        StatText3,
+        Text1,
+        Text2
     }
     public void set(object _item, Sprite _sprite, int _count, bool _isEquipped)
     {
@@ -65,6 +70,7 @@ public class ItemInformation_UI : UI_Popup
         GameObject button1 = get<Button>((int)Buttons.Button1).gameObject;
         GameObject button2 = get<Button>((int)Buttons.Button2).gameObject;
 
+        Image background = get<Image>((int)Images.Background);
         Image itemImage = get<Image>((int)Images.ItemImage);
 
         TextMeshProUGUI itemName = get<TextMeshProUGUI>((int)TMPro.ItemName);
@@ -78,7 +84,15 @@ public class ItemInformation_UI : UI_Popup
         statImages.Add(get<Image>((int)Images.StatImage2));
         statImages.Add(get<Image>((int)Images.StatImage3));
 
+        button1 = get<Button>((int)Buttons.Button1).gameObject;
+        button2 = get<Button>((int)Buttons.Button2).gameObject;
+
+        text1 = get<TextMeshProUGUI>((int)TMPro.Text1);
+        text2 = get<TextMeshProUGUI>((int)TMPro.Text2);
+
         AddUIEvent(exit, (PointerEventData data) => { closePopup(); }, Define.UIEvent.Click);
+
+        AddUIEvent(background.gameObject, (PointerEventData data) => { closePopup(); }, Define.UIEvent.Click);
 
         sprites = Managers.Resource.LoadAll<Sprite>("sprites/Icon/Stat");
 
@@ -87,6 +101,35 @@ public class ItemInformation_UI : UI_Popup
         if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Equipment")) { _item = set_Equipment(); }
         else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables")) { _item = set_Expendables(); }
         else { closePopup(); }
+
+        if (_item.GetType() == System.Type.GetType("Equipment"))
+        {
+            if (isEquipped)
+            {
+                text1.text = "";
+                text2.text = "";
+            }
+            else
+            {
+                text1.text = "";
+                text2.text = "";
+            }
+        }
+        else if (_item.GetType() == System.Type.GetType("Expendables"))
+        {
+            text1.text = "";
+            text2.text = "";
+        }
+
+        AddUIEvent(button1, (PointerEventData data) =>
+        {
+
+        }, Define.UIEvent.Click);
+
+        AddUIEvent(button2, (PointerEventData data) =>
+        {
+
+        }, Define.UIEvent.Click);
 
         itemImage.sprite = sprite;
         itemName.text = $"{_item.itemName}";
@@ -127,7 +170,7 @@ public class ItemInformation_UI : UI_Popup
                         break;
                 }
 
-                statTexts[index].text = $"{statType} {equipment[i]}";
+                statTexts[index].text = $"{equipment[i]}";
                 statImages[index].sprite = Array.Find(sprites, sprite => sprite.name == statType);
                 index++;
             }
@@ -182,7 +225,7 @@ public class ItemInformation_UI : UI_Popup
                         break;
                 }
 
-                statTexts[index].text = $"{statType} {expendables}";
+                statTexts[index].text = $"{expendables}";
                 index++;
             }
         }
@@ -190,4 +233,3 @@ public class ItemInformation_UI : UI_Popup
         return expendables;
     }
 }
-//itemName.text = $"{item.itemName}";
