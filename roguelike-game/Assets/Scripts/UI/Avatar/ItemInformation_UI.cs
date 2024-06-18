@@ -52,7 +52,7 @@ public class ItemInformation_UI : UI_Popup
         Text1,
         Text2
     }
-    public void set(object _item, Sprite _sprite, int _count, bool _isEquipped = false)
+    public void setData(object _item, Sprite _sprite, int _count, bool _isEquipped = false)
     {
         sceneName = SceneManager.GetActiveScene().name;
         item = _item;
@@ -61,6 +61,13 @@ public class ItemInformation_UI : UI_Popup
         isEquipped = _isEquipped;
 
         init();
+    }
+    public void updateData(object _item, Sprite _sprite, int _count, bool _isEquipped = false)
+    {
+        item = _item;
+        sprite = _sprite;
+        count = _count;
+        isEquipped = _isEquipped;
     }
     protected override void init()
     {
@@ -98,10 +105,11 @@ public class ItemInformation_UI : UI_Popup
         sprites = Managers.Resource.LoadAll<Sprite>("sprites/Icon/Stat");
 
         Item _item = null;
-        
+
         if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Equipment"))
         {
-            _item = set_Equipment();
+            _item = (Equipment)item.ConvertTo(System.Type.GetType("Equipment"));
+            set_Equipment();
 
             AddUIEvent(button1, (PointerEventData data) =>
             {
@@ -116,15 +124,16 @@ public class ItemInformation_UI : UI_Popup
         }
         else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables"))
         {
-            _item = set_Expendables();
+            _item = (Expendables)item.ConvertTo(System.Type.GetType("Expendables"));
+            set_Expendables();
         }
         else { closePopup(); }
 
         itemImage.sprite = sprite;
         itemName.text = $"{_item.itemName}";
-        itemInformation.text = $"{_item.explanation}";
+        itemInformation.text = $"{_item.explanation}";//event
     }
-    private Item set_Equipment()
+    private void set_Equipment()
     {
         Equipment equipment = (Equipment)item.ConvertTo(System.Type.GetType("Equipment"));
         int index = 0;
@@ -173,20 +182,12 @@ public class ItemInformation_UI : UI_Popup
             index++;
         }
 
-        if (isEquipped)
-        {
-            text1.text = "해제";
-            text2.text = "판매";
-        }
-        else
-        {
-            text1.text = "장착";
-            text2.text = "판매";
-        }
+        if (isEquipped) { text1.text = "해제"; }
+        else { text1.text = "장착"; }
 
-        return equipment;
+        text2.text = "판매";
     }
-    private Item set_Expendables()
+    private void set_Expendables()
     {
         Expendables expendables = (Expendables)item.ConvertTo(System.Type.GetType("Expendables"));
         int index = 0;
@@ -238,7 +239,5 @@ public class ItemInformation_UI : UI_Popup
             statTexts[index].gameObject.transform.parent.gameObject.SetActive(false);
             index++;
         }
-
-        return expendables;
     }
 }
