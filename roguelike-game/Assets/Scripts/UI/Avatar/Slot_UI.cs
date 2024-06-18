@@ -32,11 +32,7 @@ public class Slot_UI : Util
         isEquipped = _isEquipped;
         itemImage.sprite = _sprite;
 
-        if (_isEquipped) { itemCount.text = "Equipped"; }
-        else 
-        {
-            if (_count == -1) { itemCount.text = ""; }
-            else { itemCount.text = $"X  {_count}"; }
-        }
+        if (_count == -1) { itemCount.text = ""; }
+        else { itemCount.text = $"X  {_count}"; }
     }
 }

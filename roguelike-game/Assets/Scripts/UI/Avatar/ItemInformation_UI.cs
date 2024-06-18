@@ -70,8 +70,6 @@ public class ItemInformation_UI : UI_Popup
         bind<TextMeshProUGUI>(typeof(TMPro));
 
         GameObject exit = get<Button>((int)Buttons.Exit).gameObject;
-        GameObject button1 = get<Button>((int)Buttons.Button1).gameObject;
-        GameObject button2 = get<Button>((int)Buttons.Button2).gameObject;
 
         Image background = get<Image>((int)Images.Background);
         Image itemImage = get<Image>((int)Images.ItemImage);
@@ -101,39 +99,26 @@ public class ItemInformation_UI : UI_Popup
 
         Item _item = null;
         
-        if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Equipment")) { _item = set_Equipment(); }
-        else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables")) { _item = set_Expendables(); }
+        if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Equipment"))
+        {
+            _item = set_Equipment();
+
+            AddUIEvent(button1, (PointerEventData data) =>
+            {
+                isEquipped = !isEquipped;
+
+                Managers.Data.inventory_edit(_item.itemName, 0, isEquipped ? 1 : 0);
+
+                set_Equipment();
+            }, Define.UIEvent.Click);
+
+            button2.SetActive(false);
+        }
+        else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables"))
+        {
+            _item = set_Expendables();
+        }
         else { closePopup(); }
-
-        //if (_item.GetType() == System.Type.GetType("Expendables"))
-        //{
-        //    text2.gameObject.transform.parent.gameObject.SetActive(false);
-
-        //    text1.text = "사용";
-        //}
-        //else if (_item.GetType() == System.Type.GetType("Equipment"))
-        //{
-        //    if (isEquipped)
-        //    {
-        //        text1.text = "해제";
-        //        text2.text = "판매";
-        //    }
-        //    else
-        //    {
-        //        text1.text = "장착";
-        //        text2.text = "판매";
-        //    }
-        //}
-
-        //AddUIEvent(button1, (PointerEventData data) =>
-        //{
-
-        //}, Define.UIEvent.Click);
-
-        //AddUIEvent(button2, (PointerEventData data) =>
-        //{
-
-        //}, Define.UIEvent.Click);
 
         itemImage.sprite = sprite;
         itemName.text = $"{_item.itemName}";
@@ -192,15 +177,11 @@ public class ItemInformation_UI : UI_Popup
         {
             text1.text = "해제";
             text2.text = "판매";
-
-            Managers.Data.inventory_edit(equipment.itemName, 0, 0);
         }
         else
         {
             text1.text = "장착";
             text2.text = "판매";
-
-            Managers.Data.inventory_edit(equipment.itemName, 0, 0);
         }
 
         return equipment;

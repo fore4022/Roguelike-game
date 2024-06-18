@@ -125,44 +125,54 @@ public class Inventory_UI : UI_Scene
 
         height = Managers.Data.inventoryData.Count / 4 + (Managers.Data.inventoryData.Count % 4 > 0 ? 1 : 0);
 
-        for (int h = 0; h < (height < 4 ? 4 : height); h++)
+        for (int i = 0; i < (height < 4 ? 4 : height) * 4; i++)
         {
-            for (int w = 0; w < 4; w++)
+            GameObject go = Managers.Resource.instantiate("UI/Slot", content.transform);
+
+            Slot_UI slot = go.AddComponent<Slot_UI>();
+
+            if (SceneManager.GetActiveScene().name == "InGame")
             {
-                GameObject go = Managers.Resource.instantiate("UI/Slot", content.transform);
-
-                Slot_UI slot = go.AddComponent<Slot_UI>();
-
-                if (SceneManager.GetActiveScene().name == "InGame")
-                {
-                    if (!(slot.item.GetType() == System.Type.GetType("Equipment"))) { slotList.Add(slot); }
-                    else { continue; }
-                }
-                else if (SceneManager.GetActiveScene().name == "Main") { slotList.Add(slot); }
-
-                index = Mathf.Min(h * 4 + w, Managers.Data.inventoryData.Count - 1);
-
-                List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventoryData[index].itemName ? item : null).ToList();
-                item.RemoveAll(item => item == null);
-
-                if (h * 4 + w >= Managers.Data.inventoryData.Count) { slot.setSlot(null, null, -1); }
-                else { slot.setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count); }
-
-                slotDatas.Add((item[0], slot.sprite, slot.count, slot.isEquipped));
-
-                AddUIEvent(go, (PointerEventData data) =>
-                {
-                    Slot_UI slot = go.GetComponent<Slot_UI>();
-
-                    if(slot.item == null) { return; }
-
-                    Managers.UI.showPopupUI<ItemInformation_UI>("ItemInformation");
-                    Managers.UI.PopupStack.Peek().gameObject.GetComponent<ItemInformation_UI>().set(slotDatas[h * 4 + w].item, slotDatas[h * 4 + w].sprite, slotDatas[h * 4 + w].count, slotDatas[h * 4 + w].isEquipped);
-                }, Define.UIEvent.Click);
-                AddUIEvent(go, (PointerEventData data) => { evtHandle.OnBeginDragHandler.Invoke(data); }, Define.UIEvent.BeginDrag);
-                AddUIEvent(go, (PointerEventData data) => { evtHandle.OnDragHandler.Invoke(data); }, Define.UIEvent.Drag);
-                AddUIEvent(go, (PointerEventData data) => { evtHandle.OnEndDragHandler.Invoke(data); }, Define.UIEvent.EndDrag);
+                if (!(slot.item.GetType() == System.Type.GetType("Equipment"))) { slotList.Add(slot); }
+                else { continue; }
             }
+            else if (SceneManager.GetActiveScene().name == "Main") { slotList.Add(slot); }
+
+            index = Mathf.Min(i, Managers.Data.inventoryData.Count - 1);
+
+            List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventoryData[index].itemName ? item : null).ToList();
+            item.RemoveAll(item => item == null);
+
+            if (i >= Managers.Data.inventoryData.Count) { slot.setSlot(null, null, -1); }
+            else 
+            {
+                if (updateEquippedSlot(Managers.Data.inventoryData[index].equipped))
+                {
+
+                }
+                else
+                {
+
+                }
+                slot.setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count, Managers.Data.inventoryData[index].equipped == 0 ? false : true);
+            }
+
+            slotDatas.Add((item[0], slot.sprite, slot.count, slot.isEquipped));
+
+            int _index = index;
+
+            AddUIEvent(go, (PointerEventData data) =>
+            {
+                Slot_UI slot = go.GetComponent<Slot_UI>();
+
+                if (slot.item == null) { return; }
+
+                Managers.UI.showPopupUI<ItemInformation_UI>("ItemInformation");
+                Managers.UI.PopupStack.Peek().gameObject.GetComponent<ItemInformation_UI>().set(slotDatas[_index].item, slotDatas[_index].sprite, slotDatas[_index].count, slotDatas[_index].isEquipped);
+            }, Define.UIEvent.Click);
+            AddUIEvent(go, (PointerEventData data) => { evtHandle.OnBeginDragHandler.Invoke(data); }, Define.UIEvent.BeginDrag);
+            AddUIEvent(go, (PointerEventData data) => { evtHandle.OnDragHandler.Invoke(data); }, Define.UIEvent.Drag);
+            AddUIEvent(go, (PointerEventData data) => { evtHandle.OnEndDragHandler.Invoke(data); }, Define.UIEvent.EndDrag);
         }
 
         content.offsetMin = new Vector2(content.offsetMin.x, content.offsetMin.y + 245 * Mathf.Abs(height - 4));
@@ -171,20 +181,31 @@ public class Inventory_UI : UI_Scene
     {
         for (int i = 0; i < slotList.Count; i++)
         {
-            List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventoryData[Mathf.Min(i, slotList.Count() - 1)].itemName ? item : null).ToList();
+            index = Mathf.Min(i, Managers.Data.inventoryData.Count() - 1);
+
+            List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventoryData[index].itemName ? item : null).ToList();
             item.RemoveAll(item => item == null);
 
-            if (item[0] == null) 
+            if (i >= Managers.Data.inventoryData.Count()) 
             {
                 slotList[i].setSlot(null, null, -1);
 
                 continue;
             }
 
-            slotDatas[i] = ((item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[Mathf.Min(i, Managers.Data.inventoryData.Count - 1)].itemName), Managers.Data.inventoryData[i].count, Managers.Data.inventoryData[i].equipped == 0 ? false : true));
+            slotDatas[i] = ((item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count, Managers.Data.inventoryData[index].equipped == 0 ? false : true));
 
-            slotList[i].setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[Mathf.Min(i, Managers.Data.inventoryData.Count - 1)].itemName), Managers.Data.inventoryData[i].count);
+            slotList[i].setSlot(slotDatas[index].item, slotDatas[index].sprite, slotDatas[index].count, slotDatas[index].isEquipped);
         }
+    }
+    private bool updateEquippedSlot(int isEquipped)
+    {
+        if(isEquipped == 1)
+        {
+
+        }
+
+        return false;
     }
     private void OnDisable() { Managers.Data.edit -= updateSlot; }
 }
