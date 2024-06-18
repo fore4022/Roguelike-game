@@ -68,6 +68,9 @@ public class ItemInformation_UI : UI_Popup
         sprite = _sprite;
         count = _count;
         isEquipped = _isEquipped;
+
+        if (item.GetType() == System.Type.GetType("Equipment")) { set_Equipment(); }
+        else { set_Expendables(); }
     }
     protected override void init()
     {
@@ -116,8 +119,6 @@ public class ItemInformation_UI : UI_Popup
                 isEquipped = !isEquipped;
 
                 Managers.Data.inventory_edit(_item.itemName, 0, isEquipped ? 1 : 0);
-
-                set_Equipment();
             }, Define.UIEvent.Click);
 
             button2.SetActive(false);
@@ -130,8 +131,8 @@ public class ItemInformation_UI : UI_Popup
         else { closePopup(); }
 
         itemImage.sprite = sprite;
-        itemName.text = $"{_item.itemName}";
-        itemInformation.text = $"{_item.explanation}";//event
+        itemName.text = $"{_item.itemName}(X {count})";
+        itemInformation.text = $"{_item.explanation}";
     }
     private void set_Equipment()
     {
