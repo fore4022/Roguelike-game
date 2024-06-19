@@ -119,9 +119,24 @@ public class ItemInformation_UI : UI_Popup
                 isEquipped = !isEquipped;
 
                 Managers.Data.inventory_edit(_item.itemName, 0, isEquipped ? 1 : 0);
+
+                if (count == 1 && isEquipped) { button2.SetActive(false); }
+                else { button2.SetActive(true); }
             }, Define.UIEvent.Click);
 
-            button2.SetActive(false);
+            AddUIEvent(button2, (PointerEventData data) =>
+            {
+                Managers.UI.showPopupUI<Sale_UI>("Sale");
+
+                if (isEquipped)
+                {
+                    if (count - 1 > 1) { Managers.UI.PopupStack.Peek().GetComponent<Sale_UI>().set(_item.itemName, count - 1, true); }
+                }
+                else { Managers.UI.PopupStack.Peek().GetComponent<Sale_UI>().set(_item.itemName, count); }
+            }, Define.UIEvent.Click);
+
+            if(count == 1 && isEquipped) { button2.SetActive(false); }
+            else { button2.SetActive(true); }
         }
         else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables"))
         {
@@ -131,7 +146,7 @@ public class ItemInformation_UI : UI_Popup
         else { closePopup(); }
 
         itemImage.sprite = sprite;
-        itemName.text = $"{_item.itemName}(X {count})";
+        itemName.text = $"{_item.itemName}";
         itemInformation.text = $"{_item.explanation}";
     }
     private void set_Equipment()
@@ -240,5 +255,7 @@ public class ItemInformation_UI : UI_Popup
             statTexts[index].gameObject.transform.parent.gameObject.SetActive(false);
             index++;
         }
+
+        text1.text = "ÆÇ¸Å";
     }
 }
