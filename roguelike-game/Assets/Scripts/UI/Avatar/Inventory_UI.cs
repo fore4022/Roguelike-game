@@ -7,7 +7,6 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
-using System.Reflection;
 public class Inventory_UI : UI_Scene
 {
     public Sprite[] sprites;
@@ -62,7 +61,8 @@ public class Inventory_UI : UI_Scene
 
         can.renderMode = RenderMode.ScreenSpaceOverlay;
         can.overrideSorting = false;
-        can.sortingOrder = FindObjectOfType<SwipeMenu_UI>().GetComponent<Canvas>().sortingOrder + 1;
+        
+        if(SceneManager.GetActiveScene().name == "Main") { can.sortingOrder = FindObjectOfType<SwipeMenu_UI>().GetComponent<Canvas>().sortingOrder + 1; }
 
         if (pos != null)
         {
@@ -159,25 +159,29 @@ public class Inventory_UI : UI_Scene
 
             Slot_UI slot = go.AddComponent<Slot_UI>();
 
-            if (SceneManager.GetActiveScene().name == "InGame")
-            {
-                if (slot.item.GetType() == System.Type.GetType("Expendables")) { slotList.Add(slot); }
-                else { continue; }
-            }
-            else if (SceneManager.GetActiveScene().name == "Main") { slotList.Add(slot); }
+            slotList.Add(slot);
 
             index = Mathf.Min(++index, Managers.Data.inventoryData.Count - 1);
 
-            List<Item> item = checkList(index);
+            List<Item> item = checkList();
+
+            if(Managers.Data.inventoryData.Count -1 == index)
+            {
+                if(index > i)
+                {
+                    continue;
+                }
+            }
 
             if (i >= Managers.Data.inventoryData.Count) { slot.setSlot(null, null, -1); }
             else
             {
-                if (Managers.Data.inventoryData[index].equipped == 0 ? false : true)
+                if (Managers.Data.inventoryData[i].equipped == 0 ? false : true)
                 {
                     equippedItemIndex = index;
                     itemImage.sprite = Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName);
                 }
+
                 slotList[i].setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count, Managers.Data.inventoryData[index].equipped == 0 ? false : true);
             }
 
@@ -217,7 +221,7 @@ public class Inventory_UI : UI_Scene
         {
             index = Mathf.Min(++index, Managers.Data.inventoryData.Count - 1);
 
-            List<Item> item = checkList(index);
+            List<Item> item = checkList();
 
             if (i >= Managers.Data.inventoryData.Count()) 
             {
@@ -249,10 +253,25 @@ public class Inventory_UI : UI_Scene
         if (itemName == "") { itemImage.gameObject.SetActive(false); }
         else { itemImage.gameObject.SetActive(true); }
     }
-    private List<Item> checkList(int index)
+    private List<Item> checkList()
     {
+        index = Mathf.Min(index, Managers.Data.inventoryData.Count - 1);
+
         List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventoryData[index].itemName ? item : null).ToList(); ;
         item.RemoveAll(item => item == null);
+
+        if (SceneManager.GetActiveScene().name == "InGame")
+        {
+            while (item[0].GetType() != System.Type.GetType("Expendables"))
+            {
+                if(index == Managers.Data.inventoryData.Count - 1) { break; }
+
+                index++;
+
+                item = itemList.Select(item => item.itemName == Managers.Data.inventoryData[index].itemName ? item : null).ToList(); ;
+                item.RemoveAll(item => item == null);
+            }
+        }
 
         return item;
     }
