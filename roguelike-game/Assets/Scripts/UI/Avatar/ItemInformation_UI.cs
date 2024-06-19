@@ -21,6 +21,8 @@ public class ItemInformation_UI : UI_Popup
     private List<Image> statImages = new List<Image>();
     private Sprite[] sprites;
 
+    private Inventory_UI inven;
+
     private GameObject button1;
     private GameObject button2;
     private TextMeshProUGUI text1;
@@ -79,6 +81,8 @@ public class ItemInformation_UI : UI_Popup
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));
 
+        inven = Managers.UI.SceneStack.Peek().GetComponent<Inventory_UI>();
+
         GameObject exit = get<Button>((int)Buttons.Exit).gameObject;
 
         Image background = get<Image>((int)Images.Background);
@@ -116,9 +120,13 @@ public class ItemInformation_UI : UI_Popup
 
             AddUIEvent(button1, (PointerEventData data) =>
             {
+                string _itemName = inven.itemName;
+
                 isEquipped = !isEquipped;
 
                 Managers.Data.inventory_edit(_item.itemName, 0, isEquipped ? 1 : 0);
+
+                if (_itemName != "") { Managers.Data.inventory_edit(_itemName, 0, 0); }
 
                 if (count == 1 && isEquipped) { button2.SetActive(false); }
                 else { button2.SetActive(true); }
@@ -130,13 +138,10 @@ public class ItemInformation_UI : UI_Popup
 
                 if (isEquipped)
                 {
-                    if (count - 1 > 1) { Managers.UI.PopupStack.Peek().GetComponent<Sale_UI>().set(_item.itemName, count - 1, true); }
+                    if (count - 1 >= 1) { Managers.UI.PopupStack.Peek().GetComponent<Sale_UI>().set(_item.itemName, count - 1, true); }
                 }
                 else { Managers.UI.PopupStack.Peek().GetComponent<Sale_UI>().set(_item.itemName, count); }
             }, Define.UIEvent.Click);
-
-            if(count == 1 && isEquipped) { button2.SetActive(false); }
-            else { button2.SetActive(true); }
         }
         else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables"))
         {
@@ -202,6 +207,9 @@ public class ItemInformation_UI : UI_Popup
         else { text1.text = "ÀåÂø"; }
 
         text2.text = "ÆÇ¸Å";
+
+        if (count == 1 && isEquipped) { button2.SetActive(false); }
+        else { button2.SetActive(true); }
     }
     private void set_Expendables()
     {

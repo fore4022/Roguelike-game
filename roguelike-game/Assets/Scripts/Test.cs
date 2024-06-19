@@ -18,6 +18,9 @@ public class Test : MonoBehaviour
         //Managers.Data.inventory_edit("weapon5", 1, 0);
         //Managers.Data.inventory_edit("weapon6", 1, 0);
         //Managers.Data.inventory_edit("weapon7", 1, 0);
+
         Managers.UI.showSceneUI<SwipeMenu_UI>("SwipeMenu");
+
+        //Managers.UI.showSceneUI<Inventory_UI>("Inventory");
     }
 }

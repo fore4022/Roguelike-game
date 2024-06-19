@@ -48,6 +48,8 @@ public class Sale_UI : UI_Popup
 
         AddUIEvent(check, (PointerEventData data) => 
         {
+            if((int)count.value == 0) { return; }
+
             Managers.UI.PopupStack.Pop();
 
             Managers.Data.inventory_edit(itemName, -(int)count.value, (isEquipped ? 1 : 0), (countValue - (int)count.value) <= 0 && !isEquipped ? true : false);
@@ -61,19 +63,19 @@ public class Sale_UI : UI_Popup
 
         AddUIEvent(count.gameObject, (PointerEventData data) =>
         {
-            reconfirm.text = $"정말로 {itemName} {(int)count.value}개를 만큼 파시겠습니까?";
+            reconfirm.text = $"정말로 {itemName} {(int)count.value}개를 파시겠습니까?";
             price.text = $"{50 * (int)count.value}";
         }, Define.UIEvent.Drag);
         AddUIEvent(count.gameObject, (PointerEventData data) =>
         {
-            reconfirm.text = $"정말로 {itemName} {(int)count.value}개를 만큼 파시겠습니까?";
+            reconfirm.text = $"정말로 {itemName} {(int)count.value}개를 파시겠습니까?";
             price.text = $"{50 * (int)count.value}";
         }, Define.UIEvent.EndDrag);
 
         count.maxValue = countValue;
-        count.value = (int)count.maxValue / 2;
+        count.value = Mathf.Max((int)count.maxValue / 2, 1);
 
-        reconfirm.text = $"정말로 {itemName} {(int)count.value}개를 만큼 파시겠습니까?";
+        reconfirm.text = $"정말로 {itemName} {(int)count.value}개를 파시겠습니까?";
         price.text = $"{50 * (int)count.value}";
     }
 }
