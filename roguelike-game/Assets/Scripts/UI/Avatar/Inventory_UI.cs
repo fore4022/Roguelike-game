@@ -55,7 +55,12 @@ public class Inventory_UI : UI_Scene
         if (SceneManager.GetActiveScene().name == "Main") { pos = GameObject.Find($"{this.GetType().Name.Replace("_UI", "")}" + "Page").transform; }
         else { }//another Scene
 
-        if (itemList == null) { itemList = Managers.Resource.LoadAll<Item>("Data/Item/").ToList<Item>(); }
+        if (itemList == null) 
+        {
+            itemList = Managers.Resource.LoadAll<Item>("Data/Item/").ToList<Item>();
+
+            if (SceneManager.GetActiveScene().name == "InGame") { itemList.RemoveAll(item => item.GetType() == System.Type.GetType("Equipment")); }
+        }
 
         init();
 
@@ -161,41 +166,36 @@ public class Inventory_UI : UI_Scene
 
             slotList.Add(slot);
 
-            index = Mathf.Min(++index, Managers.Data.inventoryData.Count - 1);
+            index = Mathf.Min(++index, Managers.Data.inventoryData.Count);
+
+            if(index == Managers.Data.inventoryData.Count || i >= Managers.Data.inventoryData.Count)
+            {
+                slot.setSlot(null, null, -1);
+
+                continue; 
+            }
 
             List<Item> item = checkList();
 
-            if(Managers.Data.inventoryData.Count -1 == index)
+            if (Managers.Data.inventoryData[i].equipped == 0 ? false : true)
             {
-                if(index > i)
-                {
-                    continue;
-                }
+                equippedItemIndex = index;
+                itemImage.sprite = Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName);
             }
 
-            if (i >= Managers.Data.inventoryData.Count) { slot.setSlot(null, null, -1); }
-            else
-            {
-                if (Managers.Data.inventoryData[i].equipped == 0 ? false : true)
-                {
-                    equippedItemIndex = index;
-                    itemImage.sprite = Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName);
-                }
-
-                slotList[i].setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count, Managers.Data.inventoryData[index].equipped == 0 ? false : true);
-            }
+            slotList[i].setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count, Managers.Data.inventoryData[index].equipped == 0 ? false : true);
 
             slotDatas.Add((slot.item, slot.sprite, slot.count, slot.isEquipped));
 
             if (slot.isEquipped) { itemName = $"{slot.item.itemName}"; }
 
-            int _index = index;
+            int _index = i;
 
             AddUIEvent(go, (PointerEventData data) =>
             {
                 Slot_UI slot = go.GetComponent<Slot_UI>();
 
-                selectedItemIndex = _index;
+                selectedItemIndex = _index;     
 
                 if (slot.item == null) { return; }
 
@@ -240,7 +240,7 @@ public class Inventory_UI : UI_Scene
                 slotList[i].setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count, Managers.Data.inventoryData[index].equipped == 0 ? false : true);
             }
 
-            slotDatas[i] = (slotList[i].item, slotList[i].sprite, slotList[i].count, slotList[i].isEquipped);
+            slotDatas[i] = (slotList[index].item, slotList[index].sprite, slotList[index].count, slotList[index].isEquipped);
 
             if (slotDatas[i].isEquipped) { itemName = $"{slotDatas[i].item.itemName}"; }
 
@@ -255,17 +255,13 @@ public class Inventory_UI : UI_Scene
     }
     private List<Item> checkList()
     {
-        index = Mathf.Min(index, Managers.Data.inventoryData.Count - 1);
-
         List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventoryData[index].itemName ? item : null).ToList(); ;
         item.RemoveAll(item => item == null);
 
-        if (SceneManager.GetActiveScene().name == "InGame")
+        if(SceneManager.GetActiveScene().name == "InGame") 
         {
-            while (item[0].GetType() != System.Type.GetType("Expendables"))
+            while(item.Count == 0)
             {
-                if(index == Managers.Data.inventoryData.Count - 1) { break; }
-
                 index++;
 
                 item = itemList.Select(item => item.itemName == Managers.Data.inventoryData[index].itemName ? item : null).ToList(); ;
