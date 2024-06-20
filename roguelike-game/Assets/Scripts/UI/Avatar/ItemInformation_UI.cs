@@ -147,6 +147,25 @@ public class ItemInformation_UI : UI_Popup
         {
             _item = (Expendables)item.ConvertTo(System.Type.GetType("Expendables"));
             set_Expendables();
+
+            AddUIEvent(button1, (PointerEventData data) =>
+            {
+                if(SceneManager.GetActiveScene().name == "Main")
+                {
+                    Managers.UI.showPopupUI<Sale_UI>("Sale");
+                    Managers.UI.PopupStack.Peek().GetComponent<Sale_UI>().set(_item.itemName, count);
+                }
+                else if(SceneManager.GetActiveScene().name == "InGame")
+                {
+                    // increase stats
+                    if(count - 1 == 0) { Managers.Data.inventory_edit(_item.itemName, 0, 0, true); }
+                    else { Managers.Data.inventory_edit(_item.itemName, -1); }
+
+                    closePopup();
+                }
+            }, Define.UIEvent.Click);
+
+            button2.gameObject.SetActive(false);
         }
         else { closePopup(); }
 
@@ -264,6 +283,7 @@ public class ItemInformation_UI : UI_Popup
             index++;
         }
 
-        text1.text = "판매";
+        if(SceneManager.GetActiveScene().name == "Main") { text1.text = "판매"; }
+        else if(SceneManager.GetActiveScene().name == "InGame") { text1.text = "사용"; }
     }
 }

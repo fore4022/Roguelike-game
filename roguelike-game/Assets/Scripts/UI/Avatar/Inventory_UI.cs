@@ -219,28 +219,26 @@ public class Inventory_UI : UI_Scene
 
         for (int i = 0; i < slotList.Count; i++)
         {
-            index = Mathf.Min(++index, Managers.Data.inventoryData.Count - 1);
+            index = Mathf.Min(++index, Managers.Data.inventoryData.Count);
 
-            List<Item> item = checkList();
-
-            if (i >= Managers.Data.inventoryData.Count()) 
+            if (index == Managers.Data.inventoryData.Count || i >= Managers.Data.inventoryData.Count)
             {
                 slotList[i].setSlot(null, null, -1);
 
                 continue;
             }
-            else
-            {
-                if (Managers.Data.inventoryData[index].equipped == 1 ? true : false)
-                {
-                    equippedItemIndex = index;
-                    itemImage.sprite = Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName);
-                }
 
-                slotList[i].setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count, Managers.Data.inventoryData[index].equipped == 0 ? false : true);
+            List<Item> item = checkList();
+
+            if (Managers.Data.inventoryData[index].equipped == 1 ? true : false)
+            {
+                equippedItemIndex = index;
+                itemImage.sprite = Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName);
             }
 
-            slotDatas[i] = (slotList[index].item, slotList[index].sprite, slotList[index].count, slotList[index].isEquipped);
+            slotList[i].setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count, Managers.Data.inventoryData[index].equipped == 0 ? false : true);
+
+            slotDatas[i] = (slotList[i].item, slotList[i].sprite, slotList[i].count, slotList[i].isEquipped);
 
             if (slotDatas[i].isEquipped) { itemName = $"{slotDatas[i].item.itemName}"; }
 
@@ -260,6 +258,7 @@ public class Inventory_UI : UI_Scene
 
         if(SceneManager.GetActiveScene().name == "InGame") 
         {
+            Debug.Log(item.Count);
             while(item.Count == 0)
             {
                 index++;

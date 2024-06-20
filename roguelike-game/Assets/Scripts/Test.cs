@@ -7,9 +7,9 @@ public class Test : MonoBehaviour
 {
     private void Start()
     {
-        //Managers.Game.stageStart("Ground");
-        //GameObject go = GameObject.Find("@Skill");
-        //go.AddComponent<FireBall_Cast>();
+        Managers.Game.stageStart("Ground");
+        GameObject go = GameObject.Find("@Skill");
+        go.AddComponent<FireBall_Cast>();
 
         //Managers.Data.inventory_edit("weapon1", 1, 0);    //Equipment
         //Managers.Data.inventory_edit("weapon2", 1, 0);
@@ -30,6 +30,6 @@ public class Test : MonoBehaviour
 
         //Managers.UI.showSceneUI<SwipeMenu_UI>("SwipeMenu");
 
-        Managers.UI.showSceneUI<Inventory_UI>("Inventory");
+        //Managers.UI.showSceneUI<Inventory_UI>("Inventory");
     }
 }

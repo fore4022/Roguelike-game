@@ -15,7 +15,8 @@ public class FireBall_Cast : Base_SkillCast
             List<Monster_Controller> monsters = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
             
             if (monsters.Count() == 0) { yield return null; }
-            go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), prefabName);
+
+            go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), skillName);
 
             FireBall newScript = go.AddComponent(script) as FireBall;
             newScript.skill = skill;
