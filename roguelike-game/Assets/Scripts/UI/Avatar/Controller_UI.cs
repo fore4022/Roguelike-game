@@ -16,7 +16,7 @@ public class Controller_UI : UI_Popup
     }
     private void Start()
     {
-        init();
+        Init();
         controllerUnit.SetActive(false);
     }
     private void Update() 
@@ -30,9 +30,9 @@ public class Controller_UI : UI_Popup
         }
         else { closePopup(); }
     }
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<Image>(typeof(Images));
 
         GameObject controllPanel = get<Image>((int)Images.ControllPanel).gameObject;

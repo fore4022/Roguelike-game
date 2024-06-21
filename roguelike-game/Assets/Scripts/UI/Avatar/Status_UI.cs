@@ -22,7 +22,7 @@ public class Status_UI : UI_Scene
     }
     private void Start()
     {
-        init();
+        Init();
         Managers.Game.player.updateStatus -= statusUpdate;
         Managers.Game.player.updateStatus += statusUpdate;
     }
@@ -37,9 +37,9 @@ public class Status_UI : UI_Scene
         }
         if (Managers.Game.player.Hp <= 0) { hp.gameObject.SetActive(false); }
     }
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<Slider>(typeof(Sliders));
         bind<TextMeshProUGUI>(typeof(TMPro));
 

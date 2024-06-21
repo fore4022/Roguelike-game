@@ -62,7 +62,7 @@ public class ItemInformation_UI : UI_Popup
         count = _count;
         isEquipped = _isEquipped;
 
-        init();
+        Init();
     }
     public void updateData(object _item, Sprite _sprite, int _count, bool _isEquipped = false)
     {
@@ -74,9 +74,9 @@ public class ItemInformation_UI : UI_Popup
         if (item.GetType() == System.Type.GetType("Equipment")) { set_Equipment(); }
         else { set_Expendables(); }
     }
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));

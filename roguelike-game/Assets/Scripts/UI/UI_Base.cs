@@ -8,7 +8,7 @@ using Unity.VisualScripting;
 public abstract class UI_Base : Util
 {
     Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
-    protected abstract void init();
+    protected abstract void Init();
     protected void bind<T>(Type type) where T : UnityEngine.Object
     {
         string[] names = Enum.GetNames(type);
@@ -28,45 +28,5 @@ public abstract class UI_Base : Util
 
         if (_objects.TryGetValue(typeof(T), out objects) == false) { return null; }
         return objects[idx] as T;
-    }
-    public static void AddUIEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
-    {
-        UI_EventHandler evt = getOrAddComponent<UI_EventHandler>(go);
-
-        switch(type)
-        {
-            case Define.UIEvent.Click:
-                evt.OnClickHandler -= action;
-                evt.OnClickHandler += action;
-                break;
-            case Define.UIEvent.Enter:
-                evt.OnPointerEnterHandler -= action;
-                evt.OnPointerEnterHandler += action;
-                break;
-            case Define.UIEvent.Exit:
-                evt.OnPointerExitHandler -= action;
-                evt.OnPointerExitHandler += action;
-                break;
-            case Define.UIEvent.Down:
-                evt.OnPointerDownHandler -= action;
-                evt.OnPointerDownHandler += action;
-                break;
-            case Define.UIEvent.Up:
-                evt.OnPointerUpHandler -= action;
-                evt.OnPointerUpHandler += action;
-                break;
-            case Define.UIEvent.BeginDrag:
-                evt.OnBeginDragHandler -= action;
-                evt.OnBeginDragHandler += action;
-                break;
-            case Define.UIEvent.Drag:
-                evt.OnDragHandler -= action;
-                evt.OnDragHandler += action;
-                break;
-            case Define.UIEvent.EndDrag:
-                evt.OnEndDragHandler -= action;
-                evt.OnEndDragHandler += action;
-                break;
-        }
     }
 }

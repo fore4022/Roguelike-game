@@ -13,11 +13,11 @@ public class Log_UI : UI_Popup
     }
     private void Start()
     {
-        init();
+        Init();
     }
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<TextMeshProUGUI>(typeof(TMPro));
 
         log = get<TextMeshProUGUI>((int)TMPro.Log);

@@ -4,35 +4,47 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using System;
 public class Slot_UI : Util
 {
-    public Item item;
-    public Sprite sprite;
+    public Item _item;
+    public Sprite _sprite;
 
-    public int count;
-    public bool isEquipped;
+    public int _count;
+    public bool _isEquipped;
 
-    private Image itemImage;
-    private TextMeshProUGUI itemCount;
+    private Image _itemImage;
+    private TextMeshProUGUI _itemCount;
 
-    public void setSlot(Item _item, Sprite _sprite, int _count, bool _isEquipped = false)
+    public void setSlot(Item item, Sprite sprite, int count, UI_EventHandler eventHandle, bool isEquipped = false)
     {
-        if (itemImage == null || itemCount == null)
+        if (_itemImage == null || _itemCount == null)
         {
-            itemImage = FindChild<Image>(this.gameObject, "slotImage", true);
-            itemCount = FindChild<TextMeshProUGUI>(this.gameObject, "slotCount", true);
+            _itemImage = FindChild<Image>(this.gameObject, "slotImage", true);
+            _itemCount = FindChild<TextMeshProUGUI>(this.gameObject, "slotCount", true);
         }
         
-        if(_sprite == null) { itemImage.gameObject.SetActive(false); }
-        else { itemImage.gameObject.SetActive(true); }
+        if(sprite == null) { _itemImage.gameObject.SetActive(false); }
+        else { _itemImage.gameObject.SetActive(true); }
 
-        item = _item;
-        count = (int)_count;
-        sprite = _sprite;
-        isEquipped = _isEquipped;
-        itemImage.sprite = _sprite;
+        _item = item;
+        _count = (int)count;
+        _sprite = sprite;
+        _isEquipped = isEquipped;
+        _itemImage.sprite = sprite;
 
-        if (_count == -1) { itemCount.text = ""; }
-        else { itemCount.text = $"X  {_count}"; }
+        if (count == -1) { _itemCount.text = ""; }
+        else { _itemCount.text = $"X  {count}"; }
+
+        AddUIEvent(this.gameObject, (PointerEventData data) =>
+        {
+            if (this._item == null) { return; }
+            Debug.Log("asdf");
+            Managers.UI.showPopupUI<ItemInformation_UI>("ItemInformation");
+            Managers.UI.PopupStack.Peek().gameObject.GetComponent<ItemInformation_UI>().setData(_item, _sprite, _count, _isEquipped);
+        }, Define.UIEvent.Click);
+        AddUIEvent(this.gameObject, (PointerEventData data) => { eventHandle.OnBeginDragHandler.Invoke(data); }, Define.UIEvent.BeginDrag);
+        AddUIEvent(this.gameObject, (PointerEventData data) => { eventHandle.OnDragHandler.Invoke(data); }, Define.UIEvent.Drag);
+        AddUIEvent(this.gameObject, (PointerEventData data) => { eventHandle.OnEndDragHandler.Invoke(data); }, Define.UIEvent.EndDrag);
     }
 }

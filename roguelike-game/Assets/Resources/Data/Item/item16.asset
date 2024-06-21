@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a1c68721457a1145aa14d91c86a3540, type: 3}
   m_Name: item16
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: item16
   explanation: 
   attackDamage: 0
   collDown: 0

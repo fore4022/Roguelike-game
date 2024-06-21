@@ -26,10 +26,10 @@ public class Result_UI : UI_Popup
     {
 
     }
-    private void Start() { init(); }
-    protected override void init()
+    private void Start() { Init(); }
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));

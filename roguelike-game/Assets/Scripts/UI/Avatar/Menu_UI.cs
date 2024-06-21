@@ -19,15 +19,15 @@ public class Menu_UI : UI_Popup
         Quit,
         Setting
     }
-    private void Start() { init(); }
+    private void Start() { Init(); }
     private void OnEnable() 
     {
         Time.timeScale = 0f;
         Managers.Game.stopWatch.Stop();
     }
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<Image>(typeof(Images));
         reStart = get<Image>((int)Images.ReStart).gameObject;
         belongings = get<Image>((int)Images.Belongings).gameObject;

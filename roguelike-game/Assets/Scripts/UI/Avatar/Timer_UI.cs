@@ -13,11 +13,11 @@ public class Timer_UI : UI_Scene
         Timer
     }
     private TextMeshProUGUI timer;
-    private void Start() { init(); }
+    private void Start() { Init(); }
     private void Update() { timer.text = $"{Managers.Game.minute} : {Managers.Game.second}"; }
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<TextMeshProUGUI>(typeof(TMPro));
         timer = get<TextMeshProUGUI>((int)TMPro.Timer);
     }

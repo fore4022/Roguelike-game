@@ -8,29 +8,32 @@ public class SpawnMonster : MonoBehaviour
 {
     private float xRange = 9.5f;
     private float yRange = 13f;
+
     public IEnumerator Spawn()
     {
         GameObject go;
-        float seconds = Managers.Game.creationCycle;
+        float delay = Managers.Game.creationCycle;
         while (Managers.Game.isSpawn)
         {
-            if (Managers.Game.minute != 0 && (((Managers.Game.minute % 8 == 0) && (Managers.Game.second % 8 == 0)) || Managers.Game.minute % 25 == 0)) { Managers.Game.inBattle = true; }
+            //to do : GameManager
+            if (Managers.Game.minute != 0 && (((Managers.Game.minute % 8 == 0) && (Managers.Game.second % 8 == 0)) || Managers.Game.minute % 25 == 0))
+            { Managers.Game.inBattle = true; }
 
             if (!Managers.Game.inBattle)
             {
                 int rand = UnityEngine.Random.Range(0, Managers.Game.map.monsterType.Count);
                 go = Managers.Game.objectPool.activateObject(typeof(Monster_Controller), Managers.Game.map.monsterType[rand].ToString());
-                go.transform.position = position();
+                go.transform.position = GetRandomSpawnPosition();
             }
             else { Managers.Game.stopWatch.Stop(); }
 
-            if(seconds < 0.1f) { seconds = 0.1f; }
-            else { seconds = Managers.Game.creationCycle - ((0.6f / 60) * Managers.Game.minute); }
+            if(delay < 0.1f) { delay = 0.1f; }
+            else { delay = Managers.Game.creationCycle - ((0.6f / 60) * Managers.Game.minute); }
 
-            yield return new WaitForSeconds(seconds);
+            yield return new WaitForSeconds(delay);
         }
     }
-    private Vector3 position()
+    private Vector3 GetRandomSpawnPosition()
     {
         float x = Managers.Game.player.gameObject.transform.position.x;
         float y = Managers.Game.player.gameObject.transform.position.y;

@@ -28,7 +28,7 @@ public class SelectSkill_UI : UI_Popup
         level2,
         level3
     }
-    private void Start() { init(); }
+    private void Start() { Init(); }
     private void OnEnable()
     {
         int rand;
@@ -65,9 +65,9 @@ public class SelectSkill_UI : UI_Popup
             });
         }
     }
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));
     }

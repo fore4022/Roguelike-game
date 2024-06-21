@@ -24,7 +24,7 @@ public class Store_UI : UI_Scene
     {
         Canvas can = this.gameObject.GetComponent<Canvas>();
 
-        init();
+        Init();
 
         can.renderMode = RenderMode.ScreenSpaceOverlay;
         can.overrideSorting = false;
@@ -40,9 +40,9 @@ public class Store_UI : UI_Scene
         rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         rectTransform.anchoredPosition = Vector2.zero;
     }
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));

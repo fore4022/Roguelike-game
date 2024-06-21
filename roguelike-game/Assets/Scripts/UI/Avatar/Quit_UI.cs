@@ -10,10 +10,10 @@ public class Quit_UI : UI_Popup
     {
         Quit
     }
-    private void Start() { init(); }
-    protected override void init()
+    private void Start() { Init(); }
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<Image>(typeof(Images));
         GameObject quit = get<Image>((int)Images.Quit).gameObject;
         quit.AddComponent<Button>();

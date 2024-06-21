@@ -49,7 +49,7 @@ public class SwipeMenu_UI : UI_Scene
     private void OnEnable() { origin = 0; }
     private void Start()
     {
-        init();
+        Init();
 
         //this.gameObject.GetComponent<Canvas>().sortingOrder = 10;
 
@@ -80,9 +80,9 @@ public class SwipeMenu_UI : UI_Scene
             }
         }
     }
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));

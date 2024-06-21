@@ -15,7 +15,7 @@ public class Inventory_UI : UI_Scene
 
     public string itemName = "";
 
-    private List<(Item item, Sprite sprite, int count, bool isEquipped)> slotDatas = new List<(Item item, Sprite sprite, int count, bool isEquipped)>();
+    private List<(Item item, Sprite sprite, int count, bool isEquipped)> slotDataList = new List<(Item item, Sprite sprite, int count, bool isEquipped)>();
     private List<Slot_UI> slotList = new List<Slot_UI>();
     private List<Item> itemList;
 
@@ -23,6 +23,7 @@ public class Inventory_UI : UI_Scene
     private ScrollRect inventoryScrollView;
     private Transform pos;
     private Image itemImage;
+    private UI_EventHandler evtHandle;
 
     private Vector2 enterPoint;
     private Vector2 direction;
@@ -62,7 +63,7 @@ public class Inventory_UI : UI_Scene
             if (SceneManager.GetActiveScene().name == "InGame") { itemList.RemoveAll(item => item.GetType() == System.Type.GetType("Equipment")); }
         }
 
-        init();
+        Init();
 
         can.renderMode = RenderMode.ScreenSpaceOverlay;
         can.overrideSorting = false;
@@ -82,12 +83,12 @@ public class Inventory_UI : UI_Scene
             swipeMenu = FindObjectOfType<SwipeMenu_UI>().GetComponent<SwipeMenu_UI>();
         }
 
-        Managers.Data.edit -= updateSlot;
-        Managers.Data.edit += updateSlot;
+        Managers.Data.edit -= UpdateSlot;
+        Managers.Data.edit += UpdateSlot;
     }
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<Image>(typeof(Images));
         bind<ScrollRect>(typeof(ScrollRects));
 
@@ -112,7 +113,7 @@ public class Inventory_UI : UI_Scene
 
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (pos != null) { evtHandle.OnBeginDragHandler.Invoke(data); }//
+            if (pos != null) { evtHandle.OnBeginDragHandler.Invoke(data); }
 #if UNITY_EDITOR
             enterPoint = Input.mousePosition;
 #endif
@@ -123,7 +124,7 @@ public class Inventory_UI : UI_Scene
         }, Define.UIEvent.BeginDrag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (pos != null) { evtHandle.OnDragHandler.Invoke(data); }//
+            if (pos != null) { evtHandle.OnDragHandler.Invoke(data); }
 #if UNITY_EDITOR
             direction = (Vector2)Input.mousePosition - enterPoint;
 #endif
@@ -135,7 +136,7 @@ public class Inventory_UI : UI_Scene
         }, Define.UIEvent.Drag);
         AddUIEvent(scrollView, (PointerEventData data) =>
         {
-            if (pos != null) { evtHandle.OnEndDragHandler.Invoke(data); }//
+            if (pos != null) { evtHandle.OnEndDragHandler.Invoke(data); }
         }, Define.UIEvent.EndDrag);
 
         AddUIEvent(itemImage.gameObject, (PointerEventData data) =>
@@ -143,15 +144,15 @@ public class Inventory_UI : UI_Scene
             if(equippedItemIndex == -1) { return; }
 
             Managers.UI.showPopupUI<ItemInformation_UI>("ItemInformation");
-            Managers.UI.PopupStack.Peek().gameObject.GetComponent<ItemInformation_UI>().setData(slotDatas[equippedItemIndex].item, slotDatas[equippedItemIndex].sprite, slotDatas[equippedItemIndex].count, slotDatas[equippedItemIndex].isEquipped);
+            Managers.UI.PopupStack.Peek().gameObject.GetComponent<ItemInformation_UI>().setData(slotDataList[equippedItemIndex].item, slotDataList[equippedItemIndex].sprite, slotDataList[equippedItemIndex].count, slotDataList[equippedItemIndex].isEquipped);
         }, Define.UIEvent.Click);
 
-        setSlot();
+        SetSlot();
     }
     private void Scroll() { inventoryScrollView.verticalScrollbar.value = Mathf.Clamp(inventoryScrollView.verticalScrollbar.value + direction.y / (content.rect.height + 245 * (height / 5)), 0, 1); }
-    private void setSlot()
+    private void SetSlot()
     {
-        UI_EventHandler evtHandle = FindParent<UI_EventHandler>(content.gameObject);
+        evtHandle = FindParent<UI_EventHandler>(content.gameObject);
 
         height = Managers.Data.inventoryData.Count / 4 + (Managers.Data.inventoryData.Count % 4 > 0 ? 1 : 0);
         equippedItemIndex = -1;
@@ -170,12 +171,12 @@ public class Inventory_UI : UI_Scene
 
             if(index == Managers.Data.inventoryData.Count || i >= Managers.Data.inventoryData.Count)
             {
-                slot.setSlot(null, null, -1);
+                slot.setSlot(null, null, -1, evtHandle);
 
                 continue; 
             }
 
-            List<Item> item = checkList();
+            List<Item> item = CheckList();
 
             if (Managers.Data.inventoryData[i].equipped == 0 ? false : true)
             {
@@ -183,28 +184,11 @@ public class Inventory_UI : UI_Scene
                 itemImage.sprite = Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName);
             }
 
-            slotList[i].setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count, Managers.Data.inventoryData[index].equipped == 0 ? false : true);
+            slotList[i].setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count, evtHandle, Managers.Data.inventoryData[index].equipped == 0 ? false : true);
 
-            slotDatas.Add((slot.item, slot.sprite, slot.count, slot.isEquipped));
+            slotDataList.Add((slot._item, slot._sprite, slot._count, slot._isEquipped));
 
-            if (slot.isEquipped) { itemName = $"{slot.item.itemName}"; }
-
-            int _index = i;
-
-            AddUIEvent(go, (PointerEventData data) =>
-            {
-                Slot_UI slot = go.GetComponent<Slot_UI>();
-
-                selectedItemIndex = _index;     
-
-                if (slot.item == null) { return; }
-
-                Managers.UI.showPopupUI<ItemInformation_UI>("ItemInformation");
-                Managers.UI.PopupStack.Peek().gameObject.GetComponent<ItemInformation_UI>().setData(slotDatas[_index].item, slotDatas[_index].sprite, slotDatas[_index].count, slotDatas[_index].isEquipped);
-            }, Define.UIEvent.Click);
-            AddUIEvent(go, (PointerEventData data) => { evtHandle.OnBeginDragHandler.Invoke(data); }, Define.UIEvent.BeginDrag);
-            AddUIEvent(go, (PointerEventData data) => { evtHandle.OnDragHandler.Invoke(data); }, Define.UIEvent.Drag);
-            AddUIEvent(go, (PointerEventData data) => { evtHandle.OnEndDragHandler.Invoke(data); }, Define.UIEvent.EndDrag);
+            if (slot._isEquipped) { itemName = $"{slot._item.itemName}"; }
         }
 
         content.offsetMin = new Vector2(content.offsetMin.x, content.offsetMin.y + 245 * Mathf.Abs(height - 4));
@@ -212,7 +196,7 @@ public class Inventory_UI : UI_Scene
         if (equippedItemIndex == -1) { itemImage.gameObject.SetActive(false); }
         else { itemImage.gameObject.SetActive(true); }
     }
-    private void updateSlot() 
+    private void UpdateSlot() 
     {
         index = -1;
         itemName = "";
@@ -223,12 +207,12 @@ public class Inventory_UI : UI_Scene
 
             if (index == Managers.Data.inventoryData.Count || i >= Managers.Data.inventoryData.Count)
             {
-                slotList[i].setSlot(null, null, -1);
+                slotList[i].setSlot(null, null, -1, evtHandle);
 
                 continue;
             }
 
-            List<Item> item = checkList();
+            List<Item> item = CheckList();
 
             if (Managers.Data.inventoryData[index].equipped == 1 ? true : false)
             {
@@ -236,29 +220,19 @@ public class Inventory_UI : UI_Scene
                 itemImage.sprite = Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName);
             }
 
-            slotList[i].setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count, Managers.Data.inventoryData[index].equipped == 0 ? false : true);
-
-            slotDatas[i] = (slotList[i].item, slotList[i].sprite, slotList[i].count, slotList[i].isEquipped);
-
-            if (slotDatas[i].isEquipped) { itemName = $"{slotDatas[i].item.itemName}"; }
-
-            if (Managers.UI.PopupStack.Peek().gameObject.GetComponent<ItemInformation_UI>() != null)
-            {
-                if (selectedItemIndex == i) { Managers.UI.PopupStack.Peek().gameObject.GetComponent<ItemInformation_UI>().updateData(slotDatas[index].item, slotDatas[index].sprite, slotDatas[index].count, slotDatas[index].isEquipped); }
-            }
+            slotList[i].setSlot(item[0], Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[index].itemName), Managers.Data.inventoryData[index].count, evtHandle, Managers.Data.inventoryData[index].equipped == 0 ? false : true);
         }
 
         if (itemName == "") { itemImage.gameObject.SetActive(false); }
         else { itemImage.gameObject.SetActive(true); }
     }
-    private List<Item> checkList()
+    private List<Item> CheckList()
     {
         List<Item> item = itemList.Select(item => item.itemName == Managers.Data.inventoryData[index].itemName ? item : null).ToList(); ;
         item.RemoveAll(item => item == null);
 
         if(SceneManager.GetActiveScene().name == "InGame") 
         {
-            Debug.Log(item.Count);
             while(item.Count == 0)
             {
                 index++;
@@ -270,5 +244,5 @@ public class Inventory_UI : UI_Scene
 
         return item;
     }
-    private void OnDisable() { Managers.Data.edit -= updateSlot; }
+    private void OnDisable() { Managers.Data.edit -= UpdateSlot; }
 }

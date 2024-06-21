@@ -10,10 +10,10 @@ public class Pause_UI : UI_Scene
     {
         Pause
     }
-    private void Start() { init(); }
-    protected override void init()
+    private void Start() { Init(); }
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<Image>(typeof(Images));
         GameObject pause = get<Image>((int)Images.Pause).gameObject;
         AddUIEvent(pause, (PointerEventData data) => 

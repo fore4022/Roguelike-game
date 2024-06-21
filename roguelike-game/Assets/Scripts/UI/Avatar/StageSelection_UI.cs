@@ -31,7 +31,7 @@ public class StageSelection_UI : UI_Scene
     private void Onenble() { GameObject.Find("Synthesis").SetActive(false); }
     private void Start()
     {
-        init();
+        Init();
 
         Transform pos = GameObject.Find("MainPage").transform;
 
@@ -43,9 +43,9 @@ public class StageSelection_UI : UI_Scene
         rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         rectTransform.anchoredPosition = Vector2.zero;
     }
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));

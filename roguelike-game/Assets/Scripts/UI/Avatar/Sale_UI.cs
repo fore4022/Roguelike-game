@@ -29,11 +29,11 @@ public class Sale_UI : UI_Popup
         countValue = _count;
         isEquipped = _isEquipped;
 
-        init();
+        Init();
     }
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
+        base.Init();
         bind<Button>(typeof(Buttons));
         bind<Slider>(typeof(Sliders));
         bind<TextMeshProUGUI>(typeof(TMPro));
