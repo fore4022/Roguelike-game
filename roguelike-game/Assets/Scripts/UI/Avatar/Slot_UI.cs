@@ -15,17 +15,16 @@ public class Slot_UI : Util
 
     public void SetSlot(Item item, Sprite sprite, int count, UI_EventHandler eventHandle, bool isEquipped = false)
     {
-        if (_itemImage == null || _itemCount == null)
-        {
-            _itemImage = FindChild<Image>(this.gameObject, "slotImage", true);
-            _itemCount = FindChild<TextMeshProUGUI>(this.gameObject, "slotCount", true);
-        }
+
+        if (_itemImage == null) { _itemImage = FindChild<Image>(gameObject, "slotImage", true); }
+
+        if (_itemCount == null) { _itemCount = FindChild<TextMeshProUGUI>(this.gameObject, "slotCount", true); }
         
         if(sprite == null) { _itemImage.gameObject.SetActive(false); }
         else { _itemImage.gameObject.SetActive(true); }
 
         _item = item;
-        _count = (int)count;
+        _count = count;
         _sprite = sprite;
         _isEquipped = isEquipped;
         _itemImage.sprite = sprite;

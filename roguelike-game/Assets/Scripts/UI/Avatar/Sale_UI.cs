@@ -54,7 +54,7 @@ public class Sale_UI : UI_Popup
 
             if (!_isEquipped && _countValue - (int)count.value <= 0) { Managers.UI.ClosePopupUI(); }
 
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }, Define.UIEvent.Click);
 
         AddUIEvent(cancel, (PointerEventData data) => { ClosePopup(); }, Define.UIEvent.Click);

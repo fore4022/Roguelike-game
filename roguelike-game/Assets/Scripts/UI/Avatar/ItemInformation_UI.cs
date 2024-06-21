@@ -8,22 +8,20 @@ using Unity.VisualScripting;
 using System;
 public class ItemInformation_UI : UI_Popup
 {
-    public object item;
-    public Sprite sprite;
-
-    public int count;
-    public bool isEquipped;
-
     private List<TextMeshProUGUI> statTexts = new List<TextMeshProUGUI>();
     private List<Image> statImages = new List<Image>();
     private Sprite[] sprites;
 
-    private Inventory_UI _inven;
+    private Item _item;
 
     private GameObject _button1;
     private GameObject _button2;
     private TextMeshProUGUI _text1;
     private TextMeshProUGUI _text2;
+    private Sprite _sprite;
+
+    private int _count;
+    private bool _isEquipped;
 
     enum Buttons
     {
@@ -49,24 +47,24 @@ public class ItemInformation_UI : UI_Popup
         Text1,
         Text2
     }
-    public void SetData(object _item, Sprite _sprite, int _count, bool _isEquipped = false)
+    public void SetData(Item item, Sprite sprite, int count, bool isEquipped = false)
     {
-        item = _item;
-        sprite = _sprite;
-        count = _count;
-        isEquipped = _isEquipped;
+        _item = item;
+        _sprite = sprite;
+        _count = count;
+        _isEquipped = isEquipped;
 
         Init();
     }
-    public void UpdateData(object _item, Sprite _sprite, int _count, bool _isEquipped = false)
+    public void UpdateData(Item item, Sprite sprite, int count, bool isEquipped = false)
     {
-        item = _item;
-        sprite = _sprite;
-        count = _count;
-        isEquipped = _isEquipped;
+        _item = item;
+        _sprite = sprite;
+        _count = count;
+        _isEquipped = isEquipped;
 
-        if (item.GetType() == System.Type.GetType("Equipment")) { Set_Equipment(); }
-        else { Set_Expendables(); }
+        if (this._item.GetType() == System.Type.GetType("Equipment")) { SetEquipment(); }
+        else { SetExpendables(); }
     }
     protected override void Init()
     {
@@ -74,8 +72,6 @@ public class ItemInformation_UI : UI_Popup
         bind<Button>(typeof(Buttons));
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));
-
-        _inven = Managers.UI.SceneStack.Peek().GetComponent<Inventory_UI>();
 
         GameObject exit = get<Button>((int)Buttons.Exit).gameObject;
 
@@ -105,71 +101,70 @@ public class ItemInformation_UI : UI_Popup
 
         sprites = Managers.Resource.LoadAll<Sprite>("sprites/Icon/Stat");
 
-        Item _item = null;
+        Item item = null;
 
-        if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Equipment"))
+        if (_item.ConvertTo(_item.GetType()).GetType() == Type.GetType("Equipment"))
         {
-            _item = (Equipment)item.ConvertTo(System.Type.GetType("Equipment"));
-            Set_Equipment();
+            item = (Equipment)_item.ConvertTo(Type.GetType("Equipment"));
+            SetEquipment();
 
             AddUIEvent(_button1, (PointerEventData data) =>
             {
-                string _itemName = _inven.itemName;
+                _isEquipped = !_isEquipped;
 
-                isEquipped = !isEquipped;
+                Managers.Data.InventoryEdit(_item.itemName, 0, _isEquipped ? 1 : 0);
 
-                Managers.Data.InventoryEdit(_item.itemName, 0, isEquipped ? 1 : 0);
-
-                if (_itemName != "") { Managers.Data.InventoryEdit(_itemName, 0, 0); }
-
-                if (count == 1 && isEquipped) { _button2.SetActive(false); }
+                if (_count == 1 && _isEquipped) { _button2.SetActive(false); }
                 else { _button2.SetActive(true); }
+
+                SetEquipment();
             }, Define.UIEvent.Click);
 
             AddUIEvent(_button2, (PointerEventData data) =>
             {
                 Managers.UI.ShowPopupUI<Sale_UI>("Sale");
 
-                if (isEquipped)
+                if (_isEquipped)
                 {
-                    if (count - 1 >= 1) { Managers.UI.PopupStack.Peek().GetComponent<Sale_UI>().Set(_item.itemName, count - 1, true); }
+                    if (_count - 1 >= 1) { Managers.UI.PopupStack.Peek().GetComponent<Sale_UI>().Set(_item.itemName, _count - 1, true); }
                 }
-                else { Managers.UI.PopupStack.Peek().GetComponent<Sale_UI>().Set(_item.itemName, count); }
+                else { Managers.UI.PopupStack.Peek().GetComponent<Sale_UI>().Set(_item.itemName, _count); }
             }, Define.UIEvent.Click);
         }
-        else if (item.ConvertTo(item.GetType()).GetType() == System.Type.GetType("Expendables"))
+        else if (_item.ConvertTo(_item.GetType()).GetType() == Type.GetType("Expendables"))
         {
-            _item = (Expendables)item.ConvertTo(System.Type.GetType("Expendables"));
-            Set_Expendables();
+            item = (Expendables)_item.ConvertTo(Type.GetType("Expendables"));
+            SetExpendables();
 
             AddUIEvent(_button1, (PointerEventData data) =>
             {
                 if(SceneManager.GetActiveScene().name == "Main")
                 {
                     Managers.UI.ShowPopupUI<Sale_UI>("Sale");
-                    Managers.UI.PopupStack.Peek().GetComponent<Sale_UI>().Set(_item.itemName, count);
+                    Managers.UI.PopupStack.Peek().GetComponent<Sale_UI>().Set(_item.itemName, _count);
                 }
                 else if(SceneManager.GetActiveScene().name == "InGame")
                 {
                     // increase stats
-                    if(count - 1 == 0) { Managers.Data.InventoryEdit(_item.itemName, 0, 0, true); }
+                    if(_count - 1 == 0) { Managers.Data.InventoryEdit(_item.itemName, 0, 0, true); }
                     else { Managers.Data.InventoryEdit(_item.itemName, -1); }
 
-                    ClosePopup();
+                    base.ClosePopup();
                 }
             }, Define.UIEvent.Click);
 
             _button2.gameObject.SetActive(false);
         }
-        else { ClosePopup(); }
+        else { base.ClosePopup(); }
 
-        itemImage.sprite = sprite;
+        itemImage.sprite = _sprite;
         itemName.text = $"{_item.itemName}";
         itemInformation.text = $"{_item.explanation}";
     }
-    private void Set_Equipment()
+    private void SetEquipment()
     {
-        Equipment equipment = (Equipment)item.ConvertTo(System.Type.GetType("Equipment"));
+        Equipment equipment = (Equipment)_item.ConvertTo(System.Type.GetType("Equipment"));
+
         int index = 0;
         string statType = "";
 
@@ -177,7 +172,61 @@ public class ItemInformation_UI : UI_Popup
         {
             if (equipment[i] != null)
             {
-                switch(i)
+                
+
+                if(statType != "Penetrate") { statTexts[index].text = $"{equipment[i]}"; }
+                else { statTexts[index].text = ""; }
+
+                statImages[index].sprite = Array.Find(sprites, sprite => sprite.name == statType);
+
+                index++;
+            }
+        }
+
+        while (index < 3) { statTexts[index++].gameObject.transform.parent.gameObject.SetActive(false); }
+
+        if (_isEquipped) { _text1.text = "해제"; }
+        else { _text1.text = "장착"; }
+
+        _text2.text = "판매";
+
+        if (_count == 1 && _isEquipped) { _button2.SetActive(false); }
+        else { _button2.SetActive(true); }
+    }
+    private void SetExpendables()
+    {
+        Expendables expendables = (Expendables)_item.ConvertTo(Type.GetType("Expendables"));
+
+        int index = 0;
+        string statType = "";
+
+        for (int i = 0; i < 9; i++)
+        {
+            if (expendables[i] != 0)
+            {
+                
+
+                statTexts[index].text = $"{expendables}";
+                statImages[index].sprite = Array.Find(sprites, sprite => sprite.name == statType);
+
+                index++;
+            }
+        }
+
+        while (index < 3) { statTexts[index++].gameObject.transform.parent.gameObject.SetActive(false); }
+
+        if(SceneManager.GetActiveScene().name == "Main") { _text1.text = "판매"; }
+        else if(SceneManager.GetActiveScene().name == "InGame") { _text1.text = "사용"; }
+    }
+    private void SetStatOfType()
+    {
+
+    }
+}
+
+/*
+
+ switch(i)
                 {
                     case 0:
                         statType = "Range";
@@ -201,40 +250,12 @@ public class ItemInformation_UI : UI_Popup
                         statType = "Penetrate";
                         break;
                 }
+ 
+ */
 
-                if(statType != "Penetrate") { statTexts[index].text = $"{equipment[i]}"; }
-                else { statTexts[index].text = ""; }
-
-                statImages[index].sprite = Array.Find(sprites, sprite => sprite.name == statType);
-                index++;
-            }
-        }
-        
-        while(index < 3)
-        {
-            statTexts[index].gameObject.transform.parent.gameObject.SetActive(false);
-            index++;
-        }
-
-        if (isEquipped) { _text1.text = "해제"; }
-        else { _text1.text = "장착"; }
-
-        _text2.text = "판매";
-
-        if (count == 1 && isEquipped) { _button2.SetActive(false); }
-        else { _button2.SetActive(true); }
-    }
-    private void Set_Expendables()
-    {
-        Expendables expendables = (Expendables)item.ConvertTo(System.Type.GetType("Expendables"));
-        int index = 0;
-        string statType = "";
-
-        for (int i = 0; i < 9; i++)
-        {
-            if (expendables[i] != 0)
-            {
-                switch(i)
+/*
+ 
+ switch(i)
                 {
                     case 0:
                         statType = "Attack Damage";
@@ -264,20 +285,5 @@ public class ItemInformation_UI : UI_Popup
                         statType = "Exp Magnification";
                         break;
                 }
-
-                statTexts[index].text = $"{expendables}";
-                statImages[index].sprite = Array.Find(sprites, sprite => sprite.name == statType);
-                index++;
-            }
-        }
-
-        while (index < 3)
-        {
-            statTexts[index].gameObject.transform.parent.gameObject.SetActive(false);
-            index++;
-        }
-
-        if(SceneManager.GetActiveScene().name == "Main") { _text1.text = "판매"; }
-        else if(SceneManager.GetActiveScene().name == "InGame") { _text1.text = "사용"; }
-    }
-}
+ 
+ */

@@ -11,8 +11,6 @@ public class Inventory_UI : UI_Scene
 
     public SwipeMenu_UI swipeMenu;
 
-    public string itemName = "";
-
     private List<(Item item, Sprite sprite, int count, bool isEquipped)> slotDataList = new List<(Item item, Sprite sprite, int count, bool isEquipped)>();
     private List<Slot_UI> slotList = new List<Slot_UI>();
     private List<Item> itemList;
@@ -35,7 +33,6 @@ public class Inventory_UI : UI_Scene
         Panel1,
         Panel2,
         ScrollView,
-        Background,
         ItemImage
     }
     enum ScrollRects
@@ -89,7 +86,6 @@ public class Inventory_UI : UI_Scene
         bind<ScrollRect>(typeof(ScrollRects));
 
         GameObject scrollView = get<Image>((int)Images.ScrollView).gameObject;
-        GameObject background = get<Image>((int)Images.Background).gameObject;
 
         _itemImage = get<Image>((int)Images.ItemImage);
         _inventoryScrollView = get<ScrollRect>((int)ScrollRects.InventoryScrollView);
@@ -97,11 +93,6 @@ public class Inventory_UI : UI_Scene
         _content = _inventoryScrollView.content.gameObject.GetComponent<RectTransform>();
 
         _inventoryScrollView.movementType = ScrollRect.MovementType.Clamped;
-
-        AddUIEvent(background, (PointerEventData data) =>
-        {
-
-        }, Define.UIEvent.Click);
 
         UI_EventHandler evtHandle = null;
 
@@ -148,6 +139,8 @@ public class Inventory_UI : UI_Scene
     private void Scroll() { _inventoryScrollView.verticalScrollbar.value = Mathf.Clamp(_inventoryScrollView.verticalScrollbar.value + _direction.y / (_content.rect.height + 245 * (_height / 5)), 0, 1); }
     private void SetSlot()
     {
+        Slot_UI slot;
+        GameObject go;
         Item item;
 
         _evtHandle = FindParent<UI_EventHandler>(_content.gameObject);
@@ -155,13 +148,12 @@ public class Inventory_UI : UI_Scene
         _height = Managers.Data.inventoryData.Count / 4 + (Managers.Data.inventoryData.Count % 4 > 0 ? 1 : 0);
         _equippedItemIndex = -1;
         _index = -1;
-        itemName = "";
 
         for (int i = 0; i < (_height < 4 ? 4 : _height) * 4; i++)
         {
-            GameObject go = Managers.Resource.Instantiate("UI/Slot", _content.transform);
+            go = Managers.Resource.Instantiate("UI/Slot", _content.transform);
 
-            Slot_UI slot = go.AddComponent<Slot_UI>();
+            slot = go.AddComponent<Slot_UI>();
 
             slotList.Add(slot);
 
@@ -185,8 +177,6 @@ public class Inventory_UI : UI_Scene
             slotList[i].SetSlot(item, Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[_index].itemName), Managers.Data.inventoryData[_index].count, _evtHandle, Managers.Data.inventoryData[_index].equipped == 0 ? false : true);
 
             slotDataList.Add((slot._item, slot._sprite, slot._count, slot._isEquipped));
-
-            if (slot._isEquipped) { itemName = $"{slot._item.itemName}"; }
         }
 
         _content.offsetMin = new Vector2(_content.offsetMin.x, _content.offsetMin.y + 245 * Mathf.Abs(_height - 4));
@@ -199,7 +189,6 @@ public class Inventory_UI : UI_Scene
         Item item;
 
         _index = -1;
-        itemName = "";
 
         for (int i = 0; i < slotList.Count; i++)
         {
@@ -223,7 +212,7 @@ public class Inventory_UI : UI_Scene
             slotList[i].SetSlot(item, Array.Find(sprites, sprite => sprite.name == Managers.Data.inventoryData[_index].itemName), Managers.Data.inventoryData[_index].count, _evtHandle, Managers.Data.inventoryData[_index].equipped == 0 ? false : true);
         }
 
-        if (itemName == "") { _itemImage.gameObject.SetActive(false); }
+        if (_equippedItemIndex == -1) { _itemImage.gameObject.SetActive(false); }
         else { _itemImage.gameObject.SetActive(true); }
     }
     private Item CheckList()
