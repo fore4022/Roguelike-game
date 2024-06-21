@@ -1,13 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 public class FireBall_Cast : Base_SkillCast
 {
-    protected override IEnumerator skillCast()
+    protected override IEnumerator SkillCast()
     {
         while (true)
         {
@@ -16,14 +13,16 @@ public class FireBall_Cast : Base_SkillCast
             
             if (monsters.Count() == 0) { yield return null; }
 
-            go = Managers.Game.objectPool.activateObject(typeof(Base_SkillCast), skillName);
+            go = Managers.Game.objectPool.ActivateObject(typeof(Base_SkillCast), skillName);
 
             FireBall newScript = go.AddComponent(script) as FireBall;
+
             newScript.skill = skill;
             newScript.anime = go.AddComponent<Animator>();
             newScript.anime.runtimeAnimatorController = animeController;
 
             BoxCollider2D boxCollider = go.AddComponent<BoxCollider2D>();
+
             boxCollider.isTrigger = true;
 
             yield return new WaitForSeconds(skill.skillCoolTime);

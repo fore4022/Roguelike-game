@@ -1,8 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 public class SpawnMonster : MonoBehaviour
 {
@@ -12,23 +8,17 @@ public class SpawnMonster : MonoBehaviour
     public IEnumerator Spawn()
     {
         GameObject go;
+
         float delay = Managers.Game.creationCycle;
+
         while (Managers.Game.isSpawn)
         {
-            //to do : GameManager
-            if (Managers.Game.minute != 0 && (((Managers.Game.minute % 8 == 0) && (Managers.Game.second % 8 == 0)) || Managers.Game.minute % 25 == 0))
-            { Managers.Game.inBattle = true; }
+            int rand = Random.Range(0, Managers.Game.map.monsterType.Count);
 
-            if (!Managers.Game.inBattle)
-            {
-                int rand = UnityEngine.Random.Range(0, Managers.Game.map.monsterType.Count);
-                go = Managers.Game.objectPool.activateObject(typeof(Monster_Controller), Managers.Game.map.monsterType[rand].ToString());
-                go.transform.position = GetRandomSpawnPosition();
-            }
-            else { Managers.Game.stopWatch.Stop(); }
+            go = Managers.Game.objectPool.ActivateObject(typeof(Monster_Controller), Managers.Game.map.monsterType[rand].ToString());
+            go.transform.position = GetRandomSpawnPosition();
 
-            if(delay < 0.1f) { delay = 0.1f; }
-            else { delay = Managers.Game.creationCycle - ((0.6f / 60) * Managers.Game.minute); }
+            if (delay < 0.1f) { delay = 0.1f; }
 
             yield return new WaitForSeconds(delay);
         }
@@ -37,16 +27,18 @@ public class SpawnMonster : MonoBehaviour
     {
         float x = Managers.Game.player.gameObject.transform.position.x;
         float y = Managers.Game.player.gameObject.transform.position.y;
-        if (UnityEngine.Random.Range(0, 2) == 1)
+
+        if (Random.Range(0, 2) == 1)
         {
-            x += UnityEngine.Random.Range(-xRange, xRange + 0.1f) >= 0 ? xRange : -xRange;
-            y += UnityEngine.Random.Range(-yRange, yRange + 0.1f);
+            x += Random.Range(-xRange, xRange + 0.1f) >= 0 ? xRange : -xRange;
+            y += Random.Range(-yRange, yRange + 0.1f);
         }
         else
         {
-            y += UnityEngine.Random.Range(-yRange, yRange + 0.1f) >= 0 ? -yRange : yRange;
-            x += UnityEngine.Random.Range(-xRange, xRange + 0.1f);
+            y += Random.Range(-yRange, yRange + 0.1f) >= 0 ? -yRange : yRange;
+            x += Random.Range(-xRange, xRange + 0.1f);
         }
+
         return new Vector3(x, y, 0);
     }
 }

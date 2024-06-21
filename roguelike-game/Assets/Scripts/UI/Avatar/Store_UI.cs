@@ -1,9 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using System;
+[Obsolete]
 public class Store_UI : UI_Scene
 {
     public List<Item> itemDatas = new List<Item>();
@@ -59,7 +60,7 @@ public class Store_UI : UI_Scene
         {
             for(int w = 0; w < 3; w++)
             {
-                GameObject go = Managers.Resource.instantiate("UI/Merchandise", storePanel.transform);
+                GameObject go = Managers.Resource.Instantiate("UI/Merchandise", storePanel.transform);
                 RectTransform rectTrnasform = go.GetComponent<RectTransform>();
 
                 rectTrnasform.localScale = new Vector2(1, 1);

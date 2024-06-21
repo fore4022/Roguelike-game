@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Timeline;
 using UnityEngine;
 public class Main_Camera : MonoBehaviour
 {
@@ -19,8 +15,8 @@ public class Main_Camera : MonoBehaviour
 
         this.gameObject.transform.position = Managers.Game.player.gameObject.transform.position;
 
-        Managers.Input.keyAction -= zoomOut;
-        Managers.Input.keyAction += zoomOut;
+        Managers.Input.keyAction -= ZoomOut;
+        Managers.Input.keyAction += ZoomOut;
     }
     private void LateUpdate()
     {
@@ -35,7 +31,7 @@ public class Main_Camera : MonoBehaviour
             else { cam.orthographicSize = 8; }
         }
     }
-    private void zoomOut()
+    private void ZoomOut()
     {
         if (cam.orthographicSize < 13) { cam.orthographicSize += 1 * Time.deltaTime * value; }
         else { cam.orthographicSize = 13; }

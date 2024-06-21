@@ -1,17 +1,16 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-using Unity.VisualScripting;
-
+using System;
+[Obsolete]
 public class Result_UI : UI_Popup
 {
-    private GameObject retry;
-    private GameObject main;
-    private GameObject background;
-    private GameObject resultPanel;
+    private GameObject _retry;
+    private GameObject _main;
+    private GameObject _background;
+    private GameObject _resultPanel;
     enum Buttons
     {
         Retry,
@@ -34,25 +33,25 @@ public class Result_UI : UI_Popup
         bind<Image>(typeof(Images));
         bind<TextMeshProUGUI>(typeof(TMPro));
 
-        retry = get<Button>((int)Buttons.Retry).gameObject;
-        main = get<Button>((int)Buttons.Main).gameObject;
-        background = get<Button>((int)Images.Background).gameObject;
-        resultPanel = get<Button>((int)Images.ResultPanel).gameObject;
+        _retry = get<Button>((int)Buttons.Retry).gameObject;
+        _main = get<Button>((int)Buttons.Main).gameObject;
+        _background = get<Button>((int)Images.Background).gameObject;
+        _resultPanel = get<Button>((int)Images.ResultPanel).gameObject;
 
-        AddUIEvent(retry, (PointerEventData data) =>
+        AddUIEvent(_retry, (PointerEventData data) =>
         {
 
         }, Define.UIEvent.Click);
-        AddUIEvent(main, (PointerEventData data) =>
+        AddUIEvent(_main, (PointerEventData data) =>
         {
 
         }, Define.UIEvent.Click);
 
-        resultPanel.SetActive(false);
+        _resultPanel.SetActive(false);
 
-        StartCoroutine(visible());
+        StartCoroutine(Visible());
     }
-    private IEnumerator visible()
+    private IEnumerator Visible()
     {
         while(true)
         {

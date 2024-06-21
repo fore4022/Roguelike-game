@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 public class Sale_UI : UI_Popup
 {
-    private string itemName;
-    private int countValue;
-    private bool isEquipped;
+    private string _itemName;
+    private int _countValue;
+    private bool _isEquipped;
     enum Buttons
     {
         Check,
@@ -23,11 +21,11 @@ public class Sale_UI : UI_Popup
         Reconfirm,
         Price
     }
-    public void set(string _itemName, int _count, bool _isEquipped = false)
+    public void Set(string itemName, int count, bool isEquipped = false)
     {
-        itemName = _itemName;
-        countValue = _count;
-        isEquipped = _isEquipped;
+        _itemName = itemName;
+        _countValue = count;
+        _isEquipped = isEquipped;
 
         Init();
     }
@@ -52,30 +50,30 @@ public class Sale_UI : UI_Popup
 
             Managers.UI.PopupStack.Pop();
 
-            Managers.Data.inventory_edit(itemName, -(int)count.value, (isEquipped ? 1 : 0), (countValue - (int)count.value) <= 0 && !isEquipped ? true : false);
+            Managers.Data.InventoryEdit(_itemName, -(int)count.value, (_isEquipped ? 1 : 0), (_countValue - (int)count.value) <= 0 && !_isEquipped ? true : false);
 
-            if (!isEquipped && countValue - (int)count.value <= 0) { Managers.UI.closePopupUI(); }
+            if (!_isEquipped && _countValue - (int)count.value <= 0) { Managers.UI.ClosePopupUI(); }
 
             Destroy(this.gameObject);
         }, Define.UIEvent.Click);
 
-        AddUIEvent(cancel, (PointerEventData data) => { closePopup(); }, Define.UIEvent.Click);
+        AddUIEvent(cancel, (PointerEventData data) => { ClosePopup(); }, Define.UIEvent.Click);
 
         AddUIEvent(count.gameObject, (PointerEventData data) =>
         {
-            reconfirm.text = $"정말로 {itemName} {(int)count.value}개를 파시겠습니까?";
+            reconfirm.text = $"정말로 {_itemName} {(int)count.value}개를 파시겠습니까?";
             price.text = $"{50 * (int)count.value}";
         }, Define.UIEvent.Drag);
         AddUIEvent(count.gameObject, (PointerEventData data) =>
         {
-            reconfirm.text = $"정말로 {itemName} {(int)count.value}개를 파시겠습니까?";
+            reconfirm.text = $"정말로 {_itemName} {(int)count.value}개를 파시겠습니까?";
             price.text = $"{50 * (int)count.value}";
         }, Define.UIEvent.EndDrag);
 
-        count.maxValue = countValue;
+        count.maxValue = _countValue;
         count.value = Mathf.Max((int)count.maxValue / 2, 1);
 
-        reconfirm.text = $"정말로 {itemName} {(int)count.value}개를 파시겠습니까?";
+        reconfirm.text = $"정말로 {_itemName} {(int)count.value}개를 파시겠습니까?";
         price.text = $"{50 * (int)count.value}";
     }
 }

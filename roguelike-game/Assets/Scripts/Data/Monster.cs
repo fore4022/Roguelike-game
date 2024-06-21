@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(fileName = "Monster", menuName = "Create New Monster/New Monster")]
 public class Monster : ScriptableObject

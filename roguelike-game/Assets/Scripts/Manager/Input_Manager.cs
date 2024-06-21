@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 public class Input_Manager
@@ -10,6 +8,7 @@ public class Input_Manager
 #if UNITY_EDITOR
         {
             if (Input.anyKey == false) { return; }
+
             if (keyAction != null) { keyAction.Invoke(); }
         }
 #endif

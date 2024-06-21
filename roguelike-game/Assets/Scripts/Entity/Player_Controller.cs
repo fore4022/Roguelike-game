@@ -1,11 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UIElements;
 public class Player_Controller : Base_Controller
 {
 #if UNITY_ANDROID
@@ -15,9 +10,9 @@ public class Player_Controller : Base_Controller
     public Action updateStatus = null;
     public Action updateStat = null;
 
-    private Item item;
+    private Item _item;
 
-    private Vector2 direction;
+    private Vector2 _direction;
 
     public float skillCooldownReduction;
     public float shieldAmount;
@@ -31,19 +26,19 @@ public class Player_Controller : Base_Controller
     protected override void Start()
     {
         base.Start();
-        init();
+        Init();
     }
-    protected override void init()
+    protected override void Init()
     {
         rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        Managers.Input.keyAction -= moving;
-        Managers.Input.keyAction += moving;
+        Managers.Input.keyAction -= Moving;
+        Managers.Input.keyAction += Moving;
 
         boxCollider.size = new Vector2(0.9f, 1.7f);
 
-        if(Managers.Game.item == null) { item = ScriptableObject.CreateInstance<Item>(); }
-        else { item = Managers.Game.item; }
+        if(Managers.Game.item == null) { _item = ScriptableObject.CreateInstance<Item>(); }
+        else { _item = Managers.Game.item; }
 
         level = 1;
         //maxHp = hp = (int)(100 * item.hp);
@@ -59,41 +54,45 @@ public class Player_Controller : Base_Controller
         name = name.Replace("(Clone)", "");
 
         animatorPlaySpeed = 0.4f;
-        anime = Util.getOrAddComponent<Animator>(transform.gameObject);
-        anime.runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/{name}/{name}");
+        anime = Util.GetOrAddComponent<Animator>(transform.gameObject);
+        anime.runtimeAnimatorController = Managers.Resource.Load<RuntimeAnimatorController>($"Animation/{name}/{name}");
         anime.speed = animatorPlaySpeed;
     }
     protected override void Update()
     {
         if (anime.GetCurrentAnimatorStateInfo(0).IsName("death")) { return; }
+
         if (hp <= 0) 
         { 
-            Managers.Input.keyAction -= moving;
+            Managers.Input.keyAction -= Moving;
             h = v = 0;
-            StartCoroutine(death());
+            StartCoroutine(Death());
         }
+
         if (Input.anyKey == false) { h = v = 0; }
-        setAnime();
+
+        SetAnime();
     }
-    private void setAnime()
+    private void SetAnime()
     {
         if (h != 0 || v != 0) { anime.Play("move"); }
         else { anime.Play("idle"); }
     }
-    public void getLoot(int gold, int exp)
+    public void GetLoot(int gold, int exp)
     {
         //Gold += (int)(gold * item.goldMagnification);
         //Exp += (int)(exp * item.expMagnification);
         Gold += (int)(gold);
         Exp += (int)(exp);
-        checkExp();
+        CheckExp();
 
         //updateStat.Invoke();
         updateStatus.Invoke();
     }
-    private void checkExp()
+    private void CheckExp()
     {
         necessaryExp = (int)(Managers.Game.basicExp + 15 * (level - 1)) * (1 + level / 8);
+
         if (exp >= necessaryExp)
         {
             exp -= necessaryExp;
@@ -101,12 +100,12 @@ public class Player_Controller : Base_Controller
             necessaryExp = (int)(Managers.Game.basicExp + 15 * (level - 1)) * (1 + level / 8);
         }
     }
-    public void attacked(int damage)
+    public void Attacked(int damage)
     {
         hp -= damage;
         updateStatus.Invoke();
     }
-    protected override void moving()    
+    protected override void Moving()    
     {
 #if UNITY_EDITOR
         {
@@ -124,17 +123,18 @@ public class Player_Controller : Base_Controller
                     return;
                 }
 
-                direction = (Input.GetTouch(0).position - enterPoint).normalized;
+                _direction = (Input.GetTouch(0).position - enterPoint).normalized;
 
-                h = direction.x;
-                v = direction.y;
+                h = _direction.x;
+                v = _direction.y;
             }
         }
 #endif
         if (h != 0 || v != 0) { transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v); }
+
         if (h != 0) { transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0) * (h < 0 ? 0 : 1)); }
     }
-    protected override IEnumerator death()
+    protected override IEnumerator Death()
     {
         anime.Play("death");
         while (true)
@@ -143,19 +143,19 @@ public class Player_Controller : Base_Controller
             {
                 for (; ; )
                 {
-                    if(Managers.UI.SceneStack.Count > 0) { Managers.UI.closeSceneUI(); }
+                    if(Managers.UI.SceneStack.Count > 0) { Managers.UI.CloseSceneUI(); }
                     else { break; }
                 }
-                Managers.Game.stageEnd();
+                Managers.Game.StageEnd();
                 //show
                 break;
             }
             yield return null;
         }
     }
-    private void crash(Collision2D collision) { if (collision.gameObject.CompareTag("Monster")) { attacked(collision.gameObject.GetComponent<Monster_Controller>().Damage); } }
-    private void OnCollisionEnter2D(Collision2D collision) { crash(collision); }
-    private void OnCollisionStay2D(Collision2D collision) { crash(collision); }
+    private void Crash(Collision2D collision) { if (collision.gameObject.CompareTag("Monster")) { Attacked(collision.gameObject.GetComponent<Monster_Controller>().Damage); } }
+    private void OnCollisionEnter2D(Collision2D collision) { Crash(collision); }
+    private void OnCollisionStay2D(Collision2D collision) { Crash(collision); }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

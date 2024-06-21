@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -8,8 +5,8 @@ using TMPro;
 using UnityEngine.SceneManagement;
 public class Main_UI : UI_Scene
 {
-    private TextMeshProUGUI timer;
-    private TextMeshProUGUI stageName;
+    private TextMeshProUGUI _timer;
+    private TextMeshProUGUI _stageName;
     enum Buttons
     {
         Start
@@ -41,7 +38,6 @@ public class Main_UI : UI_Scene
         can.overrideSorting = false;
         can.sortingOrder = FindObjectOfType<SwipeMenu_UI>().GetComponent<Canvas>().sortingOrder + 1;
     }
-    private void Update() { /*timer.text = $"{}";*/ }
     protected override void Init()
     {
         base.Init();
@@ -52,7 +48,7 @@ public class Main_UI : UI_Scene
         GameObject start = get<Button>((int)Buttons.Start).gameObject;
         GameObject stagePanel = get<Image>((int)Images.StagePanel).gameObject;
 
-        stageName = get<TextMeshProUGUI>((int)TMPro.StageName);
+        _stageName = get<TextMeshProUGUI>((int)TMPro.StageName);
 
         AddUIEvent(start, (PointerEventData data) =>
         {
@@ -61,7 +57,7 @@ public class Main_UI : UI_Scene
 
         UI_EventHandler evtHandle = FindParent<UI_EventHandler>(this.gameObject);
 
-        AddUIEvent(stagePanel, (PointerEventData data) => { Managers.UI.showSceneUI<StageSelection_UI>("StageSelection"); }, Define.UIEvent.Click);
+        AddUIEvent(stagePanel, (PointerEventData data) => { Managers.UI.ShowSceneUI<StageSelection_UI>("StageSelection"); }, Define.UIEvent.Click);
         AddUIEvent(stagePanel, (PointerEventData data) =>
         {
 #if UNITY_ANDROID

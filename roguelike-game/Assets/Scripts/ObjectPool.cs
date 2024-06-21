@@ -1,27 +1,21 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using TMPro.EditorUtilities;
-using Unity.VisualScripting;
-using UnityEditor.Compilation;
 using UnityEngine;
 public class ObjectPool
 {
     public Dictionary<string, Queue<GameObject>> boids = new();
     public Dictionary<string, Monster> monsterData = new();
 
-    private GameObject objectPool;
-    private GameObject skill;
-    public void init()
+    private GameObject _objectPool;
+    private GameObject _skill;
+    public void Init()
     {
-        if (GameObject.Find("@Skill") == null) { skill = new GameObject { name = "@Skill" }; }
+        if (GameObject.Find("@Skill") == null) { _skill = new GameObject { name = "@Skill" }; }
 
-        if (GameObject.Find("@ObjectPool") == null) { objectPool = new GameObject { name = "@ObjectPool" }; }
+        if (GameObject.Find("@ObjectPool") == null) { _objectPool = new GameObject { name = "@ObjectPool" }; }
 
-        foreach (string str in Managers.Game.map.monsterType) { monsterData.Add(str, Managers.Resource.load<Monster>($"Data/Monster/{str}")); }
+        foreach (string str in Managers.Game.map.monsterType) { monsterData.Add(str, Managers.Resource.Load<Monster>($"Data/Monster/{str}")); }
     }
-    public void createObjects(System.Type baseType, string prefabName, int count, string scriptName = null)
+    public void CreateObjects(System.Type baseType, string prefabName, int count, string scriptName = null)
     {
         Queue<GameObject> queue;
 
@@ -41,8 +35,8 @@ public class ObjectPool
             {
                 GameObject go;
 
-                if (folderName == "Monster") { go = Managers.Resource.instantiate($"Prefab/monster", objectPool.transform); }
-                else { go = Managers.Resource.instantiate($"Prefab/{folderName}/{prefabName}", objectPool.transform); }
+                if (folderName == "Monster") { go = Managers.Resource.Instantiate($"Prefab/monster", _objectPool.transform); }
+                else { go = Managers.Resource.Instantiate($"Prefab/{folderName}/{prefabName}", _objectPool.transform); }
 
                 go.SetActive(false);
                 queue.Enqueue(go);
@@ -57,8 +51,8 @@ public class ObjectPool
             {
                 GameObject go;
 
-                if (folderName == "Monster") { go = Managers.Resource.instantiate($"Prefab/monster", objectPool.transform); }
-                else { go = Managers.Resource.instantiate($"Prefab/{folderName}/{prefabName}", objectPool.transform); }
+                if (folderName == "Monster") { go = Managers.Resource.Instantiate($"Prefab/monster", _objectPool.transform); }
+                else { go = Managers.Resource.Instantiate($"Prefab/{folderName}/{prefabName}", _objectPool.transform); }
 
                 go.SetActive(false);
                 queue.Enqueue(go);
@@ -78,11 +72,11 @@ public class ObjectPool
             {
                 Monster_Controller script = go.AddComponent(scriptType) as Monster_Controller;
                 script.monsterType = monsterData[prefabName];
-                go.AddComponent<Animator>().runtimeAnimatorController = Managers.Resource.load<RuntimeAnimatorController>($"Animation/Monster/{prefabName}/{prefabName}");
+                go.AddComponent<Animator>().runtimeAnimatorController = Managers.Resource.Load<RuntimeAnimatorController>($"Animation/Monster/{prefabName}/{prefabName}");
             }
         }
     }
-    public GameObject activateObject(System.Type baseType, string prefabName)
+    public GameObject ActivateObject(System.Type baseType, string prefabName)
     {
         Queue<GameObject> queue = boids[prefabName];
         GameObject go = queue.Dequeue();
@@ -90,17 +84,17 @@ public class ObjectPool
         go.SetActive(true);
 
         if (baseType == typeof(Monster_Controller)) { go.transform.SetParent(Managers.Game.spawnMonster.gameObject.transform); }
-        else if (baseType == typeof(Base_SkillCast)) { go.transform.SetParent(skill.transform); }
+        else if (baseType == typeof(Base_SkillCast)) { go.transform.SetParent(_skill.transform); }
 
         boids[prefabName] = queue;
 
         return go;
     }
-    public void disableObject(string prefabName, GameObject go)
+    public void DisableObject(string prefabName, GameObject go)
     {
         Queue<GameObject> queue = boids[prefabName];
 
-        go.transform.SetParent(objectPool.transform);
+        go.transform.SetParent(_objectPool.transform);
         go.SetActive(false);
         queue.Enqueue(go);
         boids[prefabName] = queue;

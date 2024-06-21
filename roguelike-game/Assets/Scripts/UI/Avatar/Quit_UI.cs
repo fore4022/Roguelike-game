@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -15,8 +13,9 @@ public class Quit_UI : UI_Popup
     {
         base.Init();
         bind<Image>(typeof(Images));
+
         GameObject quit = get<Image>((int)Images.Quit).gameObject;
-        quit.AddComponent<Button>();
+
         AddUIEvent(quit, (PointerEventData data) => { Application.Quit(); }, Define.UIEvent.Click);
     }
 }

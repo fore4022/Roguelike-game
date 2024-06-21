@@ -1,10 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using System.Linq;
+using System;
+using Random = UnityEngine.Random;
+[Obsolete("error", true)]
 public class SelectSkill_UI : UI_Popup
 {
     enum Images
@@ -31,8 +33,10 @@ public class SelectSkill_UI : UI_Popup
     private void Start() { Init(); }
     private void OnEnable()
     {
-        int rand;
         List<Skill> skills = Managers.Game.skills.Where(o => o.skillLevel < 5).ToList();
+
+        int rand;
+
         for(int i = 0; i < 3; i++)
         {
             rand = Random.Range(0, skills.Count);
@@ -46,7 +50,7 @@ public class SelectSkill_UI : UI_Popup
             TextMeshProUGUI explain = get<TextMeshProUGUI>(i + 3).gameObject.GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI level = get<TextMeshProUGUI>(i + 6).gameObject.GetComponent<TextMeshProUGUI>();
 
-            skillImage.sprite = Managers.Resource.load<Sprite>($"sprites/Icon/{skill.skillName}");
+            skillImage.sprite = Managers.Resource.Load<Sprite>($"sprites/Icon/{skill.skillName}");
             name.text = skill.skillName;
             explain.text = skill.explanation;
             if(skill.skillLevel == 0) { level.text = "new"; }
@@ -61,7 +65,7 @@ public class SelectSkill_UI : UI_Popup
                     cast.skill.skillLevel++;
                 }
 
-                closePopup();
+                ClosePopup();
             });
         }
     }

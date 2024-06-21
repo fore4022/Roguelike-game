@@ -1,12 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using TMPro;
 public class Log_UI : UI_Popup
 {
-    private TextMeshProUGUI log;
+    private TextMeshProUGUI _log;
     enum TMPro
     { 
         Log
@@ -20,6 +15,6 @@ public class Log_UI : UI_Popup
         base.Init();
         bind<TextMeshProUGUI>(typeof(TMPro));
 
-        log = get<TextMeshProUGUI>((int)TMPro.Log);
+        _log = get<TextMeshProUGUI>((int)TMPro.Log);
     }
 }

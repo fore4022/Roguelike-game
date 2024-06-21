@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 public class Managers : MonoBehaviour
 {
     public static Managers s_instance;
-    public static Managers Instance { get { init(); return s_instance; } }
+    public static Managers Instance { get { Init(); return s_instance; } }
+
     Resource_Manager _resource = new();
     UI_Manager _ui = new();
     Input_Manager _input = new();
@@ -17,24 +15,26 @@ public class Managers : MonoBehaviour
     public static Game_Manager Game { get { return Instance._game; } }
     public static Database Data { get { return Instance._data; } }
 
-    private void Awake() { _data.init(); }
+    private void Awake() { _data.Init(); }
     private void Start()
     {
-        Data.setInventory();
+        Data.SetInventory();
         //Data.setUser();
     }
     public void Update() { _input.OnUpdate(); }
-    public static void init()
+    public static void Init()
     {
         if(s_instance == null)
         {
             GameObject go = GameObject.Find("@Managers");
+
             if(go == null)
             {
                 go = new GameObject { name = "@Managers" };
                 go.AddComponent<Managers>();
             }
             DontDestroyOnLoad(go);
+
             s_instance = go.GetComponent<Managers>();
         }
     }

@@ -1,12 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-using UnityEngine.SceneManagement;
-using System.IO;
-using UnityEditor.Experimental.GraphView;
 public class SwipeMenu_UI : UI_Scene
 {
     public float relocationDelay = 0.9f;
@@ -15,12 +11,12 @@ public class SwipeMenu_UI : UI_Scene
     public Vector2 enterPoint;
     public Vector2 direction;
 
-    private RectTransform swipePanel;
-    private TextMeshProUGUI level;
-    private TextMeshProUGUI gold;
+    private RectTransform _swipePanel;
+    private TextMeshProUGUI _level;
+    private TextMeshProUGUI _gold;
 
-    private float relocationValue;
-    private int origin;
+    private float _relocationValue;
+    private int _origin;
     enum Buttons
     {
         StoreButton,
@@ -46,18 +42,18 @@ public class SwipeMenu_UI : UI_Scene
     {
         Exp
     }
-    private void OnEnable() { origin = 0; }
+    private void OnEnable() { _origin = 0; }
     private void Start()
     {
         Init();
 
         //this.gameObject.GetComponent<Canvas>().sortingOrder = 10;
 
-        relocationValue = this.gameObject.GetComponent<RectTransform>().sizeDelta.x;
+        _relocationValue = this.gameObject.GetComponent<RectTransform>().sizeDelta.x;
 
-        Managers.UI.showSceneUI<Store_UI>("Store");
-        Managers.UI.showSceneUI<Main_UI>("Main");
-        Managers.UI.showSceneUI<Inventory_UI>("Inventory");
+        Managers.UI.ShowSceneUI<Store_UI>("Store");
+        Managers.UI.ShowSceneUI<Main_UI>("Main");
+        Managers.UI.ShowSceneUI<Inventory_UI>("Inventory");
     }
     private void Update()
     {
@@ -65,16 +61,16 @@ public class SwipeMenu_UI : UI_Scene
         {
             if (direction.x != 0 && Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
             {
-                switch (origin)
+                switch (_origin)
                 {
                     case 1:
-                        if (direction.x < 0) { swipePanel.position = new Vector3(direction.x + relocationValue * origin, 0, 0); }
+                        if (direction.x < 0) { _swipePanel.position = new Vector3(direction.x + _relocationValue * _origin, 0, 0); }
                         break;
                     case -1:
-                        if (direction.x > 0) { swipePanel.position = new Vector3(direction.x + relocationValue * origin, 0, 0); }
+                        if (direction.x > 0) { _swipePanel.position = new Vector3(direction.x + _relocationValue * _origin, 0, 0); }
                         break;
                     default:
-                        swipePanel.position = new Vector3(direction.x + relocationValue * origin, 0, 0);
+                        _swipePanel.position = new Vector3(direction.x + _relocationValue * _origin, 0, 0);
                         break;
                 }
             }
@@ -94,33 +90,33 @@ public class SwipeMenu_UI : UI_Scene
         GameObject etc = get<Button>((int)Buttons.Etc).gameObject;
         GameObject dragAndDropHandler = get<Image>((int)Images.DragAndDropHandler).gameObject;
 
-        swipePanel = get<Image>((int)Images.SwipePanel).gameObject.GetComponent<RectTransform>();
+        _swipePanel = get<Image>((int)Images.SwipePanel).gameObject.GetComponent<RectTransform>();
 
-        swipePanel.pivot = new Vector2(pivot, 0);
-        swipePanel.position = Vector2.zero;
+        _swipePanel.pivot = new Vector2(pivot, 0);
+        _swipePanel.position = Vector2.zero;
 
-        level = get<TextMeshProUGUI>((int)TMPro.Level);
+        _level = get<TextMeshProUGUI>((int)TMPro.Level);
         //level.text = $"{}";
 
-        gold = get<TextMeshProUGUI>((int)TMPro.Gold);
+        _gold = get<TextMeshProUGUI>((int)TMPro.Gold);
         //gold.text = $"{}";
 
         AddUIEvent(storeButton, (PointerEventData data) =>
         {
-            origin = 1;
-            StartCoroutine(relocation());
+            _origin = 1;
+            StartCoroutine(Relocation());
         }, Define.UIEvent.Click);
 
         AddUIEvent(mainButton, (PointerEventData data) =>
         {
-            origin = 0;
-            StartCoroutine(relocation());
+            _origin = 0;
+            StartCoroutine(Relocation());
         }, Define.UIEvent.Click);
 
         AddUIEvent(inventoryButton, (PointerEventData data) =>
         {
-            origin = -1;
-            StartCoroutine(relocation());
+            _origin = -1;
+            StartCoroutine(Relocation());
         }, Define.UIEvent.Click);
 
         AddUIEvent(dragAndDropHandler, (PointerEventData data) =>
@@ -143,31 +139,31 @@ public class SwipeMenu_UI : UI_Scene
             direction = Input.GetTouch(0).position - enterPoint;
 #endif
         }, Define.UIEvent.Drag);
-        AddUIEvent(dragAndDropHandler, (PointerEventData data) => { StartCoroutine(relocation()); }, Define.UIEvent.EndDrag);
+        AddUIEvent(dragAndDropHandler, (PointerEventData data) => { StartCoroutine(Relocation()); }, Define.UIEvent.EndDrag);
     }
-    public IEnumerator relocation()
+    public IEnumerator Relocation()
     {
         if(direction != Vector2.zero)
         {
-            if (Mathf.Abs(direction.x) > relocationValue / 3)
+            if (Mathf.Abs(direction.x) > _relocationValue / 3)
             {
-                if (direction.x > 0 && origin < 1) { origin++; }
-                else if (direction.x < 0 && origin > -1) { origin--; }
+                if (direction.x > 0 && _origin < 1) { _origin++; }
+                else if (direction.x < 0 && _origin > -1) { _origin--; }
             }
 
             while (true)
             {
                 if (direction.x > 0)
                 {
-                    if (Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue) > relocationValue * origin) { break; }
+                    if (Mathf.Lerp(_relocationValue * _origin, _swipePanel.position.x, (_relocationValue * relocationDelay) / _relocationValue) > _relocationValue * _origin) { break; }
                 }
                 else if (direction.x < 0)
                 {
-                    if (Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue) < relocationValue * origin) { break; }
+                    if (Mathf.Lerp(_relocationValue * _origin, _swipePanel.position.x, (_relocationValue * relocationDelay) / _relocationValue) < _relocationValue * _origin) { break; }
                 }
-                else if (relocationValue - Mathf.Abs((int)Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue)) < 10) { break; }
+                else if (_relocationValue - Mathf.Abs((int)Mathf.Lerp(_relocationValue * _origin, _swipePanel.position.x, (_relocationValue * relocationDelay) / _relocationValue)) < 10) { break; }
 
-                swipePanel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue), 0f, 0f);
+                _swipePanel.position = new Vector3((int)Mathf.Lerp(_relocationValue * _origin, _swipePanel.position.x, (_relocationValue * relocationDelay) / _relocationValue), 0f, 0f);
 
                 if (direction != Vector2.zero) { direction = Vector2.zero; }
 
@@ -178,15 +174,15 @@ public class SwipeMenu_UI : UI_Scene
         {
             while (true)
             {
-                if(relocationValue - Mathf.Abs((int)Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue)) < 10) { break; }
+                if(_relocationValue - Mathf.Abs((int)Mathf.Lerp(_relocationValue * _origin, _swipePanel.position.x, (_relocationValue * relocationDelay) / _relocationValue)) < 10) { break; }
 
-                swipePanel.position = new Vector3((int)Mathf.Lerp(relocationValue * origin, swipePanel.position.x, (relocationValue * relocationDelay) / relocationValue), 0f, 0f);
+                _swipePanel.position = new Vector3((int)Mathf.Lerp(_relocationValue * _origin, _swipePanel.position.x, (_relocationValue * relocationDelay) / _relocationValue), 0f, 0f);
                 
                 yield return null;
             }
         }
 
-        swipePanel.position = new Vector3(relocationValue * origin, 0f, 0f);
+        _swipePanel.position = new Vector3(_relocationValue * _origin, 0f, 0f);
 
         direction = Vector2.zero;
     }

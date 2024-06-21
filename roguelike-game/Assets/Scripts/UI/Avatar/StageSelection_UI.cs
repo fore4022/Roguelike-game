@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using System;
+[Obsolete]
 public class StageSelection_UI : UI_Scene
 {
-    private GameObject panel;
+    private GameObject _panel;
 
-    private bool visibleStageInformation = false;
+    private bool _visibleStageInformation = false;
 
     enum Buttons
     {
@@ -28,7 +28,7 @@ public class StageSelection_UI : UI_Scene
         StageName,
         StageInformation
     }
-    private void Onenble() { GameObject.Find("Synthesis").SetActive(false); }
+    private void OnEnable() { GameObject.Find("Synthesis").SetActive(false); }
     private void Start()
     {
         Init();
@@ -57,9 +57,9 @@ public class StageSelection_UI : UI_Scene
         GameObject backgroundImage = get<Image>((int)Images.BackgroundImage).gameObject;
         GameObject stageImage = get<Image>((int)Images.StageImage).gameObject;
 
-        panel = get<Image>((int)Images.Panel).gameObject;
+        _panel = get<Image>((int)Images.Panel).gameObject;
 
-        AddUIEvent(exit, (PointerEventData data) => { Managers.UI.closeSceneUI(); }, Define.UIEvent.Click);
+        AddUIEvent(exit, (PointerEventData data) => { Managers.UI.CloseSceneUI(); }, Define.UIEvent.Click);
 
         AddUIEvent(select, (PointerEventData data) =>
         {
@@ -83,24 +83,24 @@ public class StageSelection_UI : UI_Scene
 
         AddUIEvent(stageImage, (PointerEventData data) =>
         {
-            if(visibleStageInformation)
+            if(_visibleStageInformation)
             {
-                visibleStageInformation = !visibleStageInformation;
+                _visibleStageInformation = !_visibleStageInformation;
                 //
             }
             else
             {
-                visibleStageInformation = !visibleStageInformation;
-                set();
+                _visibleStageInformation = !_visibleStageInformation;
+                Set();
                 //
             }
-            panel.SetActive(visibleStageInformation);
+            _panel.SetActive(_visibleStageInformation);
 
         }, Define.UIEvent.Click);
 
-        set();
+        Set();
     }
-    private void set()
+    private void Set()
     {
         //
     }

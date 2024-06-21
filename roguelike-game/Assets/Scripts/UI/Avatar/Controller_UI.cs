@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 public class Controller_UI : UI_Popup
 {
-    private GameObject controllerUnit;
-    private GameObject controllerBar;
+    private GameObject _controllerUnit;
+    private GameObject _controllerBar;
     enum Images
     {
         ControllPanel,
@@ -17,7 +15,7 @@ public class Controller_UI : UI_Popup
     private void Start()
     {
         Init();
-        controllerUnit.SetActive(false);
+        _controllerUnit.SetActive(false);
     }
     private void Update() 
     {
@@ -25,10 +23,10 @@ public class Controller_UI : UI_Popup
         {
             if(Input.touchCount > 0)
             {
-                if (controllerUnit.activeSelf) { controllerBar.transform.position = Managers.Game.player.enterPoint + Vector2.ClampMagnitude(Input.GetTouch(0).position - Managers.Game.player.enterPoint, 100); }
+                if (_controllerUnit.activeSelf) { _controllerBar.transform.position = Managers.Game.player.enterPoint + Vector2.ClampMagnitude(Input.GetTouch(0).position - Managers.Game.player.enterPoint, 100); }
             }
         }
-        else { closePopup(); }
+        else { ClosePopup(); }
     }
     protected override void Init()
     {
@@ -36,17 +34,18 @@ public class Controller_UI : UI_Popup
         bind<Image>(typeof(Images));
 
         GameObject controllPanel = get<Image>((int)Images.ControllPanel).gameObject;
-        controllerUnit = get<Image>((int)Images.ControllerUnit).gameObject;
-        controllerBar = get<Image>((int)Images.ControllerBar).gameObject;
+
+        _controllerUnit = get<Image>((int)Images.ControllerUnit).gameObject;
+        _controllerBar = get<Image>((int)Images.ControllerBar).gameObject;
 
         AddUIEvent(controllPanel, (PointerEventData data) =>
         {
-            controllerUnit.SetActive(true);
-            controllerUnit.transform.position = Input.GetTouch(0).position;
+            _controllerUnit.SetActive(true);
+            _controllerUnit.transform.position = Input.GetTouch(0).position;
         }, Define.UIEvent.Down);
         AddUIEvent(controllPanel, (PointerEventData data) =>
         {
-            controllerUnit.SetActive(false);
+            _controllerUnit.SetActive(false);
         }, Define.UIEvent.Up);
     }
 }

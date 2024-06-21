@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
 [CreateAssetMenu(fileName = "Equipment", menuName = "Create New Item/New Equipment")]
 public class Equipment : Item

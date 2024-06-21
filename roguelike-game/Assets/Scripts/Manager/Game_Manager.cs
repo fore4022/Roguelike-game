@@ -1,14 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Diagnostics;
-using UnityEngine.Events;
-using System;
 using System.Linq;
-using System.Threading;
-using UnityEditor.Compilation;
 using Debug = UnityEngine.Debug;
 public class Game_Manager
 {
@@ -20,11 +12,6 @@ public class Game_Manager
     public Map_Theme map;
     public GameObject skill;
     public Item item;
-
-    public Stopwatch stopWatch = new();
-
-    public float minute { get { return stopWatch.Elapsed.Minutes; } }
-    public float second { get { return stopWatch.Elapsed.Seconds; } }
 
     public float camera_h { get { return Camera.main.orthographicSize * 2; } }
     public float camera_w { get { return Camera.main.orthographicSize * 2 * Camera.main.aspect; } }
@@ -39,18 +26,18 @@ public class Game_Manager
     public bool isSpawn;
     public bool inBattle;
 
-    private void init(string Theme)
+    private void Init(string Theme)
     {
         creationCycle = 1f;
         isSpawn = true;
         inBattle = false;
 
-        map = Managers.Resource.load<Map_Theme>($"Data/Map_Theme/{Theme}");
+        map = Managers.Resource.Load<Map_Theme>($"Data/Map_Theme/{Theme}");
         skill = GameObject.Find("@Skill");
         GameObject go = GameObject.Find("Player");
         if (go == null)
         {
-            go = Managers.Resource.instantiate("Prefab/Player", null);
+            go = Managers.Resource.Instantiate("Prefab/Player", null);
             go.transform.position = Vector3.zero;
             player = go.AddComponent<Player_Controller>();
         }
@@ -59,33 +46,32 @@ public class Game_Manager
         go.AddComponent<Main_Camera>();
 
         if (GameObject.Find("@Monster") == null) { go = new GameObject { name = "@Monster" }; }
-        spawnMonster = Util.getOrAddComponent<SpawnMonster>(go);
+        spawnMonster = Util.GetOrAddComponent<SpawnMonster>(go);
         if (skills == null) { skills = Managers.Resource.LoadAll<Skill>("Data/Skill/").ToList<Skill>(); }
 
         //go = Managers.Resource.instantiate("Prefab/Map");
     }
-    public void stageStart(string Theme)
+    public void StageStart(string Theme)
     {
-        init(Theme);
-        objectPool.init();
+        Init(Theme);
+        objectPool.Init();
 
-        foreach (string str in map.monsterType) { objectPool.createObjects(typeof(Monster_Controller), str, 600); }
-        foreach (Skill skill in skills) { objectPool.createObjects(typeof(Base_SkillCast), /*skill.skillName*/"FireBall", 20); }
+        foreach (string str in map.monsterType) { objectPool.CreateObjects(typeof(Monster_Controller), str, 600); }
+        foreach (Skill skill in skills) { objectPool.CreateObjects(typeof(Base_SkillCast), /*skill.skillName*/"FireBall", 20); }
 
-        stopWatch.Start();
         isSpawn = true;
 
-        Managers.UI.showSceneUI<Status_UI>("Status");
-        Managers.UI.showSceneUI<Timer_UI>("Timer");
-        Managers.UI.showSceneUI<Pause_UI>("Pause");
-        Managers.UI.showPopupUI<Controller_UI>("Controller");
+        Managers.UI.ShowSceneUI<Status_UI>("Status");
+        Managers.UI.ShowSceneUI<Timer_UI>("Timer");
+        Managers.UI.ShowSceneUI<Pause_UI>("Pause");
+        Managers.UI.ShowPopupUI<Controller_UI>("Controller");
 
         spawnMonster.StartCoroutine(spawnMonster.Spawn());
     }
-    public void stageEnd()
+    public void StageEnd()
     {
-        stopWatch.Stop();
         isSpawn = false;
+
         userGold += (int)player.Gold;
         userExp += (int)player.Exp;
 

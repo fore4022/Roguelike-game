@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.Search;
 using UnityEngine;
 [CreateAssetMenu(fileName = "Expendables", menuName = "Create New Item/New Expendables")]
 public class Expendables : Item

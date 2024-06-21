@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Data;
 using Mono.Data.Sqlite;
 using System;
-using System.Linq;
 public class Database
 {
     [SerializeField]
@@ -22,19 +20,19 @@ public class Database
     public List<Slot> inventoryData = new List<Slot>();
     public User userData;
 
-    public void init()
+    public void Init()
     {
-        setInventory();
+        SetInventory();
         //setUser();
     }
-    private IDbConnection connect(string dbName)
+    private IDbConnection Connect(string dbName)
     {
         string path = "URI=file:" + Application.streamingAssetsPath + dbName;
         return new SqliteConnection(path);
     }
-    public void setInventory()
+    public void SetInventory()
     {
-        IDbConnection connection = connect(DBName1);
+        IDbConnection connection = Connect(DBName1);
 
         connection.Open();
 
@@ -57,11 +55,11 @@ public class Database
 
         inventoryReader.Close();
     }
-    public void setUser()
+    public void SetUser()
     {
         if (userData != null) { return; }
 
-        IDbConnection connection = connect(DBName2);
+        IDbConnection connection = Connect(DBName2);
 
         connection.Open();
 
@@ -73,9 +71,9 @@ public class Database
 
         userReader.Close();
     }
-    public void inventory_edit(string name, int count, int equipped = 0, bool isDelete = false)
+    public void InventoryEdit(string name, int count, int equipped = 0, bool isDelete = false)
     {
-        IDbConnection connection = connect(DBName1);
+        IDbConnection connection = Connect(DBName1);
 
         connection.Open();
 
@@ -113,14 +111,14 @@ public class Database
         command.Dispose();
         connection.Close();
 
-        setInventory();
+        SetInventory();
 
         if(edit != null) { edit.Invoke(); }
     }
-    public void user_edit(int level, int exp, int gold, int topStage, int stage, string equippedItem)
+    public void UserEdit(int level, int exp, int gold, int topStage, int stage, string equippedItem)
     {
 
-        IDbConnection connection = connect(DBName2);
+        IDbConnection connection = Connect(DBName2);
 
         connection.Open();
         IDbCommand command = connection.CreateCommand();
@@ -140,7 +138,7 @@ public class Database
 
         connection.Close();
 
-        setUser();
+        SetUser();
 
         if (edit != null) { edit.Invoke(); }
     }
