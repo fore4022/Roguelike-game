@@ -10,8 +10,6 @@ public class Player_Controller : Base_Controller
     public Action updateStatus = null;
     public Action updateStat = null;
 
-    private Item _item;
-
     private Vector2 _direction;
 
     public float skillCooldownReduction;
@@ -37,9 +35,6 @@ public class Player_Controller : Base_Controller
 
         boxCollider.size = new Vector2(0.9f, 1.7f);
 
-        if(Managers.Game.item == null) { _item = ScriptableObject.CreateInstance<Item>(); }
-        else { _item = Managers.Game.item; }
-
         level = 1;
         //maxHp = hp = (int)(100 * item.hp);
         //damage = 10 * item.damage;
@@ -54,7 +49,9 @@ public class Player_Controller : Base_Controller
         name = name.Replace("(Clone)", "");
 
         animatorPlaySpeed = 0.4f;
+
         anime = Util.GetOrAddComponent<Animator>(transform.gameObject);
+
         anime.runtimeAnimatorController = Managers.Resource.Load<RuntimeAnimatorController>($"Animation/{name}/{name}");
         anime.speed = animatorPlaySpeed;
     }
@@ -65,7 +62,9 @@ public class Player_Controller : Base_Controller
         if (hp <= 0) 
         { 
             Managers.Input.keyAction -= Moving;
+
             h = v = 0;
+
             StartCoroutine(Death());
         }
 
@@ -84,6 +83,7 @@ public class Player_Controller : Base_Controller
         //Exp += (int)(exp * item.expMagnification);
         Gold += (int)(gold);
         Exp += (int)(exp);
+
         CheckExp();
 
         //updateStat.Invoke();
@@ -137,6 +137,7 @@ public class Player_Controller : Base_Controller
     protected override IEnumerator Death()
     {
         anime.Play("death");
+
         while (true)
         {
             if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
@@ -146,10 +147,12 @@ public class Player_Controller : Base_Controller
                     if(Managers.UI.SceneStack.Count > 0) { Managers.UI.CloseSceneUI(); }
                     else { break; }
                 }
+
                 Managers.Game.StageEnd();
                 //show
                 break;
             }
+
             yield return null;
         }
     }

@@ -39,14 +39,18 @@ public class Game_Manager
         {
             go = Managers.Resource.Instantiate("Prefab/Player", null);
             go.transform.position = Vector3.zero;
+
             player = go.AddComponent<Player_Controller>();
         }
 
         go = GameObject.Find("Main Camera");
         go.AddComponent<Main_Camera>();
 
+
         if (GameObject.Find("@Monster") == null) { go = new GameObject { name = "@Monster" }; }
+
         spawnMonster = Util.GetOrAddComponent<SpawnMonster>(go);
+
         if (skills == null) { skills = Managers.Resource.LoadAll<Skill>("Data/Skill/").ToList<Skill>(); }
 
         //go = Managers.Resource.instantiate("Prefab/Map");
@@ -57,6 +61,7 @@ public class Game_Manager
         objectPool.Init();
 
         foreach (string str in map.monsterType) { objectPool.CreateObjects(typeof(Monster_Controller), str, 600); }
+
         foreach (Skill skill in skills) { objectPool.CreateObjects(typeof(Base_SkillCast), /*skill.skillName*/"FireBall", 20); }
 
         isSpawn = true;

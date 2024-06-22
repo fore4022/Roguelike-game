@@ -65,7 +65,7 @@ public class Inventory_UI : UI_Scene
 
         if (_pos != null)
         {
-            this.gameObject.transform.SetParent(_pos);
+            gameObject.transform.SetParent(_pos);
             RectTransform rectTransform = this.gameObject.GetComponent<RectTransform>();
 
             rectTransform.sizeDelta = _pos.GetComponentInParent<RectTransform>().rect.size;
@@ -73,7 +73,7 @@ public class Inventory_UI : UI_Scene
             rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
             rectTransform.anchoredPosition = Vector2.zero;
 
-            swipeMenu = FindObjectOfType<SwipeMenu_UI>().GetComponent<SwipeMenu_UI>();
+            swipeMenu = FindParent<SwipeMenu_UI>(gameObject);
         }
 
         Managers.Data.edit -= UpdateSlot;
@@ -178,8 +178,6 @@ public class Inventory_UI : UI_Scene
 
             slotDataList.Add((slot._item, slot._sprite, slot._count, slot._isEquipped));
         }
-
-        _content.offsetMin = new Vector2(_content.offsetMin.x, _content.offsetMin.y + 245 * Mathf.Abs(_height - 4));
 
         if (_equippedItemIndex == -1) { _itemImage.gameObject.SetActive(false); }
         else { _itemImage.gameObject.SetActive(true); }

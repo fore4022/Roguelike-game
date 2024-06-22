@@ -89,6 +89,7 @@ public class Monster_Controller : Base_Controller
 
         List<Player_Controller> players = colliders.Select(o => o.gameObject.GetComponent<Player_Controller>()).ToList();
         List<Monster_Controller> monsters = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
+
         players.RemoveAll(o => o == null);
         monsters.RemoveAll(o => o == null);
 

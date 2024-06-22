@@ -7,22 +7,33 @@ public class Test : MonoBehaviour
         //GameObject go = GameObject.Find("@Skill");
         //go.AddComponent<FireBall_Cast>();
 
-        //Managers.Data.inventory_edit("weapon1", 1, 0);    //Equipment
-        //Managers.Data.inventory_edit("weapon2", 1, 0);
-        //Managers.Data.inventory_edit("weapon3", 1, 0);
-        //Managers.Data.inventory_edit("weapon4", 1, 0);
-        //Managers.Data.inventory_edit("weapon5", 1, 0);
-        //Managers.Data.inventory_edit("weapon6", 1, 0);
-        //Managers.Data.inventory_edit("weapon7", 1, 0);
+        //Managers.Data.InventoryEdit("weapon1", 1, 0);    //Equipment
+        //Managers.Data.InventoryEdit("weapon2", 1, 0);
+        //Managers.Data.InventoryEdit("weapon3", 1, 0);
+        //Managers.Data.InventoryEdit("weapon4", 1, 0);
+        //Managers.Data.InventoryEdit("weapon5", 1, 0);
+        //Managers.Data.InventoryEdit("weapon6", 1, 0);
+        //Managers.Data.InventoryEdit("weapon7", 1, 0);
+        //Managers.Data.InventoryEdit("weapon8", 1, 0);
+        //Managers.Data.InventoryEdit("weapon9", 1, 0);
+        //Managers.Data.InventoryEdit("weapon10", 1, 0);
 
-        //Managers.Data.inventory_edit("item1", 1, 0);  //Expendables
-        //Managers.Data.inventory_edit("item2", 2, 0);
-        //Managers.Data.inventory_edit("item3", 3, 0);
-        //Managers.Data.inventory_edit("item4", 4, 0);
-        //Managers.Data.inventory_edit("item5", 5, 0);
-        //Managers.Data.inventory_edit("item6", 6, 0);
-        //Managers.Data.inventory_edit("item7", 7, 0);
-        //Managers.Data.inventory_edit("item8", 8, 0);
+        //Managers.Data.InventoryEdit("item1", 1, 0);  //Expendables
+        //Managers.Data.InventoryEdit("item2", 1, 0);
+        //Managers.Data.InventoryEdit("item3", 1, 0);
+        //Managers.Data.InventoryEdit("item4", 1, 0);
+        //Managers.Data.InventoryEdit("item5", 1, 0);
+        //Managers.Data.InventoryEdit("item6", 1, 0);
+        //Managers.Data.InventoryEdit("item7", 1, 0);
+        //Managers.Data.InventoryEdit("item8", 1, 0);
+        //Managers.Data.InventoryEdit("item9", 1, 0);
+        //Managers.Data.InventoryEdit("item10", 1, 0);
+        //Managers.Data.InventoryEdit("item11", 1, 0);
+        //Managers.Data.InventoryEdit("item12", 1, 0);
+        //Managers.Data.InventoryEdit("item13", 1, 0);
+        //Managers.Data.InventoryEdit("item14", 1, 0);
+        //Managers.Data.InventoryEdit("item15", 1, 0);
+        //Managers.Data.InventoryEdit("item16", 1, 0);
 
         Managers.UI.ShowSceneUI<SwipeMenu_UI>("SwipeMenu");
 
