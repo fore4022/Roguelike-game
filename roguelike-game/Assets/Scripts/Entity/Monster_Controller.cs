@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+[Obsolete]
 public class Monster_Controller : Base_Controller
 {
     [HideInInspector]
@@ -17,9 +19,13 @@ public class Monster_Controller : Base_Controller
         Death
     }
 
+    [SerializeField]
+    private float interval = 0.2f;
+
     private State _state;
 
-    protected float interval = 0.2f;
+    private Collider2D[] _colliders;
+
     protected override void Start()
     {
         base.Start();
@@ -28,7 +34,6 @@ public class Monster_Controller : Base_Controller
 
         rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        anime = GetComponent<Animator>();
         anime.speed = 0.25f;
     }
     private void OnEnable() { Init(); }
@@ -42,7 +47,7 @@ public class Monster_Controller : Base_Controller
         moveSpeed = monsterType.moveSpeed;
         hp = maxHp;
     }
-    protected override void Update()
+    protected override void Update()//
     {
         if (Managers.Game.player.Hp > 0)
         {
@@ -85,10 +90,10 @@ public class Monster_Controller : Base_Controller
     private Vector3 Move() { return (Managers.Game.player.gameObject.transform.position - transform.position).normalized; }
     protected override void Moving()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, (transform.localScale.x + transform.localScale.y) / 2.75f, LayerMask.GetMask("Monster"));
+        _colliders = Physics2D.OverlapCircleAll(transform.position, (transform.localScale.x + transform.localScale.y) / 2.75f, LayerMask.GetMask("Monster"));
 
-        List<Player_Controller> players = colliders.Select(o => o.gameObject.GetComponent<Player_Controller>()).ToList();
-        List<Monster_Controller> monsters = colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
+        List<Player_Controller> players = _colliders.Select(o => o.gameObject.GetComponent<Player_Controller>()).ToList();
+        List<Monster_Controller> monsters = _colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
 
         players.RemoveAll(o => o == null);
         monsters.RemoveAll(o => o == null);
@@ -100,7 +105,6 @@ public class Monster_Controller : Base_Controller
     public virtual void Attacked(int damage) { hp -= damage; }
     protected override IEnumerator Death() 
     {
-        anime.speed = 1f;
         anime.Play("death");
 
         Managers.Game.player.GetLoot(gold, exp);
@@ -109,18 +113,15 @@ public class Monster_Controller : Base_Controller
         {
             if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
             {
-                Managers.Game.objectPool.DisableObject(monsterType.monsterName, this.gameObject);
+                Managers.Game.objectPool.DisableObject(monsterType.monsterName, gameObject);
+
                 break;
             }
+
             yield return null;
         }
     }
-    public int MonsterCount()
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, (transform.localScale.x + transform.localScale.y) / 2, LayerMask.GetMask("Monster"));
-
-        return colliders.Count();
-    }
+    public int MonsterCount() { return Physics2D.OverlapCircleNonAlloc(transform.position, (transform.localScale.x + transform.localScale.y) / 2, _colliders, LayerMask.GetMask("Monster")); }
     protected override void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;

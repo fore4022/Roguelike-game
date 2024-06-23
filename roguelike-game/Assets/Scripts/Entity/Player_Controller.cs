@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+[Obsolete]
 public class Player_Controller : Base_Controller
 {
 #if UNITY_ANDROID
@@ -15,8 +16,8 @@ public class Player_Controller : Base_Controller
     public float skillCooldownReduction;
     public float shieldAmount;
 
-    public float h;
-    public float v;
+    private float _horizontal;
+    private float _vertical;
 
     public int necessaryExp;
     public int level;
@@ -24,6 +25,7 @@ public class Player_Controller : Base_Controller
     protected override void Start()
     {
         base.Start();
+
         Init();
     }
     protected override void Init()
@@ -45,36 +47,31 @@ public class Player_Controller : Base_Controller
         skillCooldownReduction = 0;
         moveSpeed = 2;
 
-        string name = transform.gameObject.name;
-        name = name.Replace("(Clone)", "");
-
         animatorPlaySpeed = 0.4f;
 
-        anime = Util.GetOrAddComponent<Animator>(transform.gameObject);
-
-        anime.runtimeAnimatorController = Managers.Resource.Load<RuntimeAnimatorController>($"Animation/{name}/{name}");
+        //anime.runtimeAnimatorController = Managers.Resource.Load<RuntimeAnimatorController>($"Animation/{name}/{name}")
         anime.speed = animatorPlaySpeed;
     }
     protected override void Update()
     {
-        if (anime.GetCurrentAnimatorStateInfo(0).IsName("death")) { return; }
+        if (anime.GetCurrentAnimatorStateInfo(0).IsName("death")) { return; }//
 
         if (hp <= 0) 
         { 
             Managers.Input.keyAction -= Moving;
 
-            h = v = 0;
+            _horizontal = _vertical = 0;
 
             StartCoroutine(Death());
         }
 
-        if (Input.anyKey == false) { h = v = 0; }
+        if (Input.anyKey == false) { _horizontal = _vertical = 0; }
 
         SetAnime();
     }
     private void SetAnime()
     {
-        if (h != 0 || v != 0) { anime.Play("move"); }
+        if (_horizontal != 0 || _vertical != 0) { anime.Play("move"); }
         else { anime.Play("idle"); }
     }
     public void GetLoot(int gold, int exp)
@@ -103,14 +100,15 @@ public class Player_Controller : Base_Controller
     public void Attacked(int damage)
     {
         hp -= damage;
+
         updateStatus.Invoke();
     }
     protected override void Moving()    
     {
 #if UNITY_EDITOR
         {
-            h = Input.GetAxisRaw("Horizontal");
-            v = Input.GetAxisRaw("Vertical");
+            _horizontal = Input.GetAxisRaw("Horizontal");
+            _vertical = Input.GetAxisRaw("Vertical");
         }
 #endif
 #if UNITY_ANDROID
@@ -120,19 +118,20 @@ public class Player_Controller : Base_Controller
                 if (Input.GetTouch(0).phase == TouchPhase.Began)
                 {
                     enterPoint = Input.GetTouch(0).position;
+
                     return;
                 }
 
                 _direction = (Input.GetTouch(0).position - enterPoint).normalized;
 
-                h = _direction.x;
-                v = _direction.y;
+                _horizontal = _direction.x;
+                _vertical = _direction.y;
             }
         }
 #endif
-        if (h != 0 || v != 0) { transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * h, transform.position.y + moveSpeed * Time.deltaTime * v); }
+        if (_horizontal != 0 || _vertical != 0) { transform.position = new Vector2(transform.position.x + moveSpeed * Time.deltaTime * _horizontal, transform.position.y + moveSpeed * Time.deltaTime * _vertical); }
 
-        if (h != 0) { transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0) * (h < 0 ? 0 : 1)); }
+        if (_horizontal != 0) { transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0) * (_horizontal < 0 ? 0 : 1)); }
     }
     protected override IEnumerator Death()
     {
@@ -159,6 +158,7 @@ public class Player_Controller : Base_Controller
     private void Crash(Collision2D collision) { if (collision.gameObject.CompareTag("Monster")) { Attacked(collision.gameObject.GetComponent<Monster_Controller>().Damage); } }
     private void OnCollisionEnter2D(Collision2D collision) { Crash(collision); }
     private void OnCollisionStay2D(Collision2D collision) { Crash(collision); }
+    private void OnDestroy() { Managers.Input.keyAction -= Moving; }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

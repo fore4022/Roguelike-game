@@ -6,12 +6,15 @@ public abstract class Base_Controller : Stat
     protected BoxCollider2D boxCollider;
     protected Rigidbody2D rigid;
 
+    [SerializeField]
     protected float animatorPlaySpeed;
 
     protected virtual void Start()
     {
-        boxCollider = Util.GetOrAddComponent<BoxCollider2D>(transform.gameObject);
-        rigid = Util.GetOrAddComponent<Rigidbody2D>(transform.gameObject);
+        anime = GetComponent<Animator>();
+        boxCollider = GetComponent<BoxCollider2D>();
+        rigid = GetComponent<Rigidbody2D>();
+
         rigid.gravityScale = 0f;
     }
     protected virtual IEnumerator Death() { yield return null; }

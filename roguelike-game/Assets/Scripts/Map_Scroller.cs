@@ -18,6 +18,6 @@ public class Map_Scroller : MonoBehaviour
         if (!Managers.Game.player) { return; }
 
         transform.position = Managers.Game.player.gameObject.transform.position;
-        _render.material.mainTextureOffset += new Vector2(Managers.Game.player.h * 0.16f * Managers.Game.player.MoveSpeed, Managers.Game.player.v * 0.09f * Managers.Game.player.MoveSpeed) * Time.deltaTime / 2;
+        _render.material.mainTextureOffset += new Vector2(Managers.Game.player._horizontal * 0.16f * Managers.Game.player.MoveSpeed, Managers.Game.player._vertical * 0.09f * Managers.Game.player.MoveSpeed) * Time.deltaTime / 2;
     }
 }
