@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+[Obsolete]
 public class Boss_Controller : Base_Controller
 {
     [HideInInspector]
@@ -24,7 +26,7 @@ public class Boss_Controller : Base_Controller
         moveSpeed = monsterType.moveSpeed;
         hp = maxHp;
     }
-    protected override void Update()
+    private void Update()
     {
         if(Managers.Game.player.Hp > 0)
         {
@@ -39,7 +41,7 @@ public class Boss_Controller : Base_Controller
         }
     }
     protected void SetState() { }
-    protected override void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, (transform.localScale.x + transform.localScale.y) / 2.75f);

@@ -3,9 +3,9 @@ public class Test : MonoBehaviour
 {
     private void Start()
     {
-        //Managers.Game.StageStart("Ground");
-        //GameObject go = GameObject.Find("@Skill");
-        //go.AddComponent<FireBall_Cast>();
+        Managers.Game.StageStart("Ground");
+        GameObject go = GameObject.Find("@Skill");
+        go.AddComponent<FireBall_Cast>();
 
         //Managers.Data.InventoryEdit("weapon1", 1, 0);    //Equipment
         //Managers.Data.InventoryEdit("weapon2", 1, 0);
@@ -35,7 +35,7 @@ public class Test : MonoBehaviour
         //Managers.Data.InventoryEdit("item15", 1, 0);
         //Managers.Data.InventoryEdit("item16", 1, 0);
 
-        Managers.UI.ShowSceneUI<SwipeMenu_UI>("SwipeMenu");
+        //Managers.UI.ShowSceneUI<SwipeMenu_UI>("SwipeMenu");
 
         //Managers.UI.showSceneUI<Inventory_UI>("Inventory");
     }

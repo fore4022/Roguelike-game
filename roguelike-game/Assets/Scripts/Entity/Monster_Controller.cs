@@ -1,42 +1,20 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
-[Obsolete]
 public class Monster_Controller : Base_Controller
 {
-    [HideInInspector]
+    [SerializeField]
+    private float animeSpeed = 0.25f;
+
     public Monster monsterType;
 
-    [HideInInspector]
-    public float slowDownAmount;
-
-    private enum State
-    {
-        Moving,
-        Death
-    }
-
-    [SerializeField]
-    private float interval = 0.2f;
-
-    private State _state;
-
-    private Collider2D[] _colliders;
-
+    private float _range = 2f;
     protected override void Start()
     {
         base.Start();
 
-        _state = State.Moving;
-
-        rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
-
-        anime.speed = 0.25f;
+        anime.speed = animeSpeed;
     }
     private void OnEnable() { Init(); }
+    private void Update() { Moving(); }
     protected override void Init()
     {
         damage = monsterType.attackDamage;
@@ -47,84 +25,40 @@ public class Monster_Controller : Base_Controller
         moveSpeed = monsterType.moveSpeed;
         hp = maxHp;
     }
-    protected override void Update()//
-    {
-        if (Managers.Game.player.Hp > 0)
-        {
-            if (_state == State.Death) { return; }
-
-            if (Hp <= 0)
-            {
-                boxCollider.enabled = false;
-                _state = State.Death;
-            }
-
-            SetState();
-        }
-    }
-    private void SetState()
-    {
-        switch (_state)
-        {
-            case State.Moving:
-                Moving();
-                break;
-            case State.Death:
-                StartCoroutine(Death());
-                break;
-        }
-    }
-    private Vector3 Separation(IEnumerable<Monster_Controller> monsters)
-    {
-        Vector3 vec = Vector3.zero;
-
-        foreach (Monster_Controller boid in monsters) { vec += (transform.position - boid.transform.position).normalized; }
-
-        vec /= monsters.Count();
-        vec *= MoveSpeed * 2 * Time.deltaTime;
-
-        if (Mathf.Abs(vec.x) < 0.000075f || Mathf.Abs(vec.y) < 0.000075f) { vec = Vector3.zero; }
-
-        return vec;
-    }
     private Vector3 Move() { return (Managers.Game.player.gameObject.transform.position - transform.position).normalized; }
-    protected override void Moving()
+    private void Moving() { transform.position += Move() * MoveSpeed * Time.deltaTime; }
+    public virtual void Attacked(int damage)
     {
-        _colliders = Physics2D.OverlapCircleAll(transform.position, (transform.localScale.x + transform.localScale.y) / 2.75f, LayerMask.GetMask("Monster"));
-
-        List<Player_Controller> players = _colliders.Select(o => o.gameObject.GetComponent<Player_Controller>()).ToList();
-        List<Monster_Controller> monsters = _colliders.Select(o => o.gameObject.GetComponent<Monster_Controller>()).ToList();
-
-        players.RemoveAll(o => o == null);
-        monsters.RemoveAll(o => o == null);
-
-        transform.position += Move() * MoveSpeed * Time.deltaTime + Separation(monsters) * slowDownAmount / 100f;
-
-        if (players.Count() == 1 && monsters.Count() != 1) { transform.position += Separation(monsters) * slowDownAmount / 100f; }
+        hp -= damage;
     }
-    public virtual void Attacked(int damage) { hp -= damage; }
-    protected override IEnumerator Death() 
+    private void Death() 
     {
+        anime.speed = 1f;
         anime.Play("death");
 
         Managers.Game.player.GetLoot(gold, exp);
 
-        while (true)
-        {
-            if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
-            {
-                Managers.Game.objectPool.DisableObject(monsterType.monsterName, gameObject);
+        //while (true)
+        //{
+        //    if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
+        //    {
+        //        Managers.Game.objectPool.DisableObject(monsterType.monsterName, this.gameObject);
 
-                break;
-            }
+        //        break;
+        //    }
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
     }
-    public int MonsterCount() { return Physics2D.OverlapCircleNonAlloc(transform.position, (transform.localScale.x + transform.localScale.y) / 2, _colliders, LayerMask.GetMask("Monster")); }
-    protected override void OnDrawGizmosSelected()
+    public int MonsterCount()
+    {
+        Collider2D[] colliders = new Collider2D[] { };
+
+        return Physics2D.OverlapCircleNonAlloc(transform.position, _range, colliders, LayerMask.GetMask("Monster"));
+    }
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, (transform.localScale.x + transform.localScale.y) / 2.75f);
+        Gizmos.DrawWireSphere(transform.position, _range);
     }
 }

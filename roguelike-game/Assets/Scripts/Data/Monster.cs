@@ -6,6 +6,7 @@ public class Monster : ScriptableObject
     {
         closeDistance, longDistance
     }
+
     public MonsterType monsterType;
 
     public string monsterName;

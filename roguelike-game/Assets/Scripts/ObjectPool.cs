@@ -27,20 +27,23 @@ public class ObjectPool
         else if(baseType == typeof(Base_SkillCast)) { folderName = "Skill"; }
 
         if (folderName == null) { return; }
-        
+
+        string path = $"Prefab/{folderName}/{prefabName}";
+
+        GameObject prefab = Managers.Resource.Load<GameObject>(path);
+
         if (boids.ContainsKey(prefabName))
         {
             queue = boids[prefabName];
+
             for (int i = 0; i < count; i++)
             {
-                GameObject go;
-
-                if (folderName == "Monster") { go = Managers.Resource.Instantiate($"Prefab/monster", _objectPool.transform); }
-                else { go = Managers.Resource.Instantiate($"Prefab/{folderName}/{prefabName}", _objectPool.transform); }
+                GameObject go = GameObject.Instantiate(prefab, _objectPool.transform);
 
                 go.SetActive(false);
                 queue.Enqueue(go);
             }
+
             boids[prefabName] = queue;
         }
         else
@@ -49,31 +52,13 @@ public class ObjectPool
 
             for(int i = 0; i < count; i++)
             {
-                GameObject go;
-
-                if (folderName == "Monster") { go = Managers.Resource.Instantiate($"Prefab/monster", _objectPool.transform); }
-                else { go = Managers.Resource.Instantiate($"Prefab/{folderName}/{prefabName}", _objectPool.transform); }
+                GameObject go = GameObject.Instantiate(prefab, _objectPool.transform);
 
                 go.SetActive(false);
                 queue.Enqueue(go);
             }
+
             boids.Add(prefabName, queue);
-        }
-
-        System.Type scriptType = null;
-
-        if (scriptName != null) { scriptType = System.Type.GetType(scriptName); }
-
-        if(folderName == "Monster")
-        {
-            if (scriptType == null) { scriptType = System.Type.GetType("Monster_Controller"); }
-
-            foreach (GameObject go in boids[prefabName])
-            {
-                Monster_Controller script = go.AddComponent(scriptType) as Monster_Controller;
-                script.monsterType = monsterData[prefabName];
-                go.AddComponent<Animator>().runtimeAnimatorController = Managers.Resource.Load<RuntimeAnimatorController>($"Animation/Monster/{prefabName}/{prefabName}");
-            }
         }
     }
     public GameObject ActivateObject(System.Type baseType, string prefabName)
@@ -97,6 +82,7 @@ public class ObjectPool
         go.transform.SetParent(_objectPool.transform);
         go.SetActive(false);
         queue.Enqueue(go);
+
         boids[prefabName] = queue;
     }
 }

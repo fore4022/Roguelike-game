@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+[Obsolete]
 public class Effect : MonoBehaviour
 {
     private float _amountOfSlowdown;

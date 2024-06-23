@@ -24,17 +24,18 @@ public class Game_Manager
     public int userExp;
 
     public bool isSpawn;
-    public bool inBattle;
 
     private void Init(string Theme)
     {
         creationCycle = 1f;
+
         isSpawn = true;
-        inBattle = false;
 
         map = Managers.Resource.Load<Map_Theme>($"Data/Map_Theme/{Theme}");
         skill = GameObject.Find("@Skill");
+
         GameObject go = GameObject.Find("Player");
+
         if (go == null)
         {
             go = Managers.Resource.Instantiate("Prefab/Player", null);
