@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 public class Monster_Controller : Base_Controller
 {
@@ -13,8 +14,12 @@ public class Monster_Controller : Base_Controller
 
         anime.speed = animeSpeed;
     }
-    private void OnEnable() { Init(); }
-    private void Update() { Moving(); }
+    private void OnEnable()
+    { 
+        Init();
+
+        StartCoroutine(Moving());
+    }
     protected override void Init()
     {
         damage = monsterType.attackDamage;
@@ -25,30 +30,37 @@ public class Monster_Controller : Base_Controller
         moveSpeed = monsterType.moveSpeed;
         hp = maxHp;
     }
-    private Vector3 Move() { return (Managers.Game.player.gameObject.transform.position - transform.position).normalized; }
-    private void Moving() { transform.position += Move() * MoveSpeed * Time.deltaTime; }
+    private Vector3 Direction() { return (Managers.Game.player.gameObject.transform.position - transform.position).normalized; }
     public virtual void Attacked(int damage)
     {
         hp -= damage;
+
+        if(hp <= 0)
+        {
+            StopCoroutine(Moving());
+
+            StartCoroutine(Death());
+        }
     }
-    private void Death() 
+    private IEnumerator Moving() 
     {
-        anime.speed = 1f;
+        while (true)
+        {
+            transform.position += Direction() * MoveSpeed * Time.deltaTime;
+
+            yield return null;
+        }  
+    }
+    private IEnumerator Death() 
+    {
+        anime.speed++;
         anime.Play("death");
 
         Managers.Game.player.GetLoot(gold, exp);
 
-        //while (true)
-        //{
-        //    if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
-        //    {
-        //        Managers.Game.objectPool.DisableObject(monsterType.monsterName, this.gameObject);
+        while (anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1) { yield return null; }
 
-        //        break;
-        //    }
-
-        //    yield return null;
-        //}
+        Managers.Game.objectPool.DisableObject(monsterType.monsterName, gameObject);
     }
     public int MonsterCount()
     {

@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+[Obsolete]
 public class Main_Camera : MonoBehaviour
 {
     private Camera cam;
