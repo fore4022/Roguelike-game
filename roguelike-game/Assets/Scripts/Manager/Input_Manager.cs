@@ -8,14 +8,9 @@ public class Input_Manager
 #if UNITY_EDITOR
         {
             if (Input.anyKey == false) { return; }
+        }
+#endif
 
-            if (keyAction != null) { keyAction.Invoke(); }
-        }
-#endif
-#if UNITY_ANDROID
-        {
-            if(keyAction != null) { keyAction.Invoke(); }
-        }
-#endif
+        if (keyAction != null) { keyAction.Invoke(); }
     }
 }

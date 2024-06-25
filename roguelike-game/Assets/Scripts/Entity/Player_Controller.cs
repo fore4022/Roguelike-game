@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine;
 public class Player_Controller : Base_Controller
 {
+    [SerializeField]
+    private float animatorPlaySpeed = 0.4f;
+
 #if UNITY_ANDROID
     public Vector2 enterPoint;
 #endif
@@ -11,9 +14,6 @@ public class Player_Controller : Base_Controller
     public Action updateStat = null;
 
     private Vector2 _direction;
-
-    public float skillCooldownReduction;
-    public float shieldAmount;
 
     public float h;
     public float v;
@@ -40,20 +40,14 @@ public class Player_Controller : Base_Controller
         //MoveSpeed = 2 * item.moveSpeed;
         maxHp = hp = (int)(100);
         damage = 10;
-        skillCooldownReduction = 0;
         moveSpeed = 2;
 
         string name = transform.gameObject.name;
         name = name.Replace("(Clone)", "");
 
-        animatorPlaySpeed = 0.4f;
-
-        anime = Util.GetOrAddComponent<Animator>(transform.gameObject);
-
-        anime.runtimeAnimatorController = Managers.Resource.Load<RuntimeAnimatorController>($"Animation/{name}/{name}");
         anime.speed = animatorPlaySpeed;
     }
-    private void Update()
+    private void Update()//
     {
         if (anime.GetCurrentAnimatorStateInfo(0).IsName("death")) { return; }
 
@@ -118,6 +112,7 @@ public class Player_Controller : Base_Controller
                 if (Input.GetTouch(0).phase == TouchPhase.Began)
                 {
                     enterPoint = Input.GetTouch(0).position;
+
                     return;
                 }
 

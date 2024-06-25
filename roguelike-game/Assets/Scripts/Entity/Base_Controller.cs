@@ -6,8 +6,6 @@ public abstract class Base_Controller : Stat
     protected BoxCollider2D boxCollider;
     protected Rigidbody2D rigid;
 
-    protected float animatorPlaySpeed;
-
     protected virtual void Start()
     {
         anime = GetComponent<Animator>();

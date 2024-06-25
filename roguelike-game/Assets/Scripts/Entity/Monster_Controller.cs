@@ -3,7 +3,7 @@ using UnityEngine;
 public class Monster_Controller : Base_Controller
 {
     [SerializeField]
-    private float animeSpeed = 0.25f;
+    private float animatorPlaySpeed = 0.4f;
 
     public Monster monsterType;
 
@@ -12,7 +12,7 @@ public class Monster_Controller : Base_Controller
     {
         base.Start();
 
-        anime.speed = animeSpeed;
+        anime.speed = animatorPlaySpeed;
     }
     private void OnEnable()
     { 
