@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using UnityEngine;
+[Obsolete]
 public class Player_Controller : Base_Controller
 {
     [SerializeField]

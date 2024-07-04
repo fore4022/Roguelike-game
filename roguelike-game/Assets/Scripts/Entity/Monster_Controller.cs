@@ -1,41 +1,37 @@
+using System;
 using System.Collections;
 using UnityEngine;
+[Obsolete]
 public class Monster_Controller : Base_Controller
 {
-    [SerializeField]
-    private float animatorPlaySpeed = 0.4f;
+    public Monster monster;
 
-    public Monster monsterType;
-
-    private float _range = 2f;
-    protected override void Start()
+    public override void Attack()
     {
-        base.Start();
 
-        anime.speed = animatorPlaySpeed;
+    }
+    public override void TakeDamage()
+    {
+
+    }
+    public override void Die()
+    {
+
+    }
+    public override void Move()
+    {
+
     }
     private void OnEnable()
-    { 
-        Init();
-
-        StartCoroutine(Moving());
-    }
-    protected override void Init()
     {
-        damage = monsterType.attackDamage;
-        maxHp = monsterType.maxHp;
-        gold = monsterType.gold;
-        exp = monsterType.exp;
-
-        moveSpeed = monsterType.moveSpeed;
-        hp = maxHp;
+        StartCoroutine(Moving());
     }
     private Vector3 Direction() { return (Managers.Game.player.gameObject.transform.position - transform.position).normalized; }
     public virtual void Attacked(int damage)
     {
-        hp -= damage;
+        Hp -= damage;
 
-        if(hp <= 0)
+        if(Hp <= 0)
         {
             StopCoroutine(Moving());
 
@@ -56,21 +52,21 @@ public class Monster_Controller : Base_Controller
         anime.speed++;
         anime.Play("death");
 
-        Managers.Game.player.GetLoot(gold, exp);
+        //Managers.Game.player.GetLoot(gold, exp);
 
         while (anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1) { yield return null; }
 
-        Managers.Game.objectPool.DisableObject(monsterType.monsterName, gameObject);
+        Managers.Game.objectPool.DisableObject(monster.monsterName, gameObject);
     }
     public int MonsterCount()
     {
         Collider2D[] colliders = new Collider2D[] { };
 
-        return Physics2D.OverlapCircleNonAlloc(transform.position, _range, colliders, LayerMask.GetMask("Monster"));
+        return Physics2D.OverlapCircleNonAlloc(transform.position, Range, colliders, LayerMask.GetMask("Monster"));
     }
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, _range);
+        Gizmos.DrawWireSphere(transform.position, Range);
     }
 }
