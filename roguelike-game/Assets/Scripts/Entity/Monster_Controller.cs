@@ -1,12 +1,18 @@
 using System;
 using System.Collections;
+using TMPro.EditorUtilities;
 using UnityEngine;
 [Obsolete]
 public class Monster_Controller : Base_Controller
 {
-    public Monster monster;
+    protected Monster _monster;
 
-    public override void Attack()
+    public Monster monster { get => _monster; }
+
+    protected override void Init() { }
+}
+/*
+ public override void Attack()
     {
 
     }
@@ -69,4 +75,4 @@ public class Monster_Controller : Base_Controller
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, Range);
     }
-}
+ */

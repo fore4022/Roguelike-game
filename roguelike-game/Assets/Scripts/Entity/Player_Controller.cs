@@ -5,6 +5,8 @@ public class Player_Controller : Base_Controller
 {
     [SerializeField]
     private float animatorPlaySpeed = 0.4f;
+    [SerializeField]
+    private Stat stat;
 
 #if UNITY_ANDROID
     public Vector2 enterPoint;
@@ -15,12 +17,6 @@ public class Player_Controller : Base_Controller
 
     private Vector2 _direction;
 
-    public float h;
-    public float v;
-
-    public int necessaryExp;
-    public int level;
-
     protected override void Start()
     {
         base.Start();
@@ -30,17 +26,6 @@ public class Player_Controller : Base_Controller
     {
         Managers.Input.keyAction -= Moving;
         Managers.Input.keyAction += Moving;
-
-        boxCollider.size = new Vector2(0.9f, 1.7f);
-
-        level = 1;
-        //maxHp = hp = (int)(100 * item.hp);
-        //damage = 10 * item.damage;
-        //skillCooldownReduction = item.skillCooldownReduction;
-        //MoveSpeed = 2 * item.moveSpeed;
-        maxHp = hp = (int)(100);
-        damage = 10;
-        moveSpeed = 2;
 
         string name = transform.gameObject.name;
         name = name.Replace("(Clone)", "");
@@ -61,13 +46,6 @@ public class Player_Controller : Base_Controller
         }
 
         if (Input.anyKey == false) { h = v = 0; }
-
-        SetAnime();
-    }
-    private void SetAnime()
-    {
-        if (h != 0 || v != 0) { anime.Play("move"); }
-        else { anime.Play("idle"); }
     }
     public void GetLoot(int gold, int exp)
     {
@@ -91,11 +69,6 @@ public class Player_Controller : Base_Controller
             level++;
             necessaryExp = (int)(Managers.Game.basicExp + 15 * (level - 1)) * (1 + level / 8);
         }
-    }
-    public void Attacked(int damage)
-    {
-        hp -= damage;
-        updateStatus.Invoke();
     }
     private void Moving()    
     {
@@ -130,26 +103,8 @@ public class Player_Controller : Base_Controller
     private void Death()
     {
         anime.Play("death");
-
-        //while (true)
-        //{
-        //    if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
-        //    {
-        //        for (; ; )
-        //        {
-        //            if(Managers.UI.SceneStack.Count > 0) { Managers.UI.CloseSceneUI(); }
-        //            else { break; }
-        //        }
-
-        //        Managers.Game.StageEnd();
-        //        //show
-        //        break;
-        //    }
-
-        //    yield return null;
-        //}
     }
-    private void Crash(Collision2D collision) { if (collision.gameObject.CompareTag("Monster")) { Attacked(collision.gameObject.GetComponent<Monster_Controller>().Damage); } }
+    private void Crash(Collision2D collision) { /*attack*/ }
     private void OnCollisionEnter2D(Collision2D collision) { Crash(collision); }
     private void OnCollisionStay2D(Collision2D collision) { Crash(collision); }
     private void OnDrawGizmos()
@@ -158,3 +113,20 @@ public class Player_Controller : Base_Controller
         Gizmos.DrawWireCube(transform.position, new Vector2(Managers.Game.camera_w, Managers.Game.camera_h));
     }
 }
+//while (true)
+//{
+//    if(anime.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f && anime.GetCurrentAnimatorStateInfo(0).IsName("death"))
+//    {
+//        for (; ; )
+//        {
+//            if(Managers.UI.SceneStack.Count > 0) { Managers.UI.CloseSceneUI(); }
+//            else { break; }
+//        }
+
+//        Managers.Game.StageEnd();
+//        //show
+//        break;
+//    }
+
+//    yield return null;
+//}

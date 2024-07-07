@@ -8,6 +8,7 @@ public class Monster : ScriptableObject
     {
         CloseDistance, LongDistance
     }
+    public Stat stat;
 
     public MonsterType monsterType;
 
