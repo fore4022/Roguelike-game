@@ -7,16 +7,6 @@ public abstract class Base_Controller : MonoBehaviour
     protected BoxCollider2D boxCollider;
     protected Rigidbody2D rigid;
 
-    //public float MoveSpeed { get => stat.moveSpeed; protected set => stat.moveSpeed += value; }
-    //public float Range { get => stat.range; protected set => stat.range += value; }
-    //public int Damage { get => stat.damage; protected set => stat.damage += value; }
-    //public int MaxHp { get => stat.maxHp; protected set => stat.maxHp += value; }
-    //public int Hp { get => stat.hp; protected set => stat.hp += value; }
-
-    //public abstract void Attack();
-    //public abstract void Die();
-    //public abstract void Move();
-    //public abstract void TakeDamage();
     protected virtual void Start()
     {
         anime = GetComponent<Animator>();

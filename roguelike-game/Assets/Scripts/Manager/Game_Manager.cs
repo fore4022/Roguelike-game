@@ -16,23 +16,18 @@ public class Game_Manager
     public float camera_h { get { return Camera.main.orthographicSize * 2; } }
     public float camera_w { get { return Camera.main.orthographicSize * 2 * Camera.main.aspect; } }
 
-    public float basicExp = 55;
-    public float creationCycle;
+    public float basicExp = 55;//
     public float timer;
 
-    public int userGold;
-    public int userExp;
+    public int Gold;
+    public int Exp;
 
     public bool isSpawn;
 
     private void Init(string Theme)
     {
-        creationCycle = 1f;
-
-        isSpawn = true;
-
         map = Managers.Resource.Load<Map_Theme>($"Data/Map_Theme/{Theme}");
-        skill = GameObject.Find("@Skill");
+        skill = GameObject.Find("@Skill");//scene
 
         GameObject go = GameObject.Find("Player");
 
@@ -44,8 +39,8 @@ public class Game_Manager
             player = go.AddComponent<Player_Controller>();
         }
 
-        go = GameObject.Find("Main Camera");
-        go.AddComponent<Main_Camera>();
+        //go = GameObject.Find("Main Camera");
+        //go.AddComponent<Main_Camera>(); //scene
 
 
         if (GameObject.Find("@Monster") == null) { go = new GameObject { name = "@Monster" }; }
@@ -78,8 +73,8 @@ public class Game_Manager
     {
         isSpawn = false;
 
-        userGold += (int)player.Gold;
-        userExp += (int)player.Exp;
+        userGold += Gold;//
+        userExp += Exp;
 
         Time.timeScale = 0f;
     }

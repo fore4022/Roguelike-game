@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using TMPro.EditorUtilities;
-using UnityEngine;
 [Obsolete]
 public class Monster_Controller : Base_Controller
 {

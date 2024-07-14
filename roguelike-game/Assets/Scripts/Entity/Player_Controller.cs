@@ -1,10 +1,8 @@
 using System;
 using UnityEngine;
 [Obsolete]
-public class Player_Controller : Base_Controller
+public class Player_Controller : Base_Controller, IAttackable, IDamageable, IDieable, IMovable
 {
-    [SerializeField]
-    private float animatorPlaySpeed = 0.4f;
     [SerializeField]
     private Stat stat;
 
@@ -27,32 +25,17 @@ public class Player_Controller : Base_Controller
         Managers.Input.keyAction -= Moving;
         Managers.Input.keyAction += Moving;
 
-        string name = transform.gameObject.name;
-        name = name.Replace("(Clone)", "");
-
-        anime.speed = animatorPlaySpeed;
+        anime.speed = stat.animationPlaySpeed;
     }
     private void Update()//
     {
         if (anime.GetCurrentAnimatorStateInfo(0).IsName("death")) { return; }
 
-        if (hp <= 0) 
-        { 
-            Managers.Input.keyAction -= Moving;
-
-            h = v = 0;
-
-            //Death();
-        }
-
         if (Input.anyKey == false) { h = v = 0; }
     }
     public void GetLoot(int gold, int exp)
     {
-        //Gold += (int)(gold * item.goldMagnification);
-        //Exp += (int)(exp * item.expMagnification);
-        Gold += (int)(gold);
-        Exp += (int)(exp);
+        //
 
         CheckExp();
 
@@ -61,7 +44,7 @@ public class Player_Controller : Base_Controller
     }
     private void CheckExp()
     {
-        necessaryExp = (int)(Managers.Game.basicExp + 15 * (level - 1)) * (1 + level / 8);
+        necessaryExp = (int)(Managers.Game.basicExp + 15 * (level - 1)) * (1 + level / 8);//
 
         if (exp >= necessaryExp)
         {
@@ -70,7 +53,7 @@ public class Player_Controller : Base_Controller
             necessaryExp = (int)(Managers.Game.basicExp + 15 * (level - 1)) * (1 + level / 8);
         }
     }
-    private void Moving()    
+    private void Moving()//inpust system
     {
 #if UNITY_EDITOR
         {

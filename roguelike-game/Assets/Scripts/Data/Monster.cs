@@ -13,7 +13,6 @@ public class Monster : ScriptableObject
     public MonsterType monsterType;
 
     public string monsterName;
-    public float moveSpeed;
     public int gold;
     public int exp;
 }
